@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'crete_rounditalic';
+    src: url('google-font/crete-round-italic/CreteRound-Italic-webfont.eot');
+    src: url('google-font/crete-round-italic/CreteRound-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/crete-round-italic/CreteRound-Italic-webfont.woff2') format('woff2'),
+         url('google-font/crete-round-italic/CreteRound-Italic-webfont.woff') format('woff'),
+         url('google-font/crete-round-italic/CreteRound-Italic-webfont.ttf') format('truetype'),
+         url('google-font/crete-round-italic/CreteRound-Italic-webfont.svg#crete_rounditalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'crete_roundregular';
+    src: url('google-font/crete-round-regular/CreteRound-Regular-webfont.eot');
+    src: url('google-font/crete-round-regular/CreteRound-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/crete-round-regular/CreteRound-Regular-webfont.woff2') format('woff2'),
+         url('google-font/crete-round-regular/CreteRound-Regular-webfont.woff') format('woff'),
+         url('google-font/crete-round-regular/CreteRound-Regular-webfont.ttf') format('truetype'),
+         url('google-font/crete-round-regular/CreteRound-Regular-webfont.svg#crete_roundregular') format('svg');
+    font-weight: 900;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'josefin_sansregular';
+    src: url('google-font/josefin-sans/JosefinSans-Regular-webfont.eot');
+    src: url('google-font/josefin-sans/JosefinSans-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/josefin-sans/JosefinSans-Regular-webfont.woff2') format('woff2'),
+         url('google-font/josefin-sans/JosefinSans-Regular-webfont.woff') format('woff'),
+         url('google-font/josefin-sans/JosefinSans-Regular-webfont.ttf') format('truetype'),
+         url('google-font/josefin-sans/JosefinSans-Regular-webfont.svg#josefin_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'archivo_narrowbold';
+    src: url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.eot');
+    src: url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.woff2') format('woff2'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.woff') format('woff'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.ttf') format('truetype'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Bold-webfont.svg#archivo_narrowbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'archivo_narrowregular';
+    src: url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.eot');
+    src: url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.woff2') format('woff2'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.woff') format('woff'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.ttf') format('truetype'),
+         url('google-font/Archivo_Narrow/ArchivoNarrow-Regular-webfont.svg#archivo_narrowregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'dosismedium';
+    src: url('google-font/Dosis/Dosis-Medium-webfont.eot');
+    src: url('google-font/Dosis/Dosis-Medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Dosis/Dosis-Medium-webfont.woff2') format('woff2'),
+         url('google-font/Dosis/Dosis-Medium-webfont.woff') format('woff'),
+         url('google-font/Dosis/Dosis-Medium-webfont.ttf') format('truetype'),
+         url('google-font/Dosis/Dosis-Medium-webfont.svg#dosismedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dosisregular';
+    src: url('google-font/Dosis/Dosis-Regular-webfont.eot');
+    src: url('google-font/Dosis/Dosis-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Dosis/Dosis-Regular-webfont.woff2') format('woff2'),
+         url('google-font/Dosis/Dosis-Regular-webfont.woff') format('woff'),
+         url('google-font/Dosis/Dosis-Regular-webfont.ttf') format('truetype'),
+         url('google-font/Dosis/Dosis-Regular-webfont.svg#dosisregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'dosissemibold';
+    src: url('google-font/Dosis/Dosis-SemiBold-webfont.eot');
+    src: url('google-font/Dosis/Dosis-SemiBold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Dosis/Dosis-SemiBold-webfont.woff2') format('woff2'),
+         url('google-font/Dosis/Dosis-SemiBold-webfont.woff') format('woff'),
+         url('google-font/Dosis/Dosis-SemiBold-webfont.ttf') format('truetype'),
+         url('google-font/Dosis/Dosis-SemiBold-webfont.svg#dosissemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'poiret_oneregular';
+    src: url('google-font/Poiret_One/PoiretOne-Regular-webfont.eot');
+    src: url('google-font/Poiret_One/PoiretOne-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Poiret_One/PoiretOne-Regular-webfont.woff2') format('woff2'),
+         url('google-font/Poiret_One/PoiretOne-Regular-webfont.woff') format('woff'),
+         url('google-font/Poiret_One/PoiretOne-Regular-webfont.ttf') format('truetype'),
+         url('google-font/Poiret_One/PoiretOne-Regular-webfont.svg#poiret_oneregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewaymedium';
+    src: url('google-font/Raleway/Raleway-Medium-webfont.eot');
+    src: url('google-font/Raleway/Raleway-Medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Raleway/Raleway-Medium-webfont.woff2') format('woff2'),
+         url('google-font/Raleway/Raleway-Medium-webfont.woff') format('woff'),
+         url('google-font/Raleway/Raleway-Medium-webfont.ttf') format('truetype'),
+         url('google-font/Raleway/Raleway-Medium-webfont.svg#ralewaymedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewayregular';
+    src: url('google-font/Raleway/Raleway-Regular-webfont.eot');
+    src: url('google-font/Raleway/Raleway-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Raleway/Raleway-Regular-webfont.woff2') format('woff2'),
+         url('google-font/Raleway/Raleway-Regular-webfont.woff') format('woff'),
+         url('google-font/Raleway/Raleway-Regular-webfont.ttf') format('truetype'),
+         url('google-font/Raleway/Raleway-Regular-webfont.svg#ralewayregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewaysemibold';
+    src: url('google-font/Raleway/Raleway-SemiBold-webfont.eot');
+    src: url('google-font/Raleway/Raleway-SemiBold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('google-font/Raleway/Raleway-SemiBold-webfont.woff2') format('woff2'),
+         url('google-font/Raleway/Raleway-SemiBold-webfont.woff') format('woff'),
+         url('google-font/Raleway/Raleway-SemiBold-webfont.ttf') format('truetype'),
+         url('google-font/Raleway/Raleway-SemiBold-webfont.svg#ralewaysemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

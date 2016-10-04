@@ -1,0 +1,87 @@
+<script id="user_role_mgmt" type="text/html">
+<section>
+	<div class="row">
+		<span>
+			<center>
+				<h2 data-bind="text:userrolemgnt.curUser().name + ' @Messages("user.rl.mgmt")'"></h2>
+			</center>
+			<br>
+		<br> <span>
+				<div data-alert id="alert-box-container"
+					class="padding5 small-8 large-4 small-centered columns alert-box alert round"
+					data-bind="visible:userrolemgnt.visibility">
+					<div id="alert-message" class="text-center fontBlack"></div>
+				</div>
+		</span>
+			<dl	class="sub-nav xo-nav">
+				<dd class="active">
+					<a title="Create a new user" data-reveal-id="myModal" id="assignNewUserRoleBut"
+						data-bind='click:userrolemgnt.loadPopup'>@Messages("user.rl.mgmt.newusrrl")</a>
+					<div id="myModal"class="reveal-modal small top50" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" >				
+							<span>
+								<div data-alert id="popup-box-container"
+									class="padding5 small-8 large-6 small-centered columns alert-box alert round"
+									data-bind="visible:userrolemgnt.visibility">
+									<div id="popup-message" class="text-center fontBlack"></div>
+								</div>
+							</span>
+						<table id="UnassignedUserRoles">
+								<thead>
+									<tr>
+										<th class="width65" >Roles</th>
+										<th class="text-center">Assign</th>
+									</tr>
+								</thead>
+								<tbody
+									data-bind="foreach: {data:userrolemgnt.availableUnassignedRoles, as: 'unassignedRoleRecord'}">
+									<tr>
+										<td data-bind='text: unassignedRoleRecord.name'></td>
+										<td class="text-center">
+										<input type="submit" class="small round button lightbluebutton popupheight" value="ADD" data-bind="click:unassignedRoleRecord.updateUserRole"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+											
+							
+					 	 <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+					</div>
+				</dd>
+			</dl>
+		</span>
+			<table id="allAvailableUserRoles">
+				<thead>
+					<tr>
+						<th>@Messages("user.rl.mgmt.name")</th>
+						<th>@Messages("user.rl.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody
+					data-bind="foreach: {data:userrolemgnt.availableUserRoles, as: 'userRoleRecord'}">
+					<tr>
+						<td data-bind='text: userRoleRecord.name'></td>
+						<td>
+							<ul class="inline-list">
+								<li data-bind="if: userRoleRecord.active"><a
+									title='@Messages("user.rl.mgmt.dactusr")'
+									data-bind='attr: {id: "user_active_"+userRoleRecord.userId+"_"+userRoleRecord.roleId}, click:userRoleRecord.toggleUserRoleStatus'>
+										<i class="fi-unlock"></i>
+								</a></li>
+								<li data-bind="ifnot: userRoleRecord.active"><a
+									title='@Messages("user.rl.mgmt.actusr")'
+									data-bind='attr: {id: "user_active_"+userRoleRecord.userId+"_"+userRoleRecord.roleId}, click:userRoleRecord.toggleUserRoleStatus'>
+										<i class="fi-lock"></i>
+								</a></li>
+								<li>
+									<a  title='@Messages("user.rl.mgmt.delusrrl")' data-bind='attr: {id: "user_active_"+userRoleRecord.userId+"_"+userRoleRecord.roleId}, click:userRoleRecord.deleteUserRole'>
+										<i class="fi-trash"></i>
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</section>
+</script>

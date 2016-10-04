@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-Oct-2014 07:17:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.tableau.models.TableauSite"  table="tableau_sites">
+    <id name="tableauSiteId" type="string">
+      <column length="40" name="tableau_site_id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="name" type="string">
+      <column length="75" name="name"/>
+    </property>
+    <property name="contentUrl" type="string">
+      <column length="150" name="content_url"/>
+    </property>
+    <property name="active" type="boolean">
+      <column name="active" not-null="true"/>
+    </property>
+    <property name="lastModifiedDate" type="timestamp">
+        <column name="last_modified_dt"/>
+    </property>
+    <property name="createdDate" type="timestamp">
+        <column name="created_dt"/>
+    </property>
+    <set fetch="select" inverse="true" cascade="save-update" lazy="true" name="tableauUsers" table="tableau_users">
+      <key>
+        <column length="40" name="tableau_site_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.xo.web.ext.tableau.models.TableauUser"/>
+    </set>
+    <filter name="authfill_tableau_site" condition=" tableau_site_id in (:resourceIds) " />
+  </class>
+  <query name="com.xo.web.ext.tableau.models.TableauSite.findByNameAndContentUrl">
+    	<![CDATA[
+    		SELECT ts FROM TableauSite as ts WHERE ts.name = :name AND contentUrl = :contentUrl
+    	]]>
+    </query>
+
+	<!-- Filters section -->
+  <filter-def name="authfill_tableau_site">
+  		<filter-param name="resourceIds" type="string"/>
+  </filter-def>
+</hibernate-mapping>

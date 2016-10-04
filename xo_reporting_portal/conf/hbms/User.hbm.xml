@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.User" table="users">
+        <id name="userId" type="java.lang.Integer">
+            <column name="user_id" />
+            <generator class="identity" />
+        </id>
+        <property name="firstName" type="string">
+            <column name="first_name" length="50" not-null="true" />
+        </property>
+        <property name="secondName" type="string">
+            <column name="second_name" length="50" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="150" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="150" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="systemResource" type="boolean">
+            <column name="system_resource" not-null="true" />
+        </property>
+        <property name="superUser" type="boolean">
+            <column name="super_user" not-null="true" />
+        </property>
+        <property name="deleted" type="boolean">
+            <column name="deleted" not-null="true" />
+        </property>
+        <property name="isEmailVerified" type="boolean">
+            <column name="is_email_verified" not-null="true" />
+        </property>
+        <property name="lastLoginDt" type="timestamp">
+            <column name="last_login_dt" length="19" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <many-to-one name="xoClient" class="com.xo.web.models.system.XoClient" fetch="select">
+            <column name="client_id" not-null="true" />
+        </many-to-one>
+        <set name="userRoles" table="users_roles" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.UserRole" />
+        </set>
+        <set name="tokenActions" table="token_actions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.TokenAction" />
+        </set>
+        <set name="usersPermissions" table="users_permissions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.UserPermission" />
+        </set>
+        <set name="chat" table="chat" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.ext.chat.models.Chat" />
+        </set>
+    </class>
+    <query name="com.xo.web.models.system.User.findByUsernamePassword">
+    	<![CDATA[
+    		SELECT user FROM com.xo.web.models.system.User as user WHERE 
+    		user.email= :email AND user.password= :hashedPassword
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.User.findByEmailAndActive">
+    	<![CDATA[
+    		SELECT user FROM com.xo.web.models.system.User user WHERE user.active= :active AND user.email = :email
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.User.findByEmail">
+    	<![CDATA[
+    		SELECT user FROM com.xo.web.models.system.User user WHERE user.email = :email
+    	]]>
+    </query>
+</hibernate-mapping>

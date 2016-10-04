@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-Oct-2014 07:17:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.chat.models.ChatRoom"  table="chatroom">
+    <id name="chatroomId" type="java.lang.Integer">
+            <column name="chatroom_id" />
+            <generator class="identity" />
+    </id>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+   
+   <set name="chat" table="chat" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="chatroom_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.ext.chat.models.Chat" />
+   </set>
+   </class>
+</hibernate-mapping>

@@ -1,0 +1,172 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Map static resources from the /public folder to the /assets URL path
+GET      /assets/*file                                                controllers.Assets.at(path="/public", file)
+GET      /vassets/*file                                               controllers.Assets.versioned(path="/public", file:Asset)
+GET      /webjars/*file                                               controllers.WebJarAssets.at(file)
+
+# Security related requests and reports 
+POST     /cspreport                                                   @com.xo.web.controllers.XOBaseController.cspReportParser
+GET      /crossdomain.xml                                             controllers.Assets.at(path="/public", file ?= "security/crossdomain.xml")
+GET      /accessdenied                                                @com.xo.web.controllers.XOBaseController.accessDenied
+GET      /jsonaccessdenied                                            @com.xo.web.controllers.UserController.jsonAccessDenied()
+
+GET      /                                                            @com.xo.web.controllers.UserController.renderLoginPage()
+
+# REST services
+POST     /auth/login                                                  @com.xo.web.controllers.UserController.login()
+GET      /logincallback                                               @com.xo.web.controllers.UserController.xossoCallBackHandler(token:String, company:String, domain:String, name:String ?="", email:String ?="")
+
+# User Logout
+GET      /logout                                                      @com.xo.web.controllers.UserController.logout(authToken: String)
+
+# Xoportal Pages
+GET      /pagedispatcher                                              @com.xo.web.controllers.UserController.pageDispatcher(authToken: String, currentPage: String)
+
+# Resource types based requests
+GET      /resourcetypes/keyvalue                                      @com.xo.web.controllers.ResourceTypeController.readAllAsKeyValue()
+
+# User REST services
+PUT      /users/toggleactive/:userId                                  @com.xo.web.controllers.UserController.toggleActiveStatus(userId: Integer)
+PUT      /users/resetpassword/:userId                                 @com.xo.web.controllers.UserController.resetPasswordForUser(userId: Integer)
+GET      /users/resetpasswordpage                                     @com.xo.web.controllers.UserController.renderResetPasswordPage(authToken: String)
+POST     /users/resetpassword                                         @com.xo.web.controllers.UserController.resetPassword(authToken: String)
+GET      /users/verify                                                @com.xo.web.controllers.UserController.verify(token: String)
+POST     /users/changepassword                                        @com.xo.web.controllers.UserController.changePassword()
+GET      /users/forgotpassword                                        @com.xo.web.controllers.UserController.forgotPasswordPage()
+POST     /users/forgotpassword                                        @com.xo.web.controllers.UserController.forgotPassword()
+POST     /users/upload                                                @com.xo.web.controllers.UserController.uploadUsers()
+GET      /users/keyvalue                                              @com.xo.web.controllers.UserController.readAllAsKeyValue()
+GET      /users/:userId                                               @com.xo.web.controllers.UserController.read(userId: Integer)
+PUT      /users/:userId                                               @com.xo.web.controllers.UserController.update(userId: Integer)
+DELETE   /users/:userId                                               @com.xo.web.controllers.UserController.delete(userId: Integer)
+GET      /users                                                       @com.xo.web.controllers.UserController.readAll()
+POST     /users                                                       @com.xo.web.controllers.UserController.create()
+
+# Role management
+GET      /roles                                                       @com.xo.web.controllers.RoleController.readAll()
+POST     /roles                                                       @com.xo.web.controllers.RoleController.create()
+GET      /roles/keyvalue                                              @com.xo.web.controllers.RoleController.readAllAsKeyValue()
+PUT      /roles/toggleactive/:id                                      @com.xo.web.controllers.RoleController.toggleActiveStatus(id: Integer)
+GET      /roles/:id                                                   @com.xo.web.controllers.RoleController.read(id: Integer)
+PUT      /roles/:id                                                   @com.xo.web.controllers.RoleController.update(id: Integer)
+DELETE   /roles/:roleId                                               @com.xo.web.controllers.RoleController.delete(roleId: Integer)
+GET      /roles/unassigned/:id                                        @com.xo.web.controllers.RoleController.readUnassigned(id: Integer)
+
+#Permission management
+GET      /permissions/:roleId                                         @com.xo.web.controllers.PermissionController.read(roleId: Integer)
+GET      /permissions                                                 @com.xo.web.controllers.PermissionController.readAll()
+PUT      /permissions/toggleactive/:id                                @com.xo.web.controllers.PermissionController.toggleActiveStatus(id: Integer)
+GET      /permissions/unassigned/:roleId                              @com.xo.web.controllers.PermissionController.readUnAssignedRolePermissions(roleId: Integer)
+GET      /permissions/unassigned_user_permissions/:userId             @com.xo.web.controllers.PermissionController.readUnAssignedUserPermissions(userId: Integer)
+
+
+# user role REST services
+GET      /userroles/:userId                                           @com.xo.web.controllers.UserRoleController.readAll(userId: Integer)
+POST     /userroles/:userId/:roleId                                   @com.xo.web.controllers.UserRoleController.create(userId: Integer,roleId:Integer)
+DELETE   /userroles/:userId/:roleId                                   @com.xo.web.controllers.UserRoleController.delete(userId: Integer, roleId: Integer)
+PUT      /userroles/toggleactive/:userId/:roleId                      @com.xo.web.controllers.UserRoleController.toggleActiveStatus(userId: Integer, roleId: Integer)
+GET      /userroles/roles_count/:roleId                               @com.xo.web.controllers.UserRoleController.readRolesCount(roleId: Integer)
+
+#Roles Permission mgmt
+GET      /rolepermission/:roleId                                      @com.xo.web.controllers.RolePermissionController.readAll(roleId: Integer)
+PUT      /rolepermission/toggleactive/:rolePermissionId               @com.xo.web.controllers.RolePermissionController.toggleActiveStatus(rolePermissionId: Integer)
+DELETE   /rolepermission/:rolePermissionId                            @com.xo.web.controllers.RolePermissionController.delete(rolePermissionId: Integer)
+POST     /rolepermission/:roleId/:permissionId                        @com.xo.web.controllers.RolePermissionController.create(roleId: Integer, permissionId: Integer)
+
+#Role based RLP mgmt
+GET      /rolerlp                                                     @com.xo.web.controllers.RolePermissionResourceInstanceController.readAll()
+GET      /rolerlp/:roleId/:resourceTypeId                             @com.xo.web.controllers.RolePermissionResourceInstanceController.readAllByRoleAndResourType(roleId: Integer, resourceTypeId: Integer)
+GET      /rolerlp/ressourceinstanceids/:roleId/:resourceTypeId        @com.xo.web.controllers.RolePermissionResourceInstanceController.readAllEntityInstances(roleId: Integer, resourceTypeId: Integer)
+PUT      /rolerlp/toggleactive/:rolePermissionId/:entityId            @com.xo.web.controllers.RolePermissionResourceInstanceController.toggleActiveStatus(rolePermissionId: Integer, entityId: String)
+DELETE   /rolerlp/:rolePermissionId/:entityId                         @com.xo.web.controllers.RolePermissionResourceInstanceController.delete(rolePermissionId: Integer, entityId: String)
+POST     /rolerlp                                                     @com.xo.web.controllers.RolePermissionResourceInstanceController.create()
+
+#User Permission mgmt 
+GET      /userpermission/:userId                                      @com.xo.web.controllers.UserPermissionController.readAll(userId: Integer)
+POST     /userpermission/:userId/:permissionId                        @com.xo.web.controllers.UserPermissionController.create(userId: Integer,permissionId:Integer)
+DELETE   /userpermission/:userpermissionId                            @com.xo.web.controllers.UserPermissionController.delete(userpermissionId: Integer)
+PUT      /userpermission/toggleactive/:userpermissionId               @com.xo.web.controllers.UserPermissionController.toggleActiveStatus(userpermissionId: Integer)
+
+#User based RLP mgmt
+GET      /userrlp                                                     @com.xo.web.controllers.UserPermissionResourceInstanceController.readAll()
+GET      /userrlp/:userId/:resourceTypeId                             @com.xo.web.controllers.UserPermissionResourceInstanceController.readAllByUserAndResourType(userId: Integer, resourceTypeId: Integer)
+GET      /userrlp/ressourceinstanceids/:userId/:resourceTypeId        @com.xo.web.controllers.UserPermissionResourceInstanceController.readAllEntityInstances(userId: Integer, resourceTypeId: Integer)
+PUT      /userrlp/toggleactive/:userPermissionId/:entityId            @com.xo.web.controllers.UserPermissionResourceInstanceController.toggleActiveStatus(userPermissionId: Integer, entityId: String)
+DELETE   /userrlp/:userPermissionId/:entityId                         @com.xo.web.controllers.UserPermissionResourceInstanceController.delete(userPermissionId: Integer, entityId: String)
+POST     /userrlp                                                     @com.xo.web.controllers.UserPermissionResourceInstanceController.create()
+
+
+# Business related REST Services goes below
+
+# Tableau related pages
+POST     /dashboard                                                   @com.xo.web.controllers.DashboardController.loadDashboardGroupData()
+POST     /dashboard/project/:projectId                                @com.xo.web.controllers.DashboardController.loadProjectDashboardData(projectId : String)
+POST     /dashboard/view/:workbookId/:viewId                          @com.xo.web.controllers.DashboardController.loadViewData(workbookId : String, viewId : String)
+GET      /sync_tableau_reports                                        @com.xo.web.controllers.TableauRest.syncTableauReports
+
+# Configurations mgmt
+
+GET      /configtemplates                                             @com.xo.web.controllers.XoConfigTemplateController.readAll()
+POST     /configtemplates                                             @com.xo.web.controllers.XoConfigTemplateController.create()
+GET      /configtemplates/:configId                                   @com.xo.web.controllers.XoConfigTemplateController.read(configId: Integer)
+PUT      /configtemplates/:configId                                   @com.xo.web.controllers.XoConfigTemplateController.update(configId: Integer)
+DELETE   /configtemplates/:configId                                   @com.xo.web.controllers.XoConfigTemplateController.delete(configId: Integer)
+PUT      /configtemplates/:configId                                   @com.xo.web.controllers.XoConfigTemplateController.update(configId: Integer)
+GET      /configtemplates/search/:configShortName                     @com.xo.web.controllers.XoConfigTemplateController.isConfigExist(configShortName: String)
+PUT      /configtemplates/toggleactive/:configId                      @com.xo.web.controllers.XoConfigTemplateController.toggleActiveStatus(configId: Integer)
+
+POST     /configinstances                                             @com.xo.web.controllers.XoConfigInstanceController.create()
+GET      /configinstances                                             @com.xo.web.controllers.XoConfigInstanceController.readAllInstances()
+GET      /configinstances/:configId                                   @com.xo.web.controllers.XoConfigInstanceController.read(configId: Integer)
+PUT      /configinstances/:configId                                   @com.xo.web.controllers.XoConfigInstanceController.update(configId: Integer)
+DELETE   /configinstances/:configId                                   @com.xo.web.controllers.XoConfigInstanceController.delete(configId: Integer)
+PUT      /configinstances/:configId                                   @com.xo.web.controllers.XoConfigInstanceController.update(configId: Integer)
+GET      /configinstances/search/:configTemplateId/:configShortName   @com.xo.web.controllers.XoConfigInstanceController.isConfigExist(configTemplateId: Integer, configShortName: String)
+GET      /configinstances/all/:configTemplateId                       @com.xo.web.controllers.XoConfigInstanceController.readAll(configTemplateId: Integer)
+PUT      /configinstances/toggleactive/:configId                      @com.xo.web.controllers.XoConfigInstanceController.toggleActiveStatus(configId: Integer)
+
+
+# Client Job configuration management
+PUT      /clientjobconfigs/toggleactive/:clientId/:jobId/:configId    @com.xo.web.controllers.XoClientJobConfigController.toggleActiveStatus(clientId: Integer, jobId: Integer, configId: Integer)
+PUT      /clientjobconfigs/runJob/:clientId/:jobId/:configId          @com.xo.web.controllers.XoClientJobConfigController.runJob(clientId: Integer, jobId: Integer, configId: Integer)
+DELETE   /clientjobconfigs                                            @com.xo.web.controllers.XoClientJobConfigController.delete()
+GET      /clientjobconfigs                                            @com.xo.web.controllers.XoClientJobConfigController.readAll()
+POST     /clientjobconfigs                                            @com.xo.web.controllers.XoClientJobConfigController.create()
+
+# Clients mgmt
+GET      /clients                                                     @com.xo.web.controllers.XoClientController.readAll()
+
+# Job mgmt
+GET      /jobs                                                        @com.xo.web.controllers.XoJobController.readAll()
+
+GET      /heartbeat                                                   @com.xo.web.controllers.XOBaseController.heartBeat()
+
+#View Group mgmt
+GET      /viewgroup/keyvalue                                          @com.xo.web.controllers.ViewGroupController.readAllAsKeyValue()
+PUT      /viewgroup/toggleactive/:viewGroupId                         @com.xo.web.controllers.ViewGroupController.toggleActiveStatus(viewGroupId: Integer)
+DELETE   /viewgroup/:viewGroupId                                      @com.xo.web.controllers.ViewGroupController.delete(viewGroupId: Integer)
+GET      /viewgroup/all                                               @com.xo.web.controllers.ViewGroupController.readAll()
+GET      /viewgroup/:viewGroupId                                      @com.xo.web.controllers.ViewGroupController.read(viewGroupId: Integer)
+POST     /viewgroup                                                   @com.xo.web.controllers.ViewGroupController.create()
+PUT      /viewgroup/update                                            @com.xo.web.controllers.ViewGroupController.update()
+GET      /viewgroup/groupcount/:viewGroupId                           @com.xo.web.controllers.ViewGroupController.readGroupCount(viewGroupId: Integer)
+
+# Tableau View mgmt
+GET      /tableauview/keyvalue                                        @com.xo.web.controllers.TableauViewController.readAllAsKeyValue()
+PUT      /tableauview/toggleactive/:tableauViewId                     @com.xo.web.controllers.TableauViewController.toggleActiveStatus(tableauViewId: String)
+GET      /tableauview/all                                             @com.xo.web.controllers.TableauViewController.readAll()
+GET      /tableauview/:tableauViewId                                  @com.xo.web.controllers.TableauViewController.read(tableauViewId: String)
+PUT      /tableauview/update                                          @com.xo.web.controllers.TableauViewController.update()
+PUT      /tableauview/toggledashboard/:tableauViewId                  @com.xo.web.controllers.TableauViewController.toggleDashboardStatus(tableauViewId: String)
+GET      /tableauview/checkdashboard/:viewGroupId                     @com.xo.web.controllers.TableauViewController.isDashboardExist(viewGroupId: Integer)
+
+#CHAT
+GET         /chatFeed/:room        @com.xo.web.ext.chat.controllers.ChatController.chatFeed(room: String)
+POST        /chat                  @com.xo.web.ext.chat.controllers.ChatController.postMessage
+GET			/chatrooms			   @com.xo.web.ext.chat.controllers.ChatController.readAllRooms
+GET			/chathistory/:roomid			   @com.xo.web.ext.chat.controllers.ChatController.readAllChats(roomid: Integer)
+GET			/chathistory/:roomid/:messageId			   @com.xo.web.ext.chat.controllers.ChatController.limitChats(roomid: Integer, messageId: Integer)
+POST 		/chatDashboardImg	   @com.xo.web.ext.chat.controllers.ChatController.saveImg

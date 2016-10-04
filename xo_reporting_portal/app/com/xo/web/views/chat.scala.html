@@ -1,0 +1,24 @@
+<script id="chat_mgmt" type="text/html">
+<section>
+        <div id="header">
+            Your Name: <input data-bind="textInput:chat.user" />
+            
+            
+         <select data-bind="options: chat.rooms, optionsText: 'name', optionsValue:'chatroomid', value: chat.currentRoom, optionsCaption: 'Choose..',valueAllowUnset: true" id="roomSelect"></select>
+
+        </div>
+
+        <div id="chatting">
+            <div class="row" data-bind="foreach: {data:chat.chatChannelmsgs, as: 'message'}" >
+                <div data-bind="text:message.text">               
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">               
+                <input type="text" name="chat" id="textField" data-bind="value:chat.inputText"
+                 placeholder="Say something" />
+                <button class="tiny" id="saySomething" data-bind="click:chat.submitMsg" />
+        </div>
+</section>
+</script>

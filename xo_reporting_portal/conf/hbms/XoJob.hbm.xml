@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30 May, 2015 2:15:29 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.XoJob" table="xo_jobs">
+        <id name="jobId" type="java.lang.Integer">
+            <column name="job_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="150" not-null="true" />
+        </property>
+        <property name="className" type="string">
+            <column name="class_name" length="150" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="deleted" type="boolean">
+            <column name="deleted" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <set name="clientJobsConfigurations" table="client_jobs_configurations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="job_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.XoClientJobConfig" />
+        </set>
+    </class>
+    <query name="com.xo.web.models.system.XoConfigTemplate.findbyClientId">
+        <![CDATA[
+    		SELECT xo_jobs FROM com.xo.web.models.system.XoJob xo_jobs WHERE client_id = :clientId
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.XoJob.findByClassName">
+        <![CDATA[
+    		SELECT xo_jobs FROM com.xo.web.models.system.XoJob xo_jobs WHERE xo_jobs.className = :classname
+    	]]>
+    </query>
+</hibernate-mapping>

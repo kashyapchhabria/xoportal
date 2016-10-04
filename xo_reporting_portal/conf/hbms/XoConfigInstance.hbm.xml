@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30 May, 2015 2:15:29 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.XoConfigInstance" table="xo_config_instances">
+        <id name="configId" type="java.lang.Integer">
+            <column name="config_instance_id" />
+            <generator class="identity" />
+        </id>
+        <property name="shortName" type="string">
+            <column name="short_name" length="150" not-null="true" />
+        </property>
+        <property name="configJson" type="string">
+            <column name="config_json" sql-type="mediumtext" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+		<property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <many-to-one name="xoConfigTemplate" class="com.xo.web.models.system.XoConfigTemplate" fetch="select">
+            <column name="config_template_id" />
+        </many-to-one>
+        <set name="clientJobsConfigurations" table="client_jobs_configurations" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="config_instance_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.XoClientJobConfig" />
+        </set>
+    </class>
+    <query name="com.xo.web.models.system.XoConfigInstance.findByXoConfigTemplateId">
+        <![CDATA[
+    		SELECT xoConfigInstance FROM com.xo.web.models.system.XoConfigInstance xoConfigInstance WHERE xoConfigTemplate.configId = :configTemplateId
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.XoConfigInstance.findByName">
+        <![CDATA[
+    		SELECT xoconfiginstance FROM com.xo.web.models.system.XoConfigInstance xoconfiginstance WHERE short_name = :shortName
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.XoConfigInstance.findByConfigTemplateAndName">
+        <![CDATA[
+    		SELECT xoconfiginstance FROM com.xo.web.models.system.XoConfigInstance xoconfiginstance WHERE xoConfigTemplate.configId = :configTemplateId AND short_name = :shortName
+    	]]>
+    </query>
+</hibernate-mapping>

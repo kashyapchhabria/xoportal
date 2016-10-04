@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 30 May, 2015 2:15:29 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.XoClientJobConfig" table="client_jobs_configurations">
+        <composite-id name="clientJobsConfigurationsId" class="com.xo.web.models.system.ClientJobsConfigurationsId">
+            <key-property name="clientId" type="int">
+                <column name="client_id" />
+            </key-property>
+            <key-property name="jobId" type="int">
+                <column name="job_id" />
+            </key-property>
+            <key-property name="configInstanceId" type="int">
+                <column name="config_instance_id" />
+            </key-property>
+        </composite-id>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastMsg" type="string">
+            <column name="last_msg" sql-type="mediumtext" />
+        </property>
+        <property name="deleted" type="boolean">
+            <column name="deleted" not-null="true" />
+        </property>
+		<property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <many-to-one name="xoClient" class="com.xo.web.models.system.XoClient" update="false" insert="false" fetch="select">
+            <column name="client_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="xoConfigInstance" class="com.xo.web.models.system.XoConfigInstance" update="false" insert="false" fetch="select">
+            <column name="config_instance_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="xoJob" class="com.xo.web.models.system.XoJob" update="false" insert="false" fetch="select">
+            <column name="job_id" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

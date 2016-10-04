@@ -1,0 +1,68 @@
+JQuery
+========
+Licence Type : MIT
+Licence Link : https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+Version : 2.1.3
+
+Knockout
+=========
+Licence Type : MIT
+Licence Link : http://www.opensource.org/licenses/mit-license.php
+Version : 3.2
+
+Hibernate: (Entity manager, envers, jpa)
+==========================================
+Licence Type : lgpl-2
+Licence Link : http://www.gnu.org/licenses/lgpl-2.1.html
+Version : 4.3.7
+
+jBcrpt
+=======
+Licence Type : ISC/BSD
+Licence Link : http://www.mindrot.org/files/jBCrypt/LICENSE
+Version : 0.3m
+
+Aspectj
+========
+Licence Type : Eclipse Public License - v 1.0
+Licence Link : http://www.eclipse.org/legal/epl-v10.html
+Version : 1.8.4
+
+DataTable.js
+=============
+Licence Type : MIT
+Licence Link : http://www.datatables.net/license/mit
+version : 1.10.5
+
+Foundation (Zurb)
+==================
+Licence Type : MIT
+Licence Link : https://github.com/zurb/foundation/blob/master/LICENSE
+version : 5.5
+
+Selenium
+==========
+Licence Type : The Apache Software License, Version 2.0
+Licence Link : http://www.apache.org/licenses/LICENSE-2.0.txt
+Version 2.44
+
+data.format (js)
+================
+Licence Type : MIT
+Licence Link : http://www.opensource.org/licenses/mit-license.php
+Version : -
+
+Hikari CP
+==========
+Licence Type : The Apache Software License, Version 2.0
+Licence Link : http://www.apache.org/licenses/LICENSE-2.0.txt
+Version : 2.3.3
+Download Link : http://mvnrepository.com/artifact/com.zaxxer/HikariCP/2.3.3
+
+Knockout-validation
+======================
+Vendor : https://github.com/Knockout-Contrib/Knockout-Validation
+Licence Type : MIT
+Licence Link : http://www.opensource.org/licenses/mit-license.php
+Version : 2.0.3
+Download Link : https://github.com/Knockout-Contrib/Knockout-Validation/archive/2.0.3.zip

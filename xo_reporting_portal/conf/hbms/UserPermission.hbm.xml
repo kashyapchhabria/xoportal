@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18 Nov, 2014 11:54:38 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.UserPermission" table="users_permissions" >
+        <id name="userPermissionId" type="java.lang.Integer">
+            <column name="user_permission_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="permission" class="com.xo.web.models.system.Permission" fetch="select">
+            <column name="permission_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="com.xo.web.models.system.User" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt" length="19" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt" length="19" />
+        </property>
+        <set name="usersPermissionsResourceInstances" table="users_permissions_resource_instance" inverse="true" cascade="all" lazy="true" fetch="select">
+            <key>
+                <column name="user_permission_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.UserPermissionResourceInstance" />
+        </set>
+    </class>
+    <query name="com.xo.web.models.system.UserPermission.findAllByRlpIDAndResourceTypeId">
+    	<![CDATA[
+    		SELECT up FROM com.xo.web.models.system.UserPermission as up WHERE 
+    		up.user.userId= :rlpTypeId AND up.permission.resourceType.resourceTypeId= :resourceTypeId
+    	]]>
+    </query>
+</hibernate-mapping>

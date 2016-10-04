@@ -1,0 +1,31 @@
+@()
+<script id="create-role" type="text/html">
+<section>
+		<form data-bind="submit: rolemanagement.saveRole">
+			<center data-bind="ifnot: rolemanagement.roleId">
+				<h2>@Messages("role.create")</h2>
+			</center>
+			<center data-bind="if: rolemanagement.roleId">
+				<h2 >@Messages("role.edit")</h2>
+			</center>
+			<br>
+				<div data-alert id="alert-box-container" class="padding5 small-8 large-4 small-centered columns alert-box alert round" data-bind="visible: rolemanagement.sholdShowMessage">
+					 <div id="alert-message" class="text-center fontBlack"></div>
+				</div>
+			<div class="row">
+				<div class="medium-6 small-centered columns">
+						<label>@Messages("role.name")</label>
+						<input type="text" data-bind="value: rolemanagement.name" required="required"/>
+						<label>@Messages("role.description")</label>
+						<input type="text" data-bind="value: rolemanagement.description" required="required"/>					
+				</div>
+			</div><br>
+			<center data-bind="ifnot: rolemanagement.roleId">
+				<button id="create_role" class="button extend" type="submit">@Messages("role.create")</button>
+			</center>
+			<center data-bind="if: rolemanagement.roleId">
+				<button id="update_role" class="button extend" type="submit">@Messages("role.update")</button>
+			</center>
+		</form>
+</section>
+</script>

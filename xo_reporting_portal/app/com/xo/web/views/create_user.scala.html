@@ -1,0 +1,38 @@
+@()
+<script id="create-surveyor" type="text/html">
+<section>
+		<form data-bind="submit: usermanagement.saveSurveyor">
+			<center data-bind="ifnot: usermanagement.userId">
+				<h2>@Messages("user.create")</h2>
+			</center>
+			<center data-bind="if: usermanagement.userId">
+				<h2 >@Messages("user.edit")</h2>
+			</center>
+			<br>
+				<div data-alert id="alert-box-container" class="padding5 small-8 large-4 small-centered columns alert-box alert round" data-bind="visible: usermanagement.sholdShowMessage">
+					 <div id="alert-message" class="text-center fontBlack"></div>
+				</div>
+			<div class="row">
+				<div class="medium-6 small-centered columns">
+						<label>@Messages("user.fstname")</label>
+						<input type="text" data-bind="value: usermanagement.firstName" required="required"/>
+						<label>@Messages("user.secname")</label>
+						<input type="text" data-bind="value: usermanagement.lastName" required="required"/>
+						
+					   <label>@Messages("user.email")</label>
+					   <input type="email" data-bind="value: usermanagement.email" required="required"/>
+					   <label>@Messages("user.client")</label>
+					   <select title='@Messages("user.selclient")' id="selUsrSysClient" 
+					   		data-bind='options:usermanagement.availableClients, optionsText: "name", value: usermanagement.selectedClient, optionsCaption:"@Messages("user.selclient")"'>
+					   </select>
+				</div>
+			</div><br>
+			<center data-bind="ifnot: usermanagement.userId">
+				<button id="create_user" class="button extend" type="submit">@Messages("user.create")</button>
+			</center>
+			<center data-bind="if: usermanagement.userId">
+				<button id="update_surveyor" class="button extend" type="submit">@Messages("user.update")</button>
+			</center>
+		</form>
+</section>
+</script>
