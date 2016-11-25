@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
 name := """Xo Reporting Portal"""
 
-version := "4.1"
+version := "4.2"
 
 organization := "com.xo.web"
 
