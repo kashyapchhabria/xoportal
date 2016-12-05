@@ -52,7 +52,8 @@ public class UserController extends BaseController<User, Integer> implements Use
 
 	private static final String XOSSO_URL_LINK = XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL);
 	private static final String CALLBACK_URL = "?callbackurl=";
-	private static final String APP_TYPE = "&app=xoportal";
+	private static final String APP_CONTEXT = XoUtil.getConfig(XoAppConfigKeys.APPLICATION_CONTEXT);
+	private static final String APP_TYPE = "&app=" + APP_CONTEXT.split("/")[1];
 
 	private final XoMailContentProvider xoMailContentProvider = new XoMailContentProvider();
 
