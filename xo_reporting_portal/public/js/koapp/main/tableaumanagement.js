@@ -8,7 +8,6 @@ define(['knockout', 'jquery'], function(ko, $) {
         BaseModel.call(this, ko, $);
         var viz = null;
         self.dashboardData = ko.observableArray([]);
-        self.breadcrumbData = ko.observableArray([]);
         self.menuData = ko.observableArray([]);
         self.imageUrl = ko.observable('');
         self.placeHolderImageUrl = ko.observable('');
@@ -23,233 +22,6 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isMainDashboard = ko.observable(false);
-
-        self.rooms = ko.observableArray([]);
-        self.msgs = ko.observableArray([]);
-        self.inputText = ko.observable("");
-        self.user = ko.observable(xoappusername);
-        self.className = ko.observable();
-        self.currentRoom = ko.observable();
-        self.chatChannelmsgs = ko.observableArray([]);
-        self.imgDataUrl = ko.observable($('#imgtextarea').val());
-        self.enlargeImg = ko.observable('');
-        self.lastMsgId = ko.observable();
-        self.msgCount = ko.observable('10');
-
-        self.setChatRooms = function() {
-            $.ajax({
-                'url': xoappcontext + '/chatrooms',
-                'type': 'GET',
-                'cache': false,
-                'success': function(responseData) {
-                    for (i = 0; i < responseData.length; i++) {
-                        self.rooms.push(responseData[i]);
-                    }
-                },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "general");
-                }
-            });
-        }
-
-        self.setCurrentRoom = function(room) {
-            if (self.chatFeed != undefined)
-                self.chatFeed.close();
-            self.msgs.removeAll();
-
-        };
-
-        self.submitMsg = function() {
-        		$(".se-pre-con").show(true);
-            var today = new Date();
-            var date = today.toISOString().substr(0, 10);
-            var time = today.toISOString().substr(11, 8);
-            var ts = date + " " + time
-            chatContent = {
-                chatroom: self.currentRoom(),
-                message: self.inputText(),
-                ts: ts,
-                type: 'text',
-                user: self.user()
-            };
-            data = JSON.stringify(chatContent);
-            $.ajax({
-                'url': xoappcontext + '/chat',
-                'type': 'POST',
-                'cache': false,
-                'data': data,
-                'contentType': "application/json; charset=utf-8",
-                'success': function(responseData) {
-                    setGlobalMessage(responseData, "general");
-                    $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
-                    self.lastMsgId(responseData.resultobject.messageId);
-                    $(".se-pre-con").fadeOut("slow");
-                },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "general");
-                }
-            });
-            self.inputText("");
-        };
-
-
-        self.storeImage = function() {
-        	if($('#imgtextarea').val() != "") {
-        		$(".se-pre-con").show(true);
-            var today = new Date();
-            var date = today.toISOString().substr(0, 10);
-            var time = today.toISOString().substr(11, 8);
-            var ts = date + " " + time
-            var dataurl = $('#imgtextarea').val();
-            chatContent = {
-                chatroom: self.currentRoom(),
-                ts: ts,
-                type: 'image',
-                user: self.user()
-            };
-            imgContent = {
-                'chatdto': chatContent,
-                'imgdata': dataurl
-            };
-            data = JSON.stringify(imgContent);
-
-            $.ajax({
-                'url': xoappcontext + '/chatDashboardImg',
-                'type': 'POST',
-                'data': data,
-                'cache': false,
-                'contentType': "application/json; charset=utf-8",
-                'success': function(responsedata) {
-                    console.log("success");
-                    setGlobalMessage(responsedata, "general");
-                    self.lastMsgId(responsedata.resultobject.messageId);
-                    self.addMsg(responsedata.resultobject);
-                    $('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
-                    $("#screenShotModal").foundation('reveal', 'close');
-                    $("#screenShotModal").foundation('reveal', 'reflow');
-                    $('#pasteImg').css("background-image","none");
-                    $(".se-pre-con").fadeOut("slow");
-                },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "general");
-                }
-            });
-					}
-					if($('#imgtextarea').val() == "") {
-						alert("Kindly paste an image in the given area and then click \"Send Message\".");
-					}
-        }
-
-        self.formatMsgData = function(msgdata,type) {
-            usr=msgdata.user.toString().split("@")[0];       
-	        	var messages= {user:usr,ts:msgdata.ts,text:msgdata.message,encodedImgData:msgdata.encodedImgData};
-	        	self.chatChannelmsgs.push(messages);
-
-        }
-
-        /** handle incoming messages: add to messages array */
-        self.addMsg = function(msg) {
-            var msgdata = msg;
-            if (msg.data != undefined)
-                msgdata = JSON.parse(msg.data);
-            self.formatMsgData(msgdata);
-        };
-
-        self.listen = function(chatroomId) {
-            if (chatroomId != undefined) {
-                self.chatFeed = new EventSource(xoappcontext + "/chatFeed/" + chatroomId);
-                self.chatFeed.addEventListener("message", self.addMsg, false);
-            }
-        };
-
-        self.showImage = function(event) {
-            self.enlargeImg(event.encodedImgData);
-            //$("#showImg").attr("src",$(event.encodedImgData));
-            $('#viewImageModal').foundation('reveal', 'open');
-        }
-        
-        $('.chat-history').scroll(function(data,event){
-    				if ($('.chat-history').scrollTop() == 0){
-    						self.msgCount(self.msgCount()+10);
-    						loadMessages(self.currentRoom(),self.msgCount(),"add");
-    				}
-    		});
-    		
-    		function changeClass(add, del1, del2) {
-    				if ($('#seg-title').hasClass(del1)) {
-            		$('#seg-title').removeClass(del1);
-            }
-            if ($('#seg-title').hasClass(del2)) {
-            		$('#seg-title').removeClass(del2);
-            }
-            $('#seg-title').addClass(add);
-    		}
-    		
-    		function loadMessages(chatroomid, count, type){
-    				self.msgCount(count);
-    				$(".se-pre-con").show(true);
-            if (chatroomid) {
-                // get top 10 history msg
-                $.ajax({
-                    'url': xoappcontext + '/chathistory/' + chatroomid + '/' + count,
-                    'type': 'GET',
-                    'cache': false,
-                    'contentType': "application/json; charset=utf-8",
-                    'success': function(chathistory) {
-                        if (chathistory) {
-                            chathistory.sort(function(a, b) {
-                                return a.messageId - b.messageId;
-                            });
-
-                            self.chatChannelmsgs.removeAll();
-                            for (i = 0; i < chathistory.length; i++) {
-                                self.formatMsgData(chathistory[i]);
-                            }
-                        }
-                        if (chatroomid == 1) {
-                            changeClass("all","a1","y1");
-                            self.className("All Segments");
-                        }
-                        if (chatroomid == 2) {
-                            changeClass("a1","all","y1");
-                            self.className("Segment A1");
-                        }
-                        if (chatroomid == 3) {
-                            changeClass("y1","a1","all");
-                            self.className("Segment Y1");
-                        }
-                        setGlobalMessage(chathistory, "general");
-                        if(type == "subscribe")
-                        		$('.chat-history').scrollTop($('.chat-history')[0].scrollHeight);
-                        $(".se-pre-con").fadeOut("slow");
-                    },
-                    'error': function(jqXHR, textStatus, errorThrown) {
-                        setGlobalMessage({
-                            message: textStatus,
-                            messageType: 'alert'
-                        }, "general");
-                        $(".se-pre-con").fadeOut("slow");
-                    }
-                });
-                self.setCurrentRoom(chatroomid);
-                self.listen(chatroomid);
-            }
-    		}
-    		
-        self.currentRoom.subscribe(function(chatroomid) {
-        		//alert("caller is " + arguments.callee.caller.toString());
-        		if(chatroomid)
-			            loadMessages(chatroomid,10,"subscribe");
-        });
 
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -314,7 +86,6 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.buildDashboardData = function(responsedata, isNewMenus) {
 
             var dashboardItems = [];
-            var breadcrumbItems = [];
             self.dashboardData([]);
             if (isNewMenus) {
                 self.menuData([]);
@@ -325,23 +96,6 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.renderTableauReport(responsedata);
             self.placeHolderImageUrl(responsedata.placeHolderImageUrl);
             self.errorText(responsedata.errorText);
-
-            // Processing breadcrumbs
-            if (responsedata.breadCrumbDtos) {
-                totalItems = responsedata.breadCrumbDtos.length;
-                var breadcrumbItem = null;
-                i = 0;
-                for (; i < totalItems; i++) {
-
-                    breadcrumbItem = responsedata.breadCrumbDtos[i];
-                    self.setloaderMethod(breadcrumbItem);
-                    breadcrumbItems.push(breadcrumbItem);
-                }
-                if (i > 0) {
-                    breadcrumbItems[i - 1].active = 'current'
-                }
-                //var activeMenuItem = breadcrumbItems[i-1].pageUrl;
-            }
 
             // Processing page content items
             if (responsedata.contentDtos) {
@@ -362,7 +116,6 @@ define(['knockout', 'jquery'], function(ko, $) {
                 		return left.name == right.name ? 0 : (left.name < right.name ? -1 : 1)
                 	});*/
             }
-            self.breadcrumbData(breadcrumbItems);
             self.dashboardData(dashboardItems);
 
             $(document).foundation('reflow');
@@ -372,6 +125,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.buildMenus = function(responsedata) {
 
             var menus = [];
+            var reportsMenu;
             // Processing menu items
             if (responsedata.menuDtos) {
                 totalItems = responsedata.menuDtos.length;
@@ -381,7 +135,12 @@ define(['knockout', 'jquery'], function(ko, $) {
                     totalItems = actualMenus.length;
                     for (; menuIndex < totalItems; menuIndex++) {
                         var menuItem = self.buildMenuItem(actualMenus[menuIndex]);
-                        menus.push(menuItem);
+                        if(menuIndex == 0) {
+                        	reportsMenu = menuItem;
+                        	menus.push(menuItem);
+                        } else {
+                        	reportsMenu.subMenuItems.push(menuItem);
+                        }
                     }
                 }
             }
@@ -517,18 +276,12 @@ define(['knockout', 'jquery'], function(ko, $) {
 
         self.clearAll = function() {
             self.menuData.removeAll();
-            self.breadcrumbData.removeAll();
             self.dashboardData.removeAll();
             self.imageUrl('');
             self.placeHolderImageUrl('');
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
-            self.rooms.removeAll();
-            self.currentRoom('');
-        		self.chatChannelmsgs.removeAll();
-        		self.enlargeImg('');
-        		self.msgCount('10');
         };
 
         self.loadClients = function() {
@@ -570,7 +323,6 @@ define(['knockout', 'jquery'], function(ko, $) {
             clearAll: self.clearAll,
             loadDashboardData: self.loadDashboardData,
             dashboardData: self.dashboardData,
-            breadcrumbData: self.breadcrumbData,
             menuData: self.menuData,
             currentPage: self.currentPage,
             visibility: self.visibility,
@@ -585,20 +337,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             selectedSupClient: self.selectedSupClient,
             loadClients: self.loadClients,
             isMainDashboard: self.isMainDashboard,
-            showReportMenus: self.showReportMenus,
-            submitMsg: self.submitMsg,
-            currentRoom: self.currentRoom,
-            msgs: self.chatChannelmsgs,
-            inputText: self.inputText,
-            rooms: self.rooms,
-            user: self.user(),
-            setChatRooms: self.setChatRooms,
-            chatChannelmsgs: self.chatChannelmsgs,
-            imgDataUrl: self.imgDataUrl,
-            storeImage: self.storeImage,
-            className: self.className(),
-            showImage: self.showImage,
-            enlargeImg: self.enlargeImg
+            showReportMenus: self.showReportMenus
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
