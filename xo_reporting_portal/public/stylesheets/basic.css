@@ -447,3 +447,12 @@ html:fullscreen {
 	margin-top: -15px;
     margin-right: -10px;
 }
+
+.fixmenu {
+    left: 5px;
+    position: fixed;
+    width: 58px;
+    z-index: 99;
+    font-size:30px;
+    top:0px;
+}

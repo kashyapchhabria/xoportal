@@ -21,7 +21,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         var activeSheet = null;
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
-        self.isMainDashboard = ko.observable(false);
+        self.isTopBarVisibile = ko.observable(true);
 
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -92,7 +92,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             }
 
             self.imageUrl(responsedata.imageUrl);
-            self.isMainDashboard(responsedata.isMainDashboard);
+            //self.isTopBarVisibile(responsedata.isMainDashboard);
             self.renderTableauReport(responsedata);
             self.placeHolderImageUrl(responsedata.placeHolderImageUrl);
             self.errorText(responsedata.errorText);
@@ -225,9 +225,10 @@ define(['knockout', 'jquery'], function(ko, $) {
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         activeSheet.changeSizeAsync({
-                            behavior: viz.SheetSizeBehavior.AUTOMATIC
+                            behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC
+                        	//behavior: tableauSoftware.SheetSizeBehavior.EXACTLY
                           });
-                        //self.changeViewSize();
+                        self.changeViewSize();
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
@@ -260,6 +261,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                 // Create sheetSize options
                 var sheetSize = {
                     behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
+                    //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                     minSize: {
                         width: $('#tableauViewPlace').width(),
                         height: $('#tableauViewPlace').height()
@@ -316,7 +318,10 @@ define(['knockout', 'jquery'], function(ko, $) {
         };
 
         self.showReportMenus = function() {
-            self.isMainDashboard(false);
+            self.isTopBarVisibile(!self.isTopBarVisibile());
+            $(document).foundation();
+            $(document).foundation('reflow');
+            self.changeViewSize();
         };
 
         return {
@@ -336,7 +341,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             allClients: self.allClients,
             selectedSupClient: self.selectedSupClient,
             loadClients: self.loadClients,
-            isMainDashboard: self.isMainDashboard,
+            isTopBarVisibile: self.isTopBarVisibile,
             showReportMenus: self.showReportMenus
         };
     }

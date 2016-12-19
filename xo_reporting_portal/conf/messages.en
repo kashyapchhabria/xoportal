@@ -178,6 +178,7 @@ role.perm.mgmt.delrole=Delete Permission
 
 # Tableau reports page
 tableau.report.showreportmenus=Show Report Menus
+tableau.report.hidereportmenus=Hide Report Menus
 tableau.report.fullscreen=Switch to Full Screen
 tableau.report.exitfullscreen=Exit Full Screen
 tableau.report.noreports=No reports are configured to view. Please contact Xoportal portal admin for further details.
