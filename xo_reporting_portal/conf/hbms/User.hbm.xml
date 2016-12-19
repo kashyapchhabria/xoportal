@@ -65,12 +65,6 @@
             </key>
             <one-to-many class="com.xo.web.models.system.UserPermission" />
         </set>
-        <set name="chat" table="chat" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="user_id" not-null="true" />
-            </key>
-            <one-to-many class="com.xo.web.ext.chat.models.Chat" />
-        </set>
     </class>
     <query name="com.xo.web.models.system.User.findByUsernamePassword">
     	<![CDATA[

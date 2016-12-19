@@ -466,9 +466,3 @@ tableauview.save.error3=Please check the details.
 tableauview.save.error4=Unable to change the status. Please contact your admin.
 tableauview.read.error1=Unable to load tableau view(s) detail(s).
 tableauview.read.error2=Invalid view group ID.
-
-
-#chat 
-chat.room.error1 = Unable to load rooms
-chat.room.error2 = Error saving message
-chat.success1 = Message saved successfully

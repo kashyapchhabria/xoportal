@@ -24,11 +24,11 @@
 
 @messages()
 </head>
-<body id="xoportalbody" style="background-color:white;">
+<body id="xoportalbody" style="background-color:white !important;">
 <div class="se-pre-con"></div>
 <div class="sticky fixed">
 <nav class="top-bar xoheader" data-options="sticky_on: large" role="navigation" data-topbar="">
-		<section class="top-bar-section" data-bind="if : menuData && menuData().length > 0 && !isMainDashboard()">
+		<section class="top-bar-section" data-bind="if : menuData && menuData().length > 0">
 			<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
 		</section>
 		<ul class="title-area">
@@ -50,7 +50,6 @@
 			 		<li class="name">
 			 			<a id="home_button" class="outlink xoheader" style="font-family:ralewaymedium;" href="#"><i class="fi-home">&nbsp;</i></a>
 			 		</li>
-			 		<li><a data-bind='if: isMainDashboard, click: showReportMenus'><i class="fi-graph-horizontal">&nbsp;&nbsp;@Messages("tableau.report.showreportmenus")</i></a></li>
 					<li data-bind='if: isFullScreenAvailable'>
 						<a data-bind='ifnot: isFullScreenEnabled, click: fullScreenView'><i class="fi-arrows-out">&nbsp;&nbsp;@Messages("tableau.report.fullscreen")</i></a>
 						<a data-bind='if: isFullScreenEnabled, click: closeFullScreen'><i class="fi-arrows-in">&nbsp;&nbsp;@Messages("tableau.report.exitfullscreen")</i></a>
@@ -66,7 +65,6 @@
 			 		<li class="outlink has-dropdown not-click" data-equalizer-watch>
 			 			<a href="#" style="padding:15"><i class="outlink fi-widget size-48"></i></a>
 			 			<ul class="dropdown">
-			 				<!-- <li><a onclick="openNav()">Chat</a></li> -->
 			 				<li><a href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9" target="_blank">User Guide</a></li>
 			 				<li><a id="changepassword" class="outlink" href="#changepassword">@Messages("base.changepassword")</a></li>
 			 				<li><a onclick="composeSupport()">Support</a></li>
@@ -157,17 +155,5 @@ $(window).load(function() {
 		if(getLocationHash() != 'tabdashboard')
 			document.getElementById("myNav").style.width = "0%";
 });
-</script>
-<script>
-	function openNav() {
-		if(getLocationHash() == 'tabdashboard')
-	    	document.getElementById("myNav").style.width = "20%";
-		else
-			alert("Kindly go to the reports page to start the chat discussion");
-	}
-	
-	function closeNav() {
-	    document.getElementById("myNav").style.width = "0%";
-	}
 </script>
 </html>

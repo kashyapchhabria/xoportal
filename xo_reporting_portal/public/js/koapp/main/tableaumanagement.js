@@ -224,10 +224,10 @@ define(['knockout', 'jquery'], function(ko, $) {
                     onFirstInteractive: function() {
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
-                        /*activeSheet.changeSizeAsync({
-                            behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC
-                          });*/
-                        self.changeViewSize();
+                        activeSheet.changeSizeAsync({
+                            behavior: viz.SheetSizeBehavior.AUTOMATIC
+                          });
+                        //self.changeViewSize();
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
