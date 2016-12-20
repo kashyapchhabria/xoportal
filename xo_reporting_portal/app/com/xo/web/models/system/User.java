@@ -11,7 +11,6 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.xo.web.audit.Auditable;
-import com.xo.web.ext.chat.models.Chat;
 import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.KeyValueDTO;
 /**
@@ -33,7 +32,6 @@ public class User extends AbstractEntity {
 	private Set<UserRole> userRoles = new HashSet<UserRole>(0);
 	private Set<TokenAction> tokenActions = new HashSet<TokenAction>(0);
 	private Set<UserPermission> userPermissions = new HashSet<UserPermission>(0);
-	private Set<Chat> chat = new HashSet <Chat>(0);
 
 	public User() {
 	}
@@ -115,15 +113,6 @@ public class User extends AbstractEntity {
 	public void setUsersPermissions(Set<UserPermission> usersPermissionses) {
 		this.userPermissions = usersPermissionses;
 	}
-	
-	public Set<Chat> getChat(){
-		return this.chat;
-	}
-
-	public void setChat (Set<Chat> chat){
-		this.chat=chat;
-	}
-	
 	
 	@Override
     public int hashCode() {

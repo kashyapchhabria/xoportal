@@ -12,6 +12,7 @@ public class UserDto extends BaseDto<UserDto> {
 	public Integer userId;
 	public String firstName;
 	public String secondName;
+	public String extLogonId;
 	public String email;
 	public String encryptedPassword;
 	public String authToken;

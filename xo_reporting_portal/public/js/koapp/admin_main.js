@@ -37,10 +37,10 @@ requirejs.config({
 define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         'datatables', 'DataTable','Responsive', 'main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
-        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management','main/chat'],
+        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management'],
    function(ko, Router, kv, foundation, datatables, DataTable, Responsive, UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
-         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel ,ChatModel) {
+         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel) {
 
     var initializePages = function(){
 
@@ -71,8 +71,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         reportgrpmgmt: {match: /^reportgrpmgmt$/, page: reportgrpmgmtPage},
         rowlevelpermission: {match: /^rowlevelpermission$/, page: rowlevelpermissionPage},
         userrowlevelpermission: {match: /^userrowlevelpermission$/, page: userrowlevelpermissionPage},
-        rolerowlevelpermission: {match: /^rolerowlevelpermission$/, page: rolerowlevelpermissionPage},
-        chat: { match: /^chat$/, page: chatPage}
+        rolerowlevelpermission: {match: /^rolerowlevelpermission$/, page: rolerowlevelpermissionPage}
       };
 
       var usermgmt = new UserManagerModel();
@@ -84,7 +83,6 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       var rowlevelmgmt = RowLevelPermissionModel();
       var reportmgmt = new ReportManagementModel();
       var reportgrpmgmt = new ReportGroupManagementModel();
-      var chatmodel = new ChatModel();
 
       function cleanUp() {
     	  if(tableaumgmt) {
@@ -104,14 +102,6 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  cleanUp();
     		  return new Router.Page('Xoanon Analytics Reporting Portal', 'admin-template', {});
     	  });
-      }
-
-      function chatPage() {
-        return showPageLoader(function() {
-            cleanUp();
-            chatmodel.setChatRooms();
-        return new Router.Page('Xoanon Analytics Reporting Portal', 'chat_mgmt', {chat:chatmodel});   
-      });
       }
 
       function createsurveyorPage() {
@@ -208,7 +198,6 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	cleanUp();
         	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
-        	tableaumgmt.setChatRooms();
         	return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }

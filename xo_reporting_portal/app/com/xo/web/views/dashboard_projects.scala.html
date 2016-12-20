@@ -7,24 +7,9 @@
 </script>
 <script id="tab_dashboard" type="text/html">
 	<section id="tableauReportsPageSection" style="background-color: white;">
-
-		<div data-bind="if : tableaumgmt.menuData && tableaumgmt.menuData().length > 0 && !tableaumgmt.isMainDashboard()">
-			<nav class="top-bar menu-bar1" data-options="sticky_on: large" role="navigation" data-topbar="" >
-				<section class="top-bar-section menu-bar1-section">
-					<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
-				</section>
-			</nav>
-		<!-- Breadcrums  -->
-			<ul class="breadcrumbs" style="border-radius: 0;border-style: none;border-width: 0;margin-bottom: 0rem;" 
-				id="xobreadcrumbs" data-bind="foreach: {data:tableaumgmt.breadcrumbData, as: 'breadCrumbItem'}">
-				<li data-bind='attr:{class:breadCrumbItem.active}'>
-					<a data-bind='text:breadCrumbItem.name, click:breadCrumbItem.loadPageData'></a>
-				</li>
-			</ul>
-		</div>
 		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
 			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" style="background-color:white;"></div>
+			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
 		</center>
 		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
 			<span class="alert">

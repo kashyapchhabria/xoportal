@@ -15,7 +15,6 @@ import play.GlobalSettings;
 import play.Logger;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
-import com.xo.web.ext.chat.ChatActors;
 /**
  */
 @SuppressWarnings("unchecked")
@@ -28,7 +27,6 @@ public class Global extends GlobalSettings {
     public void onStart(final Application application) {
     	XoAsyncTaskHandler.init();
     	initiateWorkerManager(application);
-    	ChatActors.start();
         super.onStart(application);
     }
 
@@ -78,7 +76,6 @@ public class Global extends GlobalSettings {
     public void onStop(final Application app) {
     	XoAsyncTaskHandler.closeAsynchHandler();
     	XoWorkerManager.getXoTaskManager().cancelAllScheduledWorks();
-    	ChatActors.stop();
     	if(AppActors.XOPORTAL_ACTOR_SYSTEM != null && !AppActors.XOPORTAL_ACTOR_SYSTEM.isTerminated()) {
     		AppActors.XOPORTAL_ACTOR_SYSTEM.shutdown();
     	}
