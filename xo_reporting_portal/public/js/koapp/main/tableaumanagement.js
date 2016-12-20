@@ -22,6 +22,8 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
+        self.selectedReportMenuItem = ko.observable("Select Report");
+        self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
 
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -60,6 +62,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
             $(".se-pre-con").show(true);
             if (data && event) {
+            	self.selectedReportMenuItem(data.name);
                 $.ajax({
                     'url': data.pageUrl,
                     'type': 'POST',
@@ -87,6 +90,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
             var dashboardItems = [];
             self.dashboardData([]);
+
             if (isNewMenus) {
                 self.menuData([]);
             }
@@ -132,6 +136,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                 if (totalItems > 0) {
                     var menuIndex = 0;
                     var actualMenus = responsedata.menuDtos[0].subMenus;
+                    actualMenus.unshift(self.selectReport);
                     totalItems = actualMenus.length;
                     for (; menuIndex < totalItems; menuIndex++) {
                         var menuItem = self.buildMenuItem(actualMenus[menuIndex]);
@@ -225,8 +230,8 @@ define(['knockout', 'jquery'], function(ko, $) {
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         activeSheet.changeSizeAsync({
-                            behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC
-                        	//behavior: tableauSoftware.SheetSizeBehavior.EXACTLY
+                            //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC
+                        	behavior: tableauSoftware.SheetSizeBehavior.EXACTLY
                           });
                         self.changeViewSize();
                     }
@@ -260,8 +265,8 @@ define(['knockout', 'jquery'], function(ko, $) {
                 //viz.setFrameSize(tempWidth, tempHeight);
                 // Create sheetSize options
                 var sheetSize = {
-                    behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
-                    //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
+                    //behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
+                    behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                     minSize: {
                         width: $('#tableauViewPlace').width(),
                         height: $('#tableauViewPlace').height()
