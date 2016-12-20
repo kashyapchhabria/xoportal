@@ -229,10 +229,18 @@ define(['knockout', 'jquery'], function(ko, $) {
                     onFirstInteractive: function() {
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
-                        activeSheet.changeSizeAsync({
-                            //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC
-                        	behavior: tableauSoftware.SheetSizeBehavior.EXACTLY
-                          });
+                        /*activeSheet.changeSizeAsync({
+                            //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
+                        	behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
+                        	minSize: {
+                                width: $('#tableauViewPlace').width(),
+                                height: $('#tableauViewPlace').height()
+                            },
+                            maxSize: {
+                                width: $('#tableauViewPlace').width(),
+                                height: $('#tableauViewPlace').height()
+                            }
+                          });*/
                         self.changeViewSize();
                     }
                 };
@@ -265,8 +273,8 @@ define(['knockout', 'jquery'], function(ko, $) {
                 //viz.setFrameSize(tempWidth, tempHeight);
                 // Create sheetSize options
                 var sheetSize = {
-                    //behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
-                    behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
+                    behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
+                    //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                     minSize: {
                         width: $('#tableauViewPlace').width(),
                         height: $('#tableauViewPlace').height()
@@ -324,9 +332,9 @@ define(['knockout', 'jquery'], function(ko, $) {
 
         self.showReportMenus = function() {
             self.isTopBarVisibile(!self.isTopBarVisibile());
+            self.changeViewSize();
             $(document).foundation();
             $(document).foundation('reflow');
-            self.changeViewSize();
         };
 
         return {
