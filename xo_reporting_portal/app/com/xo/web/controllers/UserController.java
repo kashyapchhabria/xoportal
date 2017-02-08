@@ -63,7 +63,9 @@ public class UserController extends BaseController<User, Integer> implements Use
     private static final String XOSSO_URL_APP_LOGOUT = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_LOGOUT);
     private static final String XOSSO_URL_APP_TOKEN_VERIFY = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_VERIFY_TOKEN);
 	private static final String CALLBACK_URL = "?callbackurl=";
-	private static final String APP_TYPE = "&app=xoportal";
+	
+	private static final String APP_CONTEXT = XoUtil.getConfig(XoAppConfigKeys.APPLICATION_CONTEXT);
+	private static final String APP_TYPE = "&app=" + APP_CONTEXT.split("/")[1];
 	
 	public static final HttpClient REST_CLIENT = HttpClientBuilder.create().build();
 
