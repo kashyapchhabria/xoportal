@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -67,7 +67,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 	private static final String APP_CONTEXT = XoUtil.getConfig(XoAppConfigKeys.APPLICATION_CONTEXT);
 	private static final String APP_TYPE = "&app=" + APP_CONTEXT.split("/")[1];
 	
-	public static final HttpClient REST_CLIENT = HttpClientBuilder.create().build();
+	public static final CloseableHttpClient REST_CLIENT = HttpClientBuilder.create().build();
 
 	private final XoMailContentProvider xoMailContentProvider = new XoMailContentProvider();
 
@@ -195,10 +195,11 @@ public class UserController extends BaseController<User, Integer> implements Use
 	public final boolean isValidXossoAuthToken(String authToken) throws XODAOException {
         if(XoUtil.isNotNull(authToken)) {
         	HttpRequestBase xossorequest = new HttpGet(XOSSO_URL_APP_TOKEN_VERIFY + "?token=" + authToken);
-            HttpResponse xossoResponse;
+        	CloseableHttpResponse xossoResponse;
 			try {
 				xossoResponse = REST_CLIENT.execute(xossorequest);
 				String xossoJsonResponse = IOUtils.toString(xossoResponse.getEntity().getContent(), "UTF-8");
+				xossoResponse.close();
 				return "success".equalsIgnoreCase(xossoJsonResponse);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
