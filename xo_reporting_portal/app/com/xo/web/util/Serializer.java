@@ -3,6 +3,7 @@ package com.xo.web.util;
 import java.io.ByteArrayOutputStream;
 
 import play.Logger;
+import play.api.Play;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -16,6 +17,7 @@ public class Serializer<T> {
 
     public Serializer(Class<T> persistentClass) {
     	this.persistentClass = persistentClass;
+    	KRYO.setClassLoader(Play.current().classloader());
 	}
 
 	public byte[] serialize(T object) throws XOException {

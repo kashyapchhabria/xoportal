@@ -1,14 +1,10 @@
 package com.xo.web;
 
-import com.xo.web.akka.xoactors.AppActors;
-import com.xo.web.akka.xoactors.LocalSyncActor;
-import com.xo.web.akka.xoactors.XoClientSyncActor;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoAsyncTaskHandler;
 import com.xo.web.util.XoAsynchTask;
 import com.xo.web.work.XoWorkerManager;
 
-import akka.actor.Props;
 import play.Application;
 import play.Configuration;
 import play.GlobalSettings;
@@ -43,31 +39,7 @@ public class Global extends GlobalSettings {
 	            }
 	        });
 		}
-		if(xossoStatus) {
-			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Xoportal Actor system loader") {
-				
-				public void process() throws Throwable {
-					registerActorSytemWorkers(application);
-					Logger.info("Xoportal Actor system registered successfully.");
-				}
-			});
-		}
 	}
-
-	private void registerActorSytemWorkers(final Application application) {
-		// fetch configs
-		Configuration configuration = application.configuration();
-		Configuration remoteConfig = configuration.getConfig("xoportal").getConfig("akka").getConfig("remote").getConfig("netty.tcp");
-		String actorHost = remoteConfig.getString("hostname");
-		int actorPort = remoteConfig.getInt("port");
-		String workerName = "clientsync";
-
-		String actorPath = "akka.tcp://" + "xoportalsystem" + "@" + actorHost + ":" + actorPort + "/user/" + workerName;
-		Logger.info(actorPath); // here you know what your actor's path is, well, just for show, don't do this sort of thing your code.
-		AppActors.XOPORTAL_ACTOR_SYSTEM.actorOf(Props.create(XoClientSyncActor.class), workerName);
-		AppActors.XOPORTAL_ACTOR_SYSTEM.actorOf(Props.create(LocalSyncActor.class), "localsyncactor");
-	}
-
     /**
      * Sync the context lifecycle with Play's.
      */
@@ -76,9 +48,6 @@ public class Global extends GlobalSettings {
     public void onStop(final Application app) {
     	XoAsyncTaskHandler.closeAsynchHandler();
     	XoWorkerManager.getXoTaskManager().cancelAllScheduledWorks();
-    	if(AppActors.XOPORTAL_ACTOR_SYSTEM != null && !AppActors.XOPORTAL_ACTOR_SYSTEM.isTerminated()) {
-    		AppActors.XOPORTAL_ACTOR_SYSTEM.shutdown();
-    	}
         super.onStop(app);
     }
 
