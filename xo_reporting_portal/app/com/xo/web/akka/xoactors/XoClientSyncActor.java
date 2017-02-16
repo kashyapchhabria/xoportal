@@ -7,7 +7,13 @@ import com.xo.web.viewdtos.MessageDto;
 import com.xo.web.viewdtos.MessageType;
 import com.xo.web.viewdtos.XoClientDto;
 
-public class XoClientSyncActor<T> extends XoBaseEntitySyncActor {
+import java.io.IOException;
+import com.xo.web.core.XOException;
+
+public class XoClientSyncActor extends XoBaseEntitySyncActor {
+
+	public XoClientSyncActor() throws IOException, XOException {
+	}
 
 	private final XoClientLogic XO_CLIENT_LOGIC = new XoClientLogic();
 

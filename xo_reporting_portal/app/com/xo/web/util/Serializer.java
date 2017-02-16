@@ -1,6 +1,7 @@
 package com.xo.web.util;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 import play.Logger;
 import play.api.Play;
@@ -30,6 +31,18 @@ public class Serializer<T> {
 			Logger.error("Error while serializing the object.", e);
 			throw new XOException("Error while serializing the object.", e);
 		}
+    }
+	
+	public T deserialize(InputStream inputStream) throws XOException {
+		try {
+			if(inputStream != null && this.persistentClass != null) {
+				return (T) KRYO.readObject(new Input(inputStream), this.persistentClass);
+			}
+		} catch(Exception e) {
+			Logger.error("Error while deserializing the bytes.", e);
+			throw new XOException("Error while serializing the object.", e);
+		}
+		return null;
     }
 
 	public T deserialize(byte[] bytes) throws XOException {
