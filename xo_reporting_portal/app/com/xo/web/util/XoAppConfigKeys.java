@@ -12,6 +12,12 @@ public interface XoAppConfigKeys extends TableauConstants {
     static final String XOSSO_URL_APPLOGIN = "xosso.urls.applogin";
     static final String XOSSO_URL_VERIFY_TOKEN = "xosso.urls.tokenverify";
 	static final String XOSSO_STATUS = "xosso.enable";
+	static final String XOSSO_HOSTNAME = "xosso.hostname";
+	static final String XOSSO_PORT = "xosso.port";
+	
+	static final String XOPORTAL_HOSTNAME = "xoportal.hostname";
+	static final String XOPORTAL_PORT = "xoportal.port";
+	
 	static final String XOACTORS_USERSYNC = "xoactors.usersync";
 
 }
