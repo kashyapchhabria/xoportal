@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.TokenAction" table="token_actions" >
+        <id name="tokenActionId" type="java.lang.Integer">
+            <column name="token_action_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="com.xo.web.models.system.User" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+        <property name="token" type="string">
+            <column name="token" not-null="true" />
+        </property>
+	    <property name="type" column="type" not-null="true">
+	    	<type name="org.hibernate.type.EnumType">
+	        	<param name="enumClass">com.xo.web.models.system.TokenType</param>
+	         	<!-- <param name="type">12</param> -->
+	      	</type>
+	    </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="expiresDate" type="timestamp">
+            <column name="expires_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+    </class>
+    <query name="com.xo.web.models.system.TokenAction.findByTokenAndType">
+    	<![CDATA[
+    		SELECT tokenAction FROM com.xo.web.models.system.TokenAction tokenAction WHERE tokenAction.token = :token AND tokenAction.type = :tokenType
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.TokenAction.deleteByUserAndType">
+    	<![CDATA[
+    		DELETE FROM com.xo.web.models.system.TokenAction tokenAction WHERE tokenAction.user = :user AND tokenAction.type = :tokenType
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.TokenAction.updateLastModifiedDt">
+    	<![CDATA[
+    		UPDATE com.xo.web.models.system.TokenAction tokenAction SET tokenAction.lastModifiedDate = :lastPingedTime WHERE tokenAction.token = :token AND tokenAction.type = :tokenType
+    	]]>
+    </query>
+    <sql-query name="com.xo.web.models.system.TokenAction.deleteByTokenTypeAndExpiresDate">
+    	<![CDATA[
+    		DELETE FROM token_actions WHERE last_modified_dt < DATE_SUB(NOW(), INTERVAL 7 DAY) AND type = :tokenType
+    	]]>
+    </sql-query>
+    <sql-query name="com.xo.web.models.system.TokenAction.deleteByExpiredDate">
+    	<![CDATA[
+    		DELETE FROM token_actions WHERE last_modified_dt < DATE_SUB(NOW(), INTERVAL 7 DAY)
+    	]]>
+    </sql-query>
+</hibernate-mapping>

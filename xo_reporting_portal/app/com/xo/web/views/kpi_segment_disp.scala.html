@@ -1,0 +1,26 @@
+@(kpi_selected:String,kpi_get_target:List[com.xo.web.controllers.kpi_get])
+@if(kpi_get_target.size!=0){
+    <h3>Segment With: @kpi_selected</h3>
+    <table class="ui celled table tablet stackable">
+        <thead>
+        	<tr>
+        	    <th>KPI Name</th>
+        	    <th>Segment</th>
+        		<th>Start Value</th>
+        		<th>Weightage</th>					    		
+          	</tr>
+        </thead>
+        <tbody>
+        	@for( widget <- kpi_get_target) {
+        	    <tr>
+              		<td>@widget.kpi_name</td>    	    	
+            	    <td>@widget.segment</td>
+              		<td>@widget.kpi_start</td>
+              		<td>@widget.kpi_weight</td>
+                </tr>              		
+            }
+        </tbody>
+    </tabel>
+}else{
+null
+}

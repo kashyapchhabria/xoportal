@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.Permission" table="permissions" >
+        <id name="permissionId" type="java.lang.Integer">
+            <column name="permission_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <set name="userPermissions" table="users_permissions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="permission_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.UserPermission" />
+        </set>
+        <set name="rolePermissions" table="roles_permissions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="permission_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.RolePermission" />
+        </set>
+        <many-to-one name="resourceType" class="com.xo.web.models.system.ResourceType" fetch="select">
+            <column name="resource_type_id" not-null="true" />
+        </many-to-one>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+    </class>
+    <query name="com.xo.web.models.system.Permission.findUnassignedPermissions">
+        <![CDATA[
+            SELECT permission FROM com.xo.web.models.system.Permission permission WHERE permission.active = 1 and permission.permissionId not in ( select up.permission.permissionId from com.xo.web.models.system.UserPermission up where up.user.userId = :userId )
+        ]]>
+    </query>
+
+    <query name="com.xo.web.models.system.Permission.findAllUnAvailablePermission">
+        <![CDATA[
+            SELECT permission FROM com.xo.web.models.system.Permission permission WHERE permission.active = 1 and permission.permissionId not in ( select rp.permission.permissionId from com.xo.web.models.system.RolePermission rp where rp.role.roleId = :roleid )
+        ]]>
+    </query>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-Oct-2014 07:17:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.tableau.models.TableauView"  table="tableau_views">
+    <id name="tableauViewId" type="string">
+      <column length="40" name="tableau_view_id"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="com.xo.web.ext.tableau.models.TableauWorkbook" fetch="select" name="tableauWorkbook">
+      <column length="40" name="tableau_workbook_id" not-null="true"/>
+    </many-to-one>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+    <property name="displayName" type="string">
+      <column length="150" name="display_name"/>
+    </property>
+    <property name="lastModifiedDate" type="timestamp">
+        <column name="last_modified_dt"/>
+    </property>
+    <property name="createdDate" type="timestamp">
+        <column name="created_dt"/>
+    </property>
+    <property name="dashboard" type="boolean">
+      <column name="dashboard" not-null="true" />
+    </property>
+    <property name="active" type="boolean">
+      <column name="active" not-null="true" />
+    </property>
+    <property name="displayOrder" type="java.lang.Integer">
+      <column name="display_order" />
+    </property>
+    <many-to-one class="com.xo.web.ext.tableau.models.ViewGroup"  name="viewGroup" fetch="select">
+      <column name="view_group_id" />
+    </many-to-one>
+    <filter name="authfill_tableau_view" condition=" tableau_view_id in (:resourceIds) " />
+  </class>
+  <query name="com.xo.web.ext.tableau.models.TableauView.findByViewGroupAndDashboardStatus">
+    <![CDATA[
+    		SELECT tv FROM com.xo.web.ext.tableau.models.TableauView tv WHERE tv.viewGroup.viewGroupId = :viewGroupId AND tv.dashboard = :dashboardStatus
+    	]]>
+  </query>
+  <!-- Filters section -->
+  <filter-def name="authfill_tableau_view">
+  		<filter-param name="resourceIds" type="string"/>
+  </filter-def>
+</hibernate-mapping>

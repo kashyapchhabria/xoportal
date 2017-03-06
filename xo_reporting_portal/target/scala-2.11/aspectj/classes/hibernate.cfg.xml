@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+
+	<!-- Properties  -->
+    <!-- <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://10.10.10.5:3306/xo_portal?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+ 	<property name="hibernate.archive.autodetection">hbm</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="show_sql">true</property> -->
+
+	<!-- bonecp -->
+     <!-- <property name="hibernate.connection.provider_class">com.jolbox.bonecp.provider.BoneCPConnectionProvider</property>
+     <property name="bonecp.idleMaxAgeInMinutes">10</property>
+     <property name="bonecp.idleConnectionTestPeriodInMinutes">3</property>
+     <property name="bonecp.partitionCount">3</property>
+     <property name="bonecp.acquireIncrement">1</property>
+     <property name="bonecp.maxConnectionsPerPartition">60</property>
+     <property name="bonecp.minConnectionsPerPartition">20</property>
+     <property name="bonecp.statementsCacheSize">10</property>
+     <property name="bonecp.releaseHelperThreads">3</property>
+     <property name="bonecp.connectionTestStatement">SELECT 1</property> -->
+
+	<!-- Configuring HBM Mappings -->
+    <!-- <mapping resource="hbms/UsersPermissions.hbm.xml"/>
+    <mapping resource="hbms/User.hbm.xml"/>
+    <mapping resource="hbms/LinkedAccount.hbm.xml"/>
+    <mapping resource="hbms/UsersRoles.hbm.xml"/>
+    <mapping resource="hbms/Permission.hbm.xml"/>
+    <mapping resource="hbms/RolesPermissions.hbm.xml"/>
+    <mapping resource="hbms/TokenAction.hbm.xml"/>
+    <mapping resource="hbms/TableauProject.hbm.xml"/>
+    <mapping resource="hbms/TableauSite.hbm.xml"/>
+    <mapping resource="hbms/TableauUser.hbm.xml"/>
+    <mapping resource="hbms/TableauView.hbm.xml"/>
+    <mapping resource="hbms/TableauWorkbook.hbm.xml"/> -->
+
+  </session-factory>
+</hibernate-configuration>

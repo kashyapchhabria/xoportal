@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18 Nov, 2014 11:54:38 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.UserPermissionResourceInstance" table="users_permissions_resource_instance"  >
+        <composite-id name="id" class="com.xo.web.models.system.UserPermissionResourceInstanceId">
+            <key-property name="userPermissionId" type="int">
+                <column name="user_permission_id" />
+            </key-property>
+            <key-property name="resourceInstanceId" type="string">
+                <column name="resource_instance_id" length="50" />
+            </key-property>
+        </composite-id>
+        <property name="displayText" type="string">
+            <column name="display_text" length="200" />
+        </property>
+        <many-to-one name="userPermission" class="com.xo.web.models.system.UserPermission" update="false" insert="false" fetch="select">
+            <column name="user_permission_id" not-null="true" />
+        </many-to-one>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt" length="19" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt" length="19" />
+        </property>
+    </class>
+    <!-- Row level permission related queries -->
+    <query name="com.xo.web.models.system.UserPermissionResourceInstance.findAllByRlpIDAndResourceTypeId">
+    	<![CDATA[
+    		SELECT upris FROM com.xo.web.models.system.UserPermissionResourceInstance as upris WHERE 
+    		upris.userPermission.user.userId= :rlpTypeId AND upris.userPermission.permission.resourceType.resourceTypeId= :resourceTypeId
+    	]]>
+    </query>
+
+	<!-- Query to get IDs of already assigned resource instances -->
+	<sql-query name="com.xo.web.models.system.UserPermissionResourceInstance.findResourceInstanceIdsByRlpIDAndResourceTypeId">
+    <![CDATA[
+    		SELECT resInstance.resource_instance_id FROM 
+			resource_types as resource, 
+			users_permissions_resource_instance as resInstance, 
+			users_permissions as userPermission, 
+			users as user, 
+			permissions as permission  
+			WHERE 
+			resource.resource_type_id = :resourceTypeId AND 
+			resource.resource_type_id = permission.resource_type_id AND
+			user.user_id = userPermission.user_id AND 
+			userPermission.permission_id = permission.permission_id AND 
+			user.user_id= :rlpTypeId AND 
+			userPermission.user_permission_id=resInstance.user_permission_id 
+    	]]>
+    </sql-query>
+
+	<!-- Row level secrity related queries -->
+    <sql-query name="com.xo.web.models.system.UserPermissionResourceInstance.findResourceInstanceIdsByUserIdAndPermissionName">
+    <![CDATA[
+
+			SELECT resource.resource_type_id, resInstance.resource_instance_id FROM 
+			resource_types as resource, 
+			users_permissions_resource_instance as resInstance, 
+			users_permissions as userPermission, 
+			users as user, 
+			permissions as permission  
+			WHERE 
+			resource.resource_type_id = permission.resource_type_id AND
+			userPermission.active = 1 AND 
+			resInstance.active = 1 AND 
+			user.user_id = userPermission.user_id AND 
+			userPermission.permission_id = permission.permission_id AND 
+			user.user_id= :userID AND 
+			userPermission.user_permission_id=resInstance.user_permission_id AND 
+			permission.name in (:permissionNames) 
+			GROUP BY resource.resource_type_id, resInstance.resource_instance_id
+
+    	]]>
+    </sql-query>
+	<sql-query name="com.xo.web.models.system.UserPermissionResourceInstance.countResourceInstancesByUserIdAndPermissionNames">
+    <![CDATA[
+
+			SELECT resource.resource_type_id FROM 
+			resource_types as resource, 
+			users_permissions_resource_instance as resInstance, 
+			users_permissions as userPermission, 
+			users as user, 
+			permissions as permission  
+			WHERE 
+			resource.resource_type_id = permission.resource_type_id AND
+			user.user_id = userPermission.user_id AND 
+			userPermission.permission_id = permission.permission_id AND 
+			user.user_id= :userID AND 
+			userPermission.user_permission_id=resInstance.user_permission_id AND 
+			permission.name in (:permissionNames) 
+			GROUP BY resource.resource_type_id
+
+    	]]>
+    </sql-query>
+</hibernate-mapping>

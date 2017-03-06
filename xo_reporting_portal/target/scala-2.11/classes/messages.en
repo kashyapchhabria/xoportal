@@ -1,0 +1,469 @@
+# Override default Play's validation messages
+
+# Global strings
+xo.title=Welcome To Xoanon Reporting Portal
+
+# --- Constraints
+constraint.required=Required
+constraint.min=Minimum value: {0}
+constraint.max=Maximum value: {0}
+constraint.minLength=Minimum length: {0}
+constraint.maxLength=Maximum length: {0}
+constraint.email=Email
+
+# --- Formats
+format.date=Date (''{0}'')
+format.numeric=Numeric
+format.real=Real
+
+# --- Errors
+error.invalid=Invalid value
+error.required=This field is required
+error.number=Numeric value expected
+error.real=Real number value expected
+error.min=Must be greater or equal to {0}
+error.max=Must be less or equal to {0}
+error.minLength=Minimum length is {0}
+error.maxLength=Maximum length is {0}
+error.email=Valid email required
+error.pattern=Must satisfy {0}
+
+
+#--- Xo Portal labels and messages
+accessdenied.header=Access Denied
+accessdenied.desc=The page you are requesting requires additional permissions. Please contact your administrator.
+
+# Global labels and messages
+global.title=Xoanon Reporting Portal
+
+#Base Template page
+base.title=Xoanon Reporting Portal
+base.changepassword=Change Password
+base.logout=Logout
+
+# Login page
+login.title=Welcome to Xoanon Reporting Portal
+login.email=Email
+login.password=Password
+login.oldPassword=Existing Password
+login.newPassword=New Password
+login.repeatPassword=Reenter Password
+login.login=Login
+login.forgotpass=Forgot Password ?
+
+#password modifications
+password.reset=Reset Password
+password.change=Change Password
+password.forgot=Forgot Password ?
+
+# Admin landing page
+admin.land.security=Security
+admin.land.portalapp=Reporting Portal & Configurations  
+admin.land.usermgmt=Manage Users
+admin.land.tableaumgmt=Reports
+admin.land.permission=Manage Permissions
+admin.land.role=Manage Roles
+admin.land.settings=Portal Settings
+admin.land.row-level=Record Level Permissions
+admin.land.userrow-level=User Based Record Permissions
+admin.land.rolerow-level=Role Based Record Permissions
+admin.land.clientjobconfigs=System Jobs
+admin.land.configs=Configuration Manager
+admin.land.report.settings=Reports Management
+admin.land.report.group.settings=Reports Group Management
+
+# Create User page
+user.create=Create User
+user.edit=Edit User
+user.update=Update
+user.fstname=First Name
+user.secname=Second Name
+user.email=Email Id
+user.client=Client
+user.selclient=Select Client
+user.password.verify_email.subject=Welcome to Xoanon Reporting Portal
+user.password.reset_email.subject=Password Reset Request
+
+# Create Role page
+role.create=Create New Role
+role.edit=Edit Role
+role.update=Update
+role.name=Role Name
+role.description=Description
+
+# User mgmt page
+user.mgmt=User Management
+user.mgmt.newusr=New User
+user.mgmt.action=Action
+user.mgmt.name=Name
+user.mgmt.lstapp=Last Login
+user.mgmt.email=Email
+user.mgmt.actusr=Activate User
+user.mgmt.dactusr=De-Activate User
+user.mgmt.editusr=Edit User
+user.mgmt.resetpass=Reset Password
+user.mgmt.delusr=Delete User
+user.mgmt.roles=User Roles
+user.mgmt.permission=User Special Permissions
+user.mgmt.upload=Upload Users
+admin.upload.users=Upload
+
+# Role mgmt page
+role.mgmt=Role Management
+role.mgmt.newrole=New Role
+role.mgmt.action=Action
+role.mgmt.name=Role Names
+role.mgmt.lstapp=Last Login
+role.mgmt.email=Email
+role.mgmt.actrole=Activate Role
+role.mgmt.dactrole=De-Activate Role
+role.mgmt.editrole=Edit Role
+role.mgmt.assignpermission=Assign Permissions
+role.mgmt.delrole=Delete Role
+
+
+# Permission mgmt page
+permission.mgmt=Permission Management
+permission.mgmt.newprm=New Permission
+permission.mgmt.action=Action
+permission.mgmt.name=Permissions
+permission.mgmt.description=Description
+permission.mgmt.lstapp=Last Login
+permission.mgmt.actprm=Activate Permission
+permission.mgmt.dactprm=De-Activate Permission
+permission.mgmt.editprm=Edit Permission
+permission.mgmt.assignpermission=Assign Permissions
+permission.mgmt.delprm=Delete Permission
+
+
+# Create Permission page
+permission.create=Create Permission
+permission.edit=Edit Permission
+permission.name=Permission Name
+permission.description=Description
+permission.update=Update Permission
+
+
+# User Role mgmt page
+user.rl.mgmt=Role Management
+user.rl.mgmt.newusrrl=Assign Role
+user.rl.mgmt.action=Action
+user.rl.mgmt.name=Name
+user.rl.mgmt.actusr=Activate Role
+user.rl.mgmt.dactusr=De-Activate Role
+user.rl.mgmt.delusrrl=Revoke Role
+
+# User Permission mgmt page
+user.pr.mgmt=Permission Management
+user.pr.mgmt.newusrpr=Assign Permission
+user.pr.mgmt.action=Action
+user.pr.mgmt.name=Name
+user.pr.mgmt.actusr=Activate Permission
+user.pr.mgmt.dactusr=De-Activate Permission
+user.pr.mgmt.delusrpr=Revoke Permission
+
+# Role permission mgmt page
+role.perm.mgmt=Permission Management
+role.perm.mgmt.newperm=Assign Permission
+role.perm.mgmt.action=Action
+role.perm.mgmt.name=Granted Permissions
+role.perm.mgmt.ungranted.name=Permissions
+role.perm.mgmt.description= Description
+role.perm.mgmt.lstapp=Last Login
+role.perm.mgmt.actrole=Activate Permission
+role.perm.mgmt.dactrole=De-Activate Permission
+role.perm.mgmt.editrole=Edit Permission
+role.perm.mgmt.assignpermission=Assign Permissions
+role.perm.mgmt.delrole=Delete Permission
+
+# Tableau reports page
+tableau.report.showreportmenus=Show Report Menus
+tableau.report.hidereportmenus=Hide Report Menus
+tableau.report.fullscreen=Switch to Full Screen
+tableau.report.exitfullscreen=Exit Full Screen
+tableau.report.noreports=No reports are configured to view. Please contact Xoportal portal admin for further details.
+tableau.report.reportloaderr=Unable to load the report. Please contact Xoportal admin for further details.
+
+
+# Configuration managment page
+config.mgmt.goback=Go Back
+
+# Configuration Template page
+config.tmpl.mgmt=Configuration Template Management
+config.mgmt.tmpl.newconfig=New Configuration Template
+config.mgmt.tmpl.action=Action
+config.mgmt.tmpl.name=Config Template Name
+config.mgmt.tmpl.actconfigtempl=Activate Configuration Template
+config.mgmt.tmpl.dactconfigtempl=De-Activate Configuration Template
+config.mgmt.tmpl.editconfigtempl=Edit Configuration Template
+config.mgmt.tmpl.showconfiginstances=Show Configuration Instances
+config.mgmt.tmpl.delconfig=Delete Configuration Template
+
+# Configuration Instance management page
+config.inst.mgmt=Configuration Instances
+config.mgmt.inst.newconfig=New Configuration
+config.mgmt.inst.action=Action
+config.mgmt.inst.name=Configuration Name
+config.mgmt.inst.actconfigtempl=Activate Configuration
+config.mgmt.inst.dactconfigtempl=De-Activate Configuration
+config.mgmt.inst.editconfigtempl=Edit Configuration
+config.mgmt.inst.delconfig=Delete Configuration
+
+# config params page
+config.param.params=Configuration Parameters
+config.param.newparam=Add new Parameter
+config.param.editname=Edit Configuration Name
+config.param.key=Key
+config.param.value=Value
+config.param.actions=Actions
+
+# job cofig pages
+clientjobconfig.mgmt=Job Configuration
+clientjobconfig.mgmt.client=Client
+clientjobconfig.mgmt.name=Job Name
+clientjobconfig.mgmt.configname=Configuration
+clientjobconfig.mgmt.curstatus=Current Status
+clientjobconfig.mgmt.laststatus=Previous Status
+clientjobconfig.mgmt.lastmodifieddt=Last Modified Date
+clientjobconfig.mgmt.action=Action
+clientjobconfig.mgmt.save=Save Job settings
+clientjobconfig.mgmt.dactconfigtempl=De-activate Job
+clientjobconfig.mgmt.actconfigtempl=Activate Job
+clientjobconfig.mgmt.delconfig=Delete Job
+
+# Row Level Permission mgmt page
+rowlevel.crud=Row Level Permission Management
+rowlevel.crud.chooseusorrrole=Row level access for
+rowlevel.crud.seluser=Select User
+rowlevel.crud.selrole=Select Role
+rowlevel.crud.selentitytype=Select Entity Type
+rowlevel.crud.selentity=Select Entity
+rowlevel.crud.crud.create=New
+rowlevel.crud.read=Read
+rowlevel.crud.update=Update
+rowlevel.crud.del=Delete
+rowlevel.crud.action=Action
+rowlevel.crud.entity=Entity Instance
+rowlevel.crud.restype=Resource Type
+rowlevel.crud.crud=CRUD
+rowlevel.crud.cract=Grant create Access
+rowlevel.crud.crdeact=Revoke read Access
+rowlevel.crud.rdact=Grant read Access
+rowlevel.crud.rddeact=Revoke read Access
+rowlevel.crud.updact=Grant update Access
+rowlevel.crud.upddeact=Revoke update Access
+rowlevel.crud.delact=Grant delete Access
+rowlevel.crud.deldeact=Revoke delete Access
+rowlevel.crud.allact=Grant all Access
+rowlevel.crud.alldeact=Revoke all Access
+rowlevel.crud.choose=Choose...
+
+# Server side messages
+
+# User entity related messages
+user.read.error1=Unable to load users.
+user.read.error2=Invalid user ID.
+user.read.error3=The given Email ID has not been registered. Please check the Email ID.
+user.read.error4=Please enter the Email ID.
+user.read.error5=Please check the Email ID, password, and the active status
+user.read.error6=The Email ID has not yet been verified.
+user.read.error7=The requested link is no longer available.
+user.read.error8=Repeat password must match the new password.
+user.read.error9=Please check the password.
+user.read.error10=Authorization required to process the request. 
+user.save.success1=Password updated successfully.
+user.save.success2=User status changed successfully.
+user.save.success3=User details saved successfully.
+user.save.success4=The user {0} has been created successfully.
+user.save.error1=Unable to change the user status.
+user.save.error2=Unable to save user details.
+user.save.error3=Email ID has already been registered.
+user.save.error4=Please check the User details.
+user.save.error5=Invalid user Id.
+user.forgotpass.success1=An email has been sent to the registered Email ID. Please check and follow the link in the email..
+user.reset.success1=Email for resetting the password has been sent successfully to the registered Email ID.
+
+# users upload page
+user.upload.error1=Unable to parse users CSV file.
+user.upload.error2=Unable to parse users list.
+user.upload.error3=Unable to read the file content.
+user.upload.error4=Please check the uploaded file.
+user.upload.sucess1={0} user(s) created successfully. Invalid entries : {1}.
+
+#ROLES
+role.save.success1=Role {0} has been created successfully.
+role.save.success2=Status changed successfully.
+role.save.success3=Details saved successfully.
+role.save.success4=Deleted successfully
+role.read.error1=Unable to load details.
+role.save.error1=Unable to save role details.
+role.save.error2=Role is already present.
+role.save.error3=Please check the details.
+role.save.error4=Please check the details.
+role.read.error2=Invalid role ID.
+role.save.error5=Unable to delete role.
+
+# User role entity related messages
+user.role.read.error1=Error while reading the user's role list.
+user.role.save.error1=Unable to change the user role status.
+user.role.save.error2=Invalid user id or role id.
+user.role.save.success1=User role status changed successfully.
+urole.save.success2=Role {0} added successfully.
+user.role.del.error1=Unable to delete the user role.
+user.role.del.success1=User role has been deleted successfully.
+
+
+# User permission entity related messages
+user.perm.read.error1=Error while reading the user's permission list.
+user.perm.save.error1=Unable to change the user permission status.
+user.perm.save.success1=User permission status changed successfully.
+uperm.save.success2=permission {0} added successfully.
+user.perm.del.error1=Unable to delete the user permission.
+user.perm.del.success1=User permission has been deleted successfully.
+
+#Roles permission
+role.perm.read.error1=Error while reading the role's permission list.
+role.perm.save.error1=Unable to change the permission status.
+role.perm.save.error2=Invalid Role permission Id.
+role.perm.save.success1=Permission status changed successfully.
+role.perm.del.error1=Unable to delete the permission.
+role.perm.del.success1=Permission has been deleted successfully.
+rperm.save.success2=Permission {0} added successfully.
+
+# PERMISSIONS
+permission.save.error1=Unable to save permission details.
+permission.save.error2=Permission is already present.
+permission.save.error3=Please check the details.
+permission.save.error4=Please check the details.
+permission.save.error5=Invalid permission Id.
+permission.save.success2=Status changed successfully.
+
+# Configuration pages
+config.read.error1=Unable to load details.
+config.read.error2=Invalid config ID.
+config.save.error3=Unable to delete the configuration entity.
+config.save.error4=Unable to change status of the configuration.
+config.save.success1=Config has been deleted successfully.
+configtemp.save.success2=Configuration status changed successfully.
+configtemp.save.error5=Unable to save configuration template.
+config.save.error6=Configuration with the name "{0}" is exist, please provide different name.
+configtemp.save.error7=Please check the details.
+configtemp.save.success3=Configuration template {0} has been created successfully.
+configtemp.save.success4=Configuration template {0} updated successfully.
+configinstance.save.error8=Unable to save configuration instance.
+configinstance.save.error6=Please check the details.
+configinstance.save.success7=Configuration instance {0} has been created successfully.
+configinstance.save.success8=Configuration instance {0} updated successfully.
+config.read.error3=Configuration {0} not found.
+config.read.error4=Error while searching the configuration using the its name.
+
+# XoClient pages
+xoclient.save.success1=Client {0} has been created successfully.
+xoclient.save.success2=Status changed successfully.
+xoclient.save.success3=Deleted successfully
+xoclient.save.error1=Unable to save client details.
+xoclient.save.error2=Client is already present.
+xoclient.save.error3=Please check the required details.
+xoclient.save.error4=Unable to delete client.
+xoclient.save.error5=Unable to change the status Please contact your admin.
+xoclient.read.error1=Unable to load details.
+xoclient.read.error2=Invalid Client Id.
+
+# XoClient Job Config pages
+
+clientjobconfig.save.success1=Job configuration saved successfully.
+clientjobconfig.save.success2=Status changed successfully.
+clientjobconfig.save.success3=Deleted successfully
+clientjobconfig.save.error1=Unable to save details.
+clientjobconfig.save.error2=Selected Job with the configuration exist already.
+clientjobconfig.save.error3=Unable to delete job configuration.
+clientjobconfig.save.error4=Unable to change the status Please contact your admin.
+clientjobconfig.read.error1=Unable to load the job configuration details.
+clientjobconfig.read.error2=Invalid Client / job / configuration Id.
+clientjobconfig.run.error1=Job Could not be started.
+clientjobconfig.run.success1=Job run successfully.
+
+# Client Job management pages
+clientjobconfig.mgmt.client=Clients.
+clientjobconfig.mgmt.client_name=Client Name
+clientjobconfig.mgmt.configName=Configuration Name
+clientjobconfig.mgmt.jobName=Job Name
+clientjobconfig.mgmt.lastMessage=Status
+clientjobconfig.mgmt.add=New Job Configuration
+clientjobconfig.mgmt.newClient=Select Client
+clientjobconfig.mgmt.newJob=Select Job
+clientjobconfig.mgmt.newInstance=Select Instance
+clientjobconfig.mgmt.Client=Client
+clientjobconfig.mgmt.Job=Job
+clientjobconfig.mgmt.Instance=Instance
+clientjobconfig.mgmt.dactconfigtempl=Deactivate Job Configuration.
+clientjobconfig.mgmt.actconfigtempl=Activate Job Configuration.
+clientjobconfig.mgmt.delconfig=Delete Job Configuration.
+clientjobconfig.mgmt.runconfig=Run Job
+
+# User / Role Based RLP
+rowlevel.crud.save.success1=New Entity Instance is allowed for CRUD.
+rowlevel.crud.save.success2=Status changed successfully.
+rowlevel.crud.save.success3=Revoked the instance successfully
+rowlevel.crud.save.error1=Unable to save details.
+rowlevel.crud.save.error2=Please check the required details.
+rowlevel.crud.save.error3=Unable to revoke the instance permission.
+rowlevel.crud.save.error4=Unable to change the status Please contact your admin.
+rowlevel.crud.read.error1=Unable to load the entity instances. Please contact your admin.
+rowlevel.crud.read.error2=Invalid details are given.
+
+#View Group
+viewgroup.save.success1=View Group {0} has been created successfully.
+viewgroup.save.success2=Status changed successfully.
+viewgroup.save.success3=Details saved successfully.
+viewgroup.save.success4=Deleted successfully
+viewgroup.read.error1=Unable to load details.
+viewgroup.save.error1=Unable to save view group details.
+viewgroup.save.error2=View group is already present.
+viewgroup.save.error3=Please check the details.
+viewgroup.save.error4=Unable to change the status. Please contact your admin.
+viewgroup.read.error2=Invalid view group ID.
+viewgroup.save.error5=Unable to delete view group.
+
+
+# Reports Management Page
+reports.mgmt.heading=Tableau Reports Management
+reports.mgmt.report.name=Report Name
+reports.mgmt.report.display.name=Display Name
+reports.mgmt.report.groupid=Group ID
+reports.mgmt.report.groupname=Group Name
+reports.mgmt.report.dashboard=Dashboard
+reports.mgmt.report.status=Status
+reports.mgmt.report.order=Order
+reports.mgmt.report.action=Action
+reports.mgmt.edit=Edit report group
+reports.mgmt.dact=De-activate report group
+reports.mgmt.act=Activate report group
+reports.mgmt.val=Value
+reports.mgmt.dashboard=Set Dashboard status
+reports.mgmt.email.config.subject=Reconfigure Reports Configuration
+
+# Reports Group Management Page
+reports.grp.mgmt.heading=Report Group Management
+reports.grp.mgmt.code=Group Code
+reports.grp.mgmt.name=Group Name
+reports.grp.mgmt.order=Display Order
+reports.grp.mgmt.action=Action
+reports.grp.mgmt.newgroup=New Report Group
+reports.grp.mgmt.edit=Edit report group
+reports.grp.mgmt.dact=De-activate report group
+reports.grp.mgmt.act=Activate report group
+reports.grp.mgmt.del=Delete report group
+reports.grp.mgmt.val=Value
+reports.grp.mgmt.add=Add new Group
+
+
+# Tableau View
+tableauview.save.success1=Status changed successfully.
+tableauview.save.success2=Details saved successfully.
+tableauview.save.error1=Unable to save tableau view details.
+tableauview.save.error2=Tableau view or view group is not exists.
+tableauview.save.error3=Please check the details.
+tableauview.save.error4=Unable to change the status. Please contact your admin.
+tableauview.read.error1=Unable to load tableau view(s) detail(s).
+tableauview.read.error2=Invalid view group ID.

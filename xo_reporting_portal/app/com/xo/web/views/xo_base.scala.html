@@ -12,6 +12,7 @@
 <link rel="stylesheet" href='@routes.Assets.versioned("images/foundation-icons/foundation-icons/foundation-icons.css")'>
 <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/font.css")'>
 <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/basic.css")'>
+<link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/cssmenu.css")'>
 <link href='@routes.Assets.versioned("stylesheets/freshwidget.css")' type="text/css" rel="stylesheet"/>
 <link href='@routes.Assets.versioned("stylesheets/selectize.default.css")' type="text/css" rel="stylesheet"/>
 <script src='@routes.Assets.versioned("lib/jquery/jquery.min.js")'></script>
@@ -21,6 +22,9 @@
     setAppConext('@com.xo.web.util.XoUtil.getApplicationContext()');
     setAppUser('@session().get("email")');
 </script>
+
+
+
 
 @messages()
 </head>
@@ -138,9 +142,8 @@
   	}
 <script type="text/javascript">
 
-$(document).foundation();
-$(document).foundation('reflow');
-
+//$('.menu .item').tab();
+//$('.ui.dropdown').dropdown();
 //Wait for window load
 $(window).load(function() {
 // Animate loader off screen

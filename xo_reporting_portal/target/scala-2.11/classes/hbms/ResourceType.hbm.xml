@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.ResourceType" table="resource_types" >
+        <id name="resourceTypeId" type="java.lang.Integer">
+            <column name="resource_type_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="true" />
+        </property>
+        <property name="fullyQualifiedName" type="string">
+            <column name="fully_qualified_name" length="200" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <set name="permissions" table="permissions" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="resource_type_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.Permission" />
+        </set>
+        <set name="resourceFilters" table="resource_filters" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="resource_type_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.ResourceFilter" />
+        </set>
+    </class>
+</hibernate-mapping>

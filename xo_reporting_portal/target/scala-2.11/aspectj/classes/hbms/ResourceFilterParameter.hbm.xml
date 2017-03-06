@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.ResourceFilterParameter" table="resource_filter_parameters" >
+        <id name="resourceFilterParameterId" type="java.lang.Integer">
+            <column name="resource_filter_parameter_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="75" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <property name="paramType" column="param_type" not-null="true">
+	    	<type name="org.hibernate.type.EnumType">
+	        	<param name="enumClass">com.xo.web.models.system.ResourceFilterParamType</param>
+	    		<param name="useNamed">true</param>
+	    		<param name="type">12</param>
+	      	</type>
+	    </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <many-to-one name="resourceFilter" class="com.xo.web.models.system.ResourceFilter" fetch="select">
+            <column name="resource_filter_id" not-null="true" />
+        </many-to-one>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+    </class>
+</hibernate-mapping>

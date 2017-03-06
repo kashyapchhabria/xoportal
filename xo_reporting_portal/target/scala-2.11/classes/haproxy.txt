@@ -1,0 +1,6 @@
+listen xoportalactorsystem 0.0.0.0:2553
+        mode tcp
+        option tcplog
+        balance leastconn
+        server xoportalactor-server-1 10.11.50.56:2553 check
+        server xoportalactor-server-2 10.11.50.60:2553 check

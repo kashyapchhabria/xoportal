@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-Oct-2014 07:17:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.tableau.models.TableauUser"  table="tableau_users">
+    <id name="tableauUserId" type="string">
+      <column length="40" name="tableau_user_id"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="com.xo.web.ext.tableau.models.TableauSite" fetch="select" name="tableauSite">
+      <column length="40" name="tableau_site_id" not-null="true"/>
+    </many-to-one>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+    <property name="role" type="string">
+      <column length="25" name="role"/>
+    </property>
+    <property name="publish" type="boolean">
+      <column name="publish" not-null="true"/>
+    </property>
+    <property name="contentAdmin" type="string">
+      <column length="25" name="content_admin"/>
+    </property>
+    <property name="lastLogin" type="timestamp">
+      <column length="19" name="lastLogin"/>
+    </property>
+    <property name="externalAuthUserId" type="string">
+      <column length="50" name="externalAuthUserId"/>
+    </property>
+    <property name="lastModifiedDate" type="timestamp">
+        <column name="last_modified_dt"/>
+    </property>
+    <property name="createdDate" type="timestamp">
+        <column name="created_dt"/>
+    </property>
+    <set fetch="select" inverse="true" cascade="save-update" lazy="true" name="tableauProjects" table="tableau_projects">
+      <key>
+        <column length="40" name="tableau_user_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.xo.web.ext.tableau.models.TableauProject"/>
+    </set>
+    <filter name="authorize" condition=" tableau_user_id in (:resourceIds) " />
+  </class>
+</hibernate-mapping>

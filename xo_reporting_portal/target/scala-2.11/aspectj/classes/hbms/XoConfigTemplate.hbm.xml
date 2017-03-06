@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.XoConfigTemplate" table="xo_config_templates">
+        <id name="configId" type="java.lang.Integer">
+            <column name="config_template_id" />
+            <generator class="identity" />
+        </id>
+        <property name="configJson" type="string">
+            <column name="config_json" sql-type="mediumtext" not-null="true" />
+        </property>
+        <property name="shortName" type="string">
+            <column name="short_name" length="150" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+        <set name="xoconfigInstance" table="xo_config_instances" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="config_template_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.XoConfigInstance" />
+        </set>
+    </class>
+    <query name="com.xo.web.models.system.XoConfigTemplate.findByName">
+        <![CDATA[
+    		SELECT xoconfigtemplate FROM com.xo.web.models.system.XoConfigTemplate xoconfigtemplate WHERE short_name = :shortName
+    	]]>
+    </query>
+</hibernate-mapping>

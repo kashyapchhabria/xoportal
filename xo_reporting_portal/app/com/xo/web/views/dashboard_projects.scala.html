@@ -7,6 +7,7 @@
 </script>
 <script id="tab_dashboard" type="text/html">
 	<section id="tableauReportsPageSection" style="background-color: white;">
+		<a style="visibility: hidden;" id="getFilters" class="button" data-bind="click:tableaumgmt.showPopup">Target Provisioning</a>
 		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
 			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
 			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
@@ -15,7 +16,20 @@
 			<span class="alert">
 				<h3>Report Loading Error:</h3>
 				<p data-bind="text:tableaumgmt.errorText"></p>
+				
 			</span>
 		</center>
+		<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+			<div style='color:black'>
+				<p>
+					<b>Segment Name: </b><i data-bind="text:tableaumgmt.segment()" ></i><br>
+					<b>Sub Segments: </b><i data-bind="text:tableaumgmt.subSegment()" ></i><br>
+					<b>Regions: </b><i data-bind="text:tableaumgmt.measureList()" ></i>
+				</p>
+				<center><a data-bind='click:tableaumgmt.getMsisdns' class='button small'>Confirm</a></center>
+				<a class='close-reveal-modal' aria-label='Close'>&#215;</a>
+			</div>
+		</div>
+		<div id="appliedFilters"></div>
 	</section>
 </script>

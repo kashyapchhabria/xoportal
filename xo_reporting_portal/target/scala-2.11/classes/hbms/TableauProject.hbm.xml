@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27-Oct-2014 07:17:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+  <class name="com.xo.web.ext.tableau.models.TableauProject"  table="tableau_projects">
+    <id name="tableauProjectId" type="string">
+      <column length="40" name="tableau_project_id"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="com.xo.web.ext.tableau.models.TableauUser" fetch="select" name="tableauUser">
+      <column length="40" name="tableau_user_id" not-null="true"/>
+    </many-to-one>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+    <property name="displayName" type="string">
+      <column length="150" name="display_name"/>
+    </property>    
+    <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+    <set fetch="select" inverse="true" lazy="true" cascade="save-update" name="tableauWorkbooks" table="tableau_workbooks">
+      <key>
+        <column length="40" name="tableau_project_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.xo.web.ext.tableau.models.TableauWorkbook"/>
+      <filter name="authfill_tableau_workbook" condition=" tableau_workbook_id in (:resourceIds) " />
+    </set>
+    <filter name="authfill_tableau_project" condition=" tableau_project_id in (:resourceIds)"/>
+  </class>
+
+  <!-- Queries -->
+  
+  <!-- Filters section -->
+  <filter-def name="authfill_tableau_project">
+  		<filter-param name="resourceIds" type="string"/>
+  </filter-def>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+@(kpi_get:List[com.xo.web.controllers.target], target:List[String])
+@for( widget <- kpi_get) {
+    
+    @if(widget.checked==1){
+		@if((target).contains(widget.name)){
+		<div class="ui checkbox" style="display: block !important;">
+	       <input type="checkbox" class="kpi" id="@widget.name" onchange="check(this);" value="@widget.name" start="@widget.start" weightage="@widget.weight" checked>
+		   <label>@widget.name</label><br>
+		</div>
+	   } else {
+	   <div class="ui checkbox" style="display: block !important;">
+	       <input type="checkbox" class="kpi" id="@widget.name" onchange="check(this);" value="@widget.name" start="@widget.start" weightage="@widget.weight">
+		   <label>@widget.name</label><br>
+		</div>
+		}
+	}
+}
+

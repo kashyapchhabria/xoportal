@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 18 Nov, 2014 11:54:38 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.RolePermissionResourceInstance" table="roles_permissions_resource_instance">
+        <composite-id name="rolePermissionResourceInstanceId" class="com.xo.web.models.system.RolePermissionResourceInstanceId">
+            <key-property name="rolePermissionId" type="int">
+                <column name="role_permission_id" />
+            </key-property>
+            <key-property name="resourceInstanceId" type="string">
+                <column name="resource_instance_id" length="50" />
+            </key-property>
+        </composite-id>
+        <property name="displayText" type="string">
+            <column name="display_text" length="200" />
+        </property>
+        <many-to-one name="rolePermission" class="com.xo.web.models.system.RolePermission" update="false" insert="false" fetch="select">
+            <column name="role_permission_id" not-null="true" />
+        </many-to-one>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt" length="19" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt" length="19" />
+        </property>
+    </class>
+    <!-- Row level related queries -->
+	<query name="com.xo.web.models.system.RolePermissionResourceInstance.findAllByRlpIDAndResourceTypeId">
+    	<![CDATA[
+    		SELECT rpris FROM com.xo.web.models.system.RolePermissionResourceInstance as rpris WHERE 
+    		rpris.rolePermission.role.roleId= :rlpTypeId AND rpris.rolePermission.permission.resourceType.resourceTypeId= :resourceTypeId
+    	]]>
+    </query>
+
+	<!-- Query to get IDs of already assigned resource instances -->
+	<sql-query name="com.xo.web.models.system.RolePermissionResourceInstance.findResourceInstanceIdsByRlpIDAndResourceTypeId">
+    <![CDATA[
+    		SELECT resInstance.resource_instance_id FROM 
+			resource_types as resource, 
+			roles_permissions_resource_instance as resInstance, 
+			roles_permissions as rolePermission, 
+			roles as role, 
+			permissions as permission 
+			WHERE 
+			resource.resource_type_id = :resourceTypeId AND 
+			resource.resource_type_id = permission.resource_type_id AND 
+			role.role_id = :rlpTypeId AND 
+			role.role_id = rolePermission.role_id AND 
+			rolePermission.permission_id = permission.permission_id AND 			  
+			rolePermission.role_permission_id=resInstance.role_permission_id 
+    	]]>
+    </sql-query>
+
+	<!-- Row level security related queries -->
+    <sql-query name="com.xo.web.models.system.RolePermissionResourceInstance.findResourceInstanceIdsByUserIdAndPermissionName">
+    <![CDATA[
+    		SELECT resource.resource_type_id, resInstance.resource_instance_id FROM 
+			resource_types as resource, 
+			roles_permissions_resource_instance as resInstance, 
+			roles_permissions as rolePermission, 
+			roles as role,
+			users as user, 
+			users_roles as userRole,
+			permissions as permission 
+			WHERE 
+			resource.resource_type_id = permission.resource_type_id AND
+			rolePermission.active = 1 AND 
+			resInstance.active = 1 AND 
+			role.role_id = rolePermission.role_id AND 
+			role.role_id = userRole.role_id AND 
+			rolePermission.permission_id = permission.permission_id AND 
+			user.user_id= :userID AND 
+			user.user_id= userRole.user_id AND 
+			rolePermission.role_permission_id=resInstance.role_permission_id AND 
+			permission.name in (:permissionNames) 
+			GROUP BY resource.resource_type_id, resInstance.resource_instance_id
+    	]]>
+    </sql-query>
+    <sql-query name="com.xo.web.models.system.RolePermissionResourceInstance.countResourceInstancesByUserIdAndPermissionNames">
+    <![CDATA[
+    		SELECT resource.resource_type_id FROM 
+			resource_types as resource, 
+			roles_permissions_resource_instance as resInstance, 
+			roles_permissions as rolePermission, 
+			roles as role,
+			users as user, 
+			users_roles as userRole,
+			permissions as permission 
+			WHERE 
+			resource.resource_type_id = permission.resource_type_id AND
+			role.role_id = rolePermission.role_id AND 
+			role.role_id = userRole.role_id AND 
+			rolePermission.permission_id = permission.permission_id AND 
+			user.user_id= :userID AND 
+			user.user_id= userRole.user_id AND 
+			rolePermission.role_permission_id=resInstance.role_permission_id AND 
+			permission.name in (:permissionNames) 
+			GROUP BY resource.resource_type_id
+    	]]>
+    </sql-query>
+</hibernate-mapping>

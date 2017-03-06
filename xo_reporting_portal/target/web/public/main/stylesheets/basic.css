@@ -1,0 +1,458 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'ralewaymedium';
+}
+
+.survey-detail{
+	font-family: 'dosissemibold';	
+	font-size: 17;
+}
+
+#header {
+  background-color: #36f;
+  padding: 10px 20px;
+}
+
+#header h1 {
+  margin: 0px 0px 20px 0px;
+  font-family: 'ralewaymedium';
+}
+
+#header a {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+  font-family: 'ralewaymedium';
+}
+
+#content {
+  /*padding: 20px;*/
+  font-family: 'ralewaymedium';
+}
+
+#content h2 {
+  margin-top: 0px;
+  font-family: 'ralewaymedium';
+}
+.top-bar {
+	background: gray;
+	font-family: 'ralewaymedium';
+}
+.tab-bar {
+  background: gray;
+  font-family: 'ralewaymedium';
+}
+.top-bar-section li:not(.has-form) a:not(.button) {
+    background: gray;
+    font-family: 'ralewaymedium'; }
+.tab-bar-section li:not(.has-form) a:not(.button) {
+    background: gray; 
+font-family: 'ralewaymedium';}
+.top-bar-section li:not(.has-form) a:not(.button):hover{
+    background: gray;
+    font-family: 'ralewaymedium';
+}
+.button{
+	background: #002366;
+	font-family: 'ralewaymedium';
+}
+button:hover, button:focus, .button:hover, .button:focus {
+    background-color: #002366; 
+    font-family: 'ralewaymedium';
+}
+.xo-content {
+	min-height: 600px;
+	font-family: 'ralewaymedium';
+	background-color: white;
+}
+.footer {
+position: relative;
+margin-top: 70px; /* negative value of footer height */
+height: 75px;
+clear:both;
+font-size: 0.6875rem;
+background:#ffffff;
+background-color: white;
+}
+.formTemplate{
+	margin:50px;
+	margin-left: 120px;
+}
+.xo-icon {
+	font-family: 'ralewaymedium';
+	font-size: 150px;
+	color: #808080;
+}
+.xo-grid {
+	margin:100px;
+	margin-left:100px
+}
+
+.range-question {
+	display:inline-table;
+	padding-top:4px;
+}
+
+.range-choice-group {
+	background: linear-gradient(to right, rgba(255, 0, 0, 0.76), rgba(247, 255, 0, 0.15), rgba(11, 107, 27, 0.76));
+	padding-top: 5px;
+}
+
+.star-choice-group {
+	background: linear-gradient(to right, rgba(255, 0, 0, 0.76), rgba(247, 255, 0, 0.15), rgba(11, 107, 27, 0.76));
+	padding-top: 0px;
+	padding-bottom: 20px;
+	padding-right: 10px;
+}
+
+.header{
+	font-style: italic;
+	font-size: 17px;
+	padding:3px
+}
+
+.range-choices {
+	display:table-cell;
+	min-width:60px;
+}
+
+.range-choices-limits {
+	min-width: 0px;
+	padding: 10;
+}
+
+button.small, .button.small{
+	padding-top:8;
+	padding-bottom:8;
+	padding-left:12;
+	padding-right:11;
+	font-size:12;
+	font-family: 'ralewaymedium';
+}
+
+.survey-mgmt-link{
+	margin-left: 280px;
+}
+.user-mgmt-link{
+	margin-left: 165px;
+}
+.height300{
+	height:500px
+}
+
+.height45{
+	height:45px !important;
+}
+
+.padding10l{
+	padding-left:10px
+}
+
+.padding3l{
+	padding-left:3px
+}
+.padding5{
+	padding:5px
+}
+.padding15{
+	padding:15px
+}
+.fontBlack{
+	color:black;
+	font-size:0.9rem;
+}
+.q_font {
+	font-size: 17px;
+	border:1px #002366 solid;
+	border-radius:5px;
+	padding:3px
+}
+.font15{
+	font-size: 15px;
+	margin-top:-0.4rem;
+}
+.font18{
+font-size: 18px
+}
+.font8{
+	font-size:1.0rem;
+	padding-left:5px;
+	padding-bottom:2px;
+	font-weight: 600;
+}
+.font9{
+	font-size:9;
+}
+.font10{
+	font-size:10;
+}
+.surveyPage
+{
+	background:#f2f2f2;
+	margin-top:40;
+	padding-bottom:0;
+}
+.panel-title{
+	font-family:ralewaymedium;
+	font-weight: 600;
+	font-size: 18px;
+}
+
+.survey-alert{
+	padding:5px;
+	margin-bottom:-0.7rem;
+	margin-top:-0.5rem;
+}
+
+.survey-title-panel{
+	background: white;
+	position: fixed;
+	top: 45px;
+	padding-top: 10px;	
+	z-index: 99;
+	
+}
+.button-panel{
+	background: white;
+	position: fixed;
+	padding-top: 10px;	
+	z-index: 99;
+	margin-top:15px	
+}
+.survey-title-panel-small{
+	background: white;
+	position: fixed;
+	padding-top: 10px;	
+	z-index: 99;
+	margin-top:-1.25rem	
+}
+.button-panel-small{
+	background: white;
+	position: fixed;
+	padding-top: 10px;	
+	z-index: 99;
+	margin-top:40px	
+}
+.small-survery-title-panel-divider{
+	border-width: 2px 0 0 !important;
+	margin-top: -5px;
+	margin-right: 30px;	
+}
+.survery-title-panel-divider{
+	border-width: 2px 0 0 !important;
+	margin-top: -5px;
+}
+
+.small-panel-title{
+
+	font-family:ralewaymedium;
+	font-weight: 600;
+	font-size: 15px;
+}
+
+.star{
+margin:0 10px;
+font-size:35px;
+}
+
+.star-text{
+	font-size:15px ; 
+	position:absolute ; 
+	left:270px ;
+	color:#002366 ;
+	padding-top:15px;
+	margin-top:50px;
+}
+
+.starRating span { width:24px; height:24px;color:grey;display:inline-block; cursor: pointer; background-position: -24px 0; }
+.starRating span.chosen { background-position: 0 0;color:#002366; }
+.starRating:hover span.hoverChosen { background-position: 0 -32px; color:#002366; }
+
+
+.disablelink {
+    pointer-events: none;
+    font-weight: bold !important;
+    color: #808080 !important;
+}
+
+div.image {
+  width:16px;
+  height:16px;
+  background-image:url(data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA%3D%3D);
+}
+
+/* Paste this css to your style sheet file or under head tag */
+/* This only works with JavaScript, 
+if it's not present, don't show loader */
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(../images/pageloader.gif) center no-repeat rgba(0, 0, 0, 0.45);
+}
+
+.breadcrumbs>* {
+	text-transform: none !important
+}
+
+.xoheader {
+	height: 45px !important;
+	background: gray !important
+}
+
+.reveal-modal.small {
+	width:60% !important;
+}
+
+.xo-nav {
+	background-color: #f2f2f2;
+	padding: 10px 10px 10px 0;
+}
+
+.top50 {
+	top: 50px;
+}
+
+.width65{
+	width: 65% !important;
+}
+
+.lightbluebutton {
+	background-color:#008CBA
+}
+/* A full-screen element that is not the root element should be stretched to cover the viewport. */
+:-moz-full-screen:not(:root) {
+  margin: auto;
+  float: none;
+  width: 100%;
+  height: 100%;
+  color: white !important;
+  background-color: inherit !important;
+}
+
+:-ms-fullscreen:not(:root) {
+  margin: auto;
+  float: none;
+  width: 100%;
+  height: 100%;
+  color: white !important;
+  background-color: inherit !important;
+}
+
+:fullscreen:not(:root) {
+  margin: auto;
+  float: none;
+  width: 100%;
+  height: 100%;
+  color: white !important;
+  background-color: inherit !important;
+}
+*:fullscreen, *:-webkit-full-screen, *:-moz-full-screen {
+    background-color: inherit !important;
+}
+:-webkit-full-screen:not(:root) {
+  margin: auto;
+  float: none;
+  width: 100%;
+  height: 100%;
+  color: white;
+  background-color: inherit !important;
+}
+/*
+   Fix to remove the background color of black in full screen mode so don't remove the below CSSs.
+*/
+html:-webkit-full-screen-ancestor {
+	background-color: inherit !important;
+}
+html:-moz-full-screen-ancestor {
+	background-color: inherit !important;
+}
+html:-ms-full-screen-ancestor {
+	background-color: inherit !important;
+}
+
+*:fullscreen, *:-webkit-full-screen, *:-moz-full-screen, *:-ms-fullscreen {
+    background-color: inherit !important;
+}
+
+#tableauViewPlace:-moz-full-screen {
+    background: inherit !important;
+}
+#tableauViewPlace:-webkit-full-screen {
+    background: inherit !important;
+}
+
+#tableauViewPlace:-ms-fullscreen {
+    background: inherit !important;
+    width: 100%; /* needed to center contents in IE */
+}
+
+html:fullscreen {
+    background: white !important;
+}
+
+.popupheight {
+    padding:1px 1px 1px 0;
+    margin-top:8px;
+    margin-bottom:8px;
+
+}
+
+#tableauViewPlace {
+	width:100%;
+	height:100%;
+	background-color:white !important;
+}
+
+.validationMessage {color : red}
+
+.menu-bar1 {
+	background: #cde7f0;
+	font-family: 'ralewaymedium';
+	color:#002366;
+	}
+
+.menu-bar1 li:not(.has-form) a:not(.button) {
+        background: #cde7f0;
+        font-family: 'ralewaymedium';
+         color:#002366;}
+.menu-bar1 li:not(.has-form) a:not(.button):hover {
+     background: #ADD8E6;
+     font-family: 'ralewaymedium';}
+
+.menu-bar1-section .dropdown li:not(.has-form):not(.active):hover>a:not(.button) {
+     	color: #002366;
+     	background-color: #ADD8E6;
+     	background: #ADD8E6;
+     	font-size:medium;
+     	}
+
+.menu-bar1-section .dropdown li:not(.has-form):not(.active)>a:not(.button) {
+        color: gray;
+        background: #ADD8E6;}
+
+.menu-bar1-section ul li:hover:not(.has-form)>a {
+        background-color: #555;
+        background: #ADD8E6;
+        color: rgb(0, 35, 102);
+        font-size: medium;}
+        
+.topRight {
+	margin-top: -15px;
+    margin-right: -10px;
+}
+
+.fixmenu {
+    left: 5px;
+    position: fixed;
+    width: 58px;
+    z-index: 99;
+    font-size:30px;
+    top:0px;
+}

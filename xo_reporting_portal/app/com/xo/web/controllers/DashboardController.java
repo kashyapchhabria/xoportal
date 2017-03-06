@@ -1,11 +1,25 @@
 package com.xo.web.controllers;
 
+import java.io.FileWriter;
 
+import java.net.InetAddress;
 import java.util.Set;
+
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 
 import play.i18n.Messages;
 import play.mvc.Result;
+import play.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.xo.web.ext.tableau.mgr.DashboardItemEnum;
 import com.xo.web.ext.tableau.mgr.TableauObjectLogic;
@@ -33,6 +47,8 @@ public class DashboardController extends BaseController<TableauSite, String> {
 	private final TableauWorkbookLogic tableauWorkbookLogic = new TableauWorkbookLogic();
 	private final TableauViewLogic tableauViewLogic = new TableauViewLogic();
 	private final XoClientLogic xoClientLogic = new XoClientLogic();
+	private static final String index = "kashyap"; 
+	private static final String type = "CampaignManagement"; 
 
 	public DashboardController() {
 		super(new TableauSiteLogic());
@@ -107,5 +123,61 @@ public class DashboardController extends BaseController<TableauSite, String> {
 			screenDTO.errorText = Messages.get("tableau.report.reportloaderr");
 		}
 		return ok(screenDTO.toJson());
+	}
+	
+	public Result getMsisdns() {
+		JsonNode json = request().body().asJson();
+		JsonNode jsonResponse = null;
+		Client client = null; 
+		SearchResponse response;
+		if (json == null) {
+			Logger.error(BAD_REQUEST_UNKNOWN_DATA);
+			return badRequest(generateErrorResponse(BAD_REQUEST_UNKNOWN_DATA));
+		}
+		
+		try {
+			
+			Settings settings = Settings.settingsBuilder()
+            		.put("client.transport.ignore_cluster_name", true) 
+                    .put("client.transport.sniff", true) 
+                    .build(); 
+    		        
+            client = TransportClient.builder().settings(settings).build()
+    		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+           // String name = json.rootNode("segment").getTextValue();
+            ObjectMapper mapper = new ObjectMapper(); 
+            //String text = mapper.writeValueAsString(json);
+           // String text = json.path("segment").asText();
+            //System.out.println(text);
+            //String pretty = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json); 
+            
+            
+            
+
+           // String text =json.path("regions").toString();
+            //System.out.println(text);
+            BoolQueryBuilder qb = QueryBuilders.boolQuery()
+        		    .must(QueryBuilders.matchQuery("segment.topSegment",json.path("segment").asText() ))
+        		    .must(QueryBuilders.matchQuery("demographics.homeLocation",json.path("regions").toString()));
+        		    
+        		
+            response = client.prepareSearch(index) 
+            		.setTypes(type)
+            		.setQuery(qb)
+            		.addFields("msisdn" , "demographics.homeLocation" , "segment.topSegment")
+            		.setScroll(new TimeValue(60000))
+            		.setSize(100)
+            		.execute() 
+                    .actionGet();
+            jsonResponse = generateSuccessResponse(response.toString());
+            System.out.println(response.toString());
+		} catch (Exception e) { 
+            System.out.println("00000 " + e); 
+        } finally { 
+            if (client != null) { 
+                client.close(); 
+            } 
+        }
+		return ok(jsonResponse);
 	}
 }

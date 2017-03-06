@@ -48,6 +48,8 @@ libraryDependencies ++= Seq(
     "org.webjars" % "knockout" % "3.3.0",
     "org.webjars" % "foundation" % "5.5.0",
     "org.webjars" % "selectize.js" % "0.12.1",
+    //ES
+    "jp.co.bizreach" % "elasticsearch" % "2.3.5",
     // Apache http components
 	"org.apache.httpcomponents" % "httpclient" % "4.3.6",
 	// Mail plugin related packages
@@ -56,7 +58,11 @@ libraryDependencies ++= Seq(
 	// Serialization library kryo packages (To avoid asm lib issues we are using the kryo-shaded package). 
     "com.esotericsoftware" % "kryo-shaded" % "4.0.0",
 	// Akka Remoting.
-	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1"
+	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1",
+	// Impala
+	"org.apache.thrift" % "libfb303" % "0.9.0",
+   	"org.apache.thrift" % "libthrift" % "0.9.0",
+   	"org.apache.zookeeper" % "zookeeper" % "3.4.6"
 )
 
 doc in Compile <<= target.map(_ / "none")

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.models.system.Role" table="roles" >
+        <id name="roleId" type="java.lang.Integer">
+            <column name="role_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="50" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="100" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <set name="rolePermissions" table="roles_permissions" inverse="true" lazy="true" fetch="join">
+            <key>
+                <column name="role_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.RolePermission" />
+        </set>
+        <set name="userRoles" table="users_roles" inverse="true" lazy="true" fetch="join">
+            <key>
+                <column name="role_id" not-null="true" />
+            </key>
+            <one-to-many class="com.xo.web.models.system.UserRole" />
+        </set>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt"/>
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt"/>
+        </property>
+    </class>
+    <query name="com.xo.web.models.system.Role.findByName">
+    	<![CDATA[
+    		SELECT role FROM com.xo.web.models.system.Role role WHERE name = :name
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.Role.findByActive">
+    	<![CDATA[
+    		SELECT role FROM com.xo.web.models.system.Role role WHERE active = :activestate
+    	]]>
+    </query>
+    <query name="com.xo.web.models.system.Role.findUnassignedRoles">
+        <![CDATA[
+            SELECT role FROM com.xo.web.models.system.Role role WHERE role.active = 1 and role.roleId not in ( select ur.role.roleId from com.xo.web.models.system.UserRole ur where ur.user.userId = :userId )
+        ]]>
+    </query>
+</hibernate-mapping>

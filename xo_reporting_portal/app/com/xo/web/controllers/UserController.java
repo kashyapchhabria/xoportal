@@ -405,6 +405,7 @@ public class UserController extends BaseController<User, Integer> implements Use
                 add(com.xo.web.views.html.configuration.render());
                 add(com.xo.web.views.html.configtemp_mgmt.render());
 				add(com.xo.web.views.html.reports_mgmt.render());
+				add(com.xo.web.views.html.config_kpi.render());
 				add(com.xo.web.views.html.reports_grp_mgmt.render());
 			}
 
