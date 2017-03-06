@@ -17,7 +17,7 @@ GET      /                                                            @com.xo.we
 
 # REST services
 POST     /auth/login                                                  @com.xo.web.controllers.UserController.login()
-GET      /logincallback                                               @com.xo.web.controllers.UserController.xossoCallBackHandler(token:String, company:String, domain:String, name:String ?="", email:String ?="")
+GET      /logincallback                                               @com.xo.web.controllers.UserController.xossoCallBackHandler()
 
 # User Logout
 GET      /logout                                                      @com.xo.web.controllers.UserController.logout(authToken: String)

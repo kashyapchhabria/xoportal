@@ -4,17 +4,18 @@
 package com.xo.web.persistence.intercept;
 
 import java.io.Serializable;
+import java.net.Socket;
 import java.util.Iterator;
 
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
 
-import akka.actor.ActorSelection;
-
-import com.xo.web.akka.xoactors.AppActors;
 import com.xo.web.models.system.User;
 import com.xo.web.util.XoAsyncTaskHandler;
+import com.xo.web.util.Serializer;
+import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoAsynchTask;
+import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.BaseDto;
 import com.xo.web.viewdtos.MessageDto;
 import com.xo.web.viewdtos.MessageType;
@@ -81,12 +82,15 @@ public class XoEntityInterceptor extends EmptyInterceptor {
 	private final void syncUser(MessageType messageType, BaseDto<?> entityDto) {
 		final MessageDto messageDto = new MessageDto("Entity Sync", messageType, entityDto);
 		XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("User Sync") {
-
+			
+			final Serializer<MessageDto> SERIALIZER = new Serializer<>(MessageDto.class);
 			@Override
 			public void process() throws Throwable {
-
-				final ActorSelection actor = AppActors.XOPORTAL_ACTOR_SYSTEM.actorSelection(AppActors.ACTOR_USER_LOCALSYNCACTOR); // get actor ref
-				actor.tell(messageDto, null);
+				String hostname=XoUtil.getConfig(XoAppConfigKeys.XOSSO_HOSTNAME);
+				Integer port=Integer.parseInt(XoUtil.getConfig(XoAppConfigKeys.XOSSO_PORT));
+				Socket userSyncSocket = new Socket(hostname, port);
+				userSyncSocket.getOutputStream().write(SERIALIZER.serialize(messageDto));
+				userSyncSocket.close();
 			}
 		});
 	}

@@ -10,6 +10,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.core.XODAOException;
 import com.xo.web.core.XOException;
@@ -51,9 +59,15 @@ import play.utils.UriEncoding;
 public class UserController extends BaseController<User, Integer> implements UserI18NLabels {
 
 	private static final String XOSSO_URL_LINK = XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL);
+	private static final String XOSSO_URL_APP_LOGIN = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_APPLOGIN);
+    private static final String XOSSO_URL_APP_LOGOUT = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_LOGOUT);
+    private static final String XOSSO_URL_APP_TOKEN_VERIFY = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_VERIFY_TOKEN);
 	private static final String CALLBACK_URL = "?callbackurl=";
+	
 	private static final String APP_CONTEXT = XoUtil.getConfig(XoAppConfigKeys.APPLICATION_CONTEXT);
 	private static final String APP_TYPE = "&app=" + APP_CONTEXT.split("/")[1];
+	
+	public static final CloseableHttpClient REST_CLIENT = HttpClientBuilder.create().build();
 
 	private final XoMailContentProvider xoMailContentProvider = new XoMailContentProvider();
 
@@ -71,11 +85,11 @@ public class UserController extends BaseController<User, Integer> implements Use
 
 	public Result renderLoginPage() {
 		boolean xossoStatus = Boolean.parseBoolean(XoUtil.getConfig(XoAppConfigKeys.XOSSO_STATUS));
-		if(xossoStatus && XoUtil.isNotNull(XOSSO_URL_LINK)) {
+		if(xossoStatus && XoUtil.isNotNull(XOSSO_URL_APP_LOGIN)) {
 			XoUtil.getAndSetRemoteAddress();
-			String callbackurl = com.xo.web.controllers.routes.UserController.xossoCallBackHandler(null, null, null, null, null).
+			String callbackurl = com.xo.web.controllers.routes.UserController.xossoCallBackHandler().
 					absoluteURL(request(), false);
-			StringBuilder loginUrlStr = new StringBuilder(XOSSO_URL_LINK);
+			StringBuilder loginUrlStr = new StringBuilder(XOSSO_URL_APP_LOGIN);
 			loginUrlStr.append(CALLBACK_URL);
 			loginUrlStr.append(UriEncoding.encodePathSegment(callbackurl, XoUtil.STRING_UTF_8));
 			loginUrlStr.append(APP_TYPE);
@@ -177,20 +191,40 @@ public class UserController extends BaseController<User, Integer> implements Use
 		}
 		return result;
 	}
+	
+	public final boolean isValidXossoAuthToken(String authToken) throws XODAOException {
+        if(XoUtil.isNotNull(authToken)) {
+        	HttpRequestBase xossorequest = new HttpGet(XOSSO_URL_APP_TOKEN_VERIFY + "?token=" + authToken);
+        	CloseableHttpResponse xossoResponse;
+			try {
+				xossoResponse = REST_CLIENT.execute(xossorequest);
+				String xossoJsonResponse = IOUtils.toString(xossoResponse.getEntity().getContent(), "UTF-8");
+				xossoResponse.close();
+				return "success".equalsIgnoreCase(xossoJsonResponse);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        return false;
+    }
 
-	public Result xossoCallBackHandler(String token, String company, String domain, String name, String email) {
+	public Result xossoCallBackHandler() throws XODAOException {
 		Result result = null;
-		if(!XoUtil.isNotNull(token)) {
+		if(!isValidXossoAuthToken(request().getQueryString("token"))) {
 			Logger.error(BAD_REQUEST_UNKNOWN_DATA);
 			return badRequest(generateErrorResponse("Token expected."));
 		}
 		try {
 			AppLoginResponseDTO appLoginResponseDTO = new AppLoginResponseDTO();
-			appLoginResponseDTO.company = company;
-			appLoginResponseDTO.domain = domain;
-			appLoginResponseDTO.email = email;
-			appLoginResponseDTO.name = name;
-			appLoginResponseDTO.token = token;
+			appLoginResponseDTO.company = request().getQueryString("company");
+			appLoginResponseDTO.domain = request().getQueryString("domain");
+			appLoginResponseDTO.email = request().getQueryString("email");
+			appLoginResponseDTO.name = request().getQueryString("name");
+			appLoginResponseDTO.token = request().getQueryString("token");
 			this.TOKEN_ACTION_LOGIC.save(appLoginResponseDTO);
 			result = redirect(com.xo.web.controllers.routes.UserController.pageDispatcher(appLoginResponseDTO.token, null));
 		} catch(Exception e) {

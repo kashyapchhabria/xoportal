@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
 name := """Xo Reporting Portal"""
 
-version := "4.3"
+version := "4.3.1"
 
 organization := "com.xo.web"
 
@@ -56,7 +56,8 @@ libraryDependencies ++= Seq(
 	// Serialization library kryo packages (To avoid asm lib issues we are using the kryo-shaded package). 
     "com.esotericsoftware" % "kryo-shaded" % "4.0.0",
 	// Akka Remoting.
-	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1"
+	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1",
+	"commons-io" % "commons-io" % "2.5"
 )
 
 doc in Compile <<= target.map(_ / "none")
