@@ -1,6 +1,7 @@
 package com.xo.web.controllers;
 
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import play.i18n.Messages;
@@ -59,6 +60,32 @@ public class DashboardController extends BaseController<TableauSite, String> {
 			screenDTO.errorText = Messages.get("tableau.report.noreports");
 		}
 		return ok(screenDTO.toJson());
+	}
+	
+	public Result getDiffusionMap() {
+		ScreenDTO screenDTO = new ScreenDTO();
+		try {
+			User user = this.getCurrentRestUser();
+			XoClient xoClient = null;
+			if(user.isSuperUser() || this.getCurrentRestUser().isSystemResource()) {
+				xoClient = xoClientLogic.find(Integer.parseInt(request().getHeader(XoAppConstant.HEADER_X_SUPER_CLIENT)));
+			} else {
+				xoClient = user.getXoClient();
+			}
+			tableauObjectLogic.loadDiffusionData(screenDTO, xoClient);
+		} catch(Exception e) {
+			screenDTO.errorText = Messages.get("No Reports");
+		}
+		return ok(screenDTO.toJson());
+	}
+	
+	public Result getFilterList() {
+		String filterList = tableauObjectLogic.getFilterList();
+		if ( filterList != null ) {
+			return ok(filterList);
+		}
+		return ok("Error");
+		
 	}
 
 	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK, PermissionEnum.READ_TABLEAU_VIEW}, meta = "Tableau CORS")

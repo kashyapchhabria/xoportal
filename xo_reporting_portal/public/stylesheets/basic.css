@@ -456,3 +456,108 @@ html:fullscreen {
     font-size:30px;
     top:0px;
 }
+.dropdown {
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+a {
+  color: black;
+  
+}
+
+.dropdown dd,
+.dropdown dt {
+  
+  margin: 0px;
+  padding: 0px;
+}
+
+.dropdown ul {
+  border: 1;
+  
+}
+
+.dropdown dd {
+  position: relative;
+}
+
+.dropdown a,
+.dropdown a:visited {
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+}
+
+.dropdown dt a {
+  background-color: white;
+  display: block;
+  border: 1px #808080 solid;
+  padding: 8px 20px 5px 10px;
+  overflow: hidden;
+  width: 216px;
+  height: 36px;
+  margin-top: 37px;
+}
+
+.dropdown dt a span,
+.multiSel span {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 3px 2px 0;
+}
+
+.dropdown dd ul {    
+	background-color: white;
+    border: 1px solid;
+    color: black;
+    display: none;
+    left: -17px;
+    padding: 0px 17px 2px 5px;
+    position: absolute;
+    top: 2px;
+    width: 216px;
+    list-style: none;
+    height: auto;
+    overflow: auto;
+}
+
+.dropdown span.value {
+  display: none;
+}
+
+.dropdown dd ul li a {
+  padding: 5px;
+  display: block;
+  
+}
+
+.dropdown dd ul li a:hover {
+  background-color: #fff;
+}
+
+button {
+  background-color: white;
+  width: 302px;
+  border: 1px solid;
+  padding: 10px 0;
+  margin: 5px 0 ;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+}
+
+#accordion {
+   width: auto;
+   height: auto;
+}
+#accordion div {
+   height:25%;
+   overflow: hidden;}
+#accordion:hover div {
+   height: 20px; }
+#accordion:hover div:hover {
+   height: auto;
+   overflow: auto; }

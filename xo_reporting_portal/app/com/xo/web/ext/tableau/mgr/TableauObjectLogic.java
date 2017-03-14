@@ -2,6 +2,8 @@ package com.xo.web.ext.tableau.mgr;
 
 
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -401,9 +403,66 @@ public class TableauObjectLogic {
 			screenDto.breadCrumbDtos = this.buildBreadCrumbsGroup(DashboardItemEnum.DASHBOARD, null, null, null);
 		}
 	}
+	
+	public void loadDiffusionData(final ScreenDTO screenDto, XoClient xoClient) {
+		String applicationContext = XoUtil.getApplicationContext();
+		DashboardDTO dashboardDTO =null;
+		dashboardDTO = buildDiffusionDto("Production Test","Diffusion_map","DiffusionMap", applicationContext);
+		screenDto.contentDtos.add(dashboardDTO);
+		screenDto.imageUrl = dashboardDTO.imageUrl;
+		if(!XoUtil.hasData(screenDto.contentDtos)){
+			screenDto.placeHolderImageUrl = "vassets/images/Market_Map_Segments.jpg";
+		}
+	}
+	
+	public String getFilterList() {
+		ResultSet filterList = this.tableauProjectDao.getFilterList();
+		String filters = "";
+		try {
+			while(filterList.next()) {
+				filters += filterList.getString("status");
+				if(!filterList.isLast()) {
+					filters+=",";
+				}
+			}
+			return filters;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private DashboardDTO buildDiffusionDto(String tableauProject, String tableauWorkbook, String tableauView, String applicationContext) {
+		DashboardDTO dashboardDTO = new DashboardDTO();
+		
+		dashboardDTO.name = tableauView;
+		dashboardDTO.imageUrl = buildDiffusionLinkUrl(tableauWorkbook, tableauView);
+		
+		return dashboardDTO;
+	}
 
-
-
+	private String buildDiffusionLinkUrl(String tableauWorkbook, String tableauView) {
+		String urlWorkbookName = tableauWorkbook.replaceAll(" ", "");
+		String urlViewName = tableauView.replaceAll(" ", "");
+		StringBuilder tableauImageurl = new StringBuilder();
+		tableauImageurl.append("http://192.175.112.82");
+		tableauImageurl.append(TableauRESTConnector.URL_QUERY_TRUSTED_IP_TICKET);
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append(tableauConnector.getTicket("http://192.175.112.82", /*this.userDomain + "\\" + */"Etisalat", "182.75.83.250", "Xo_Prod"));
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append(TABLEAU_MULTI_SITE);
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append("Xo_Prod");
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append("views");
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append(urlWorkbookName);
+		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
+		tableauImageurl.append(urlViewName);
+		tableauImageurl.append(TABLEAU_REPORT_URL_PARAMS);
+		return tableauImageurl.toString();
+	}
 
 	public Set<MenuDTO> buildGroupMenus() {
 		Set<MenuDTO> menuDtos = new HashSet<MenuDTO>();

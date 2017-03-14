@@ -57,7 +57,14 @@ libraryDependencies ++= Seq(
     "com.esotericsoftware" % "kryo-shaded" % "4.0.0",
 	// Akka Remoting.
 	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1",
-	"commons-io" % "commons-io" % "2.5"
+	"commons-io" % "commons-io" % "2.5",
+	// For Diffusion Map
+	"org.apache.thrift" % "libfb303" % "0.9.0",
+	"org.apache.thrift" % "libthrift" % "0.9.0",
+	"log4j" % "log4j" % "1.2.14",
+	"org.slf4j" % "slf4j-api" % "1.5.11",
+	"org.slf4j" % "slf4j-log4j12" % "1.5.11",
+	"org.apache.zookeeper" % "zookeeper" % "3.4.6"
 )
 
 doc in Compile <<= target.map(_ / "none")
@@ -82,3 +89,6 @@ resolvers += Resolver.url("Edulify Repository", url("http://edulify.github.io/mo
 
 // Additional java options
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-encoding", "UTF-8")
+
+
+

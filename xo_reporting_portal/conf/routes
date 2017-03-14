@@ -162,3 +162,7 @@ GET      /tableauview/:tableauViewId                                  @com.xo.we
 PUT      /tableauview/update                                          @com.xo.web.controllers.TableauViewController.update()
 PUT      /tableauview/toggledashboard/:tableauViewId                  @com.xo.web.controllers.TableauViewController.toggleDashboardStatus(tableauViewId: String)
 GET      /tableauview/checkdashboard/:viewGroupId                     @com.xo.web.controllers.TableauViewController.isDashboardExist(viewGroupId: Integer)
+
+# Diffusion Map
+POST	 /diffusionMap												  @com.xo.web.controllers.DashboardController.getDiffusionMap()
+GET		 /filterlist												  @com.xo.web.controllers.DashboardController.getFilterList()

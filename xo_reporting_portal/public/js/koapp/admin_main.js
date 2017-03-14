@@ -37,10 +37,10 @@ requirejs.config({
 define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         'datatables', 'DataTable','Responsive', 'main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
-        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management'],
+        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management', 'main/diffusion_map'],
    function(ko, Router, kv, foundation, datatables, DataTable, Responsive, UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
-         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel) {
+         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel,DiffusionManagerModel) {
 
     var initializePages = function(){
 
@@ -49,6 +49,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       // More specific matches should come first.
       var urlMapping = {        
         home:   { match: /^$/,                    page: adminPage},
+        diffusionmap: { match: /^diffusionmap$/, page: diffusionmapPage},
         changepassword: { match: /^changepassword/,        page: changepasswordPage},
         createsurveyor: { match: /^createsurveyor$/, page:createsurveyorPage},
         editsurveyor: { match: /^editsurveyor$/, page:editsurveyorPage},
@@ -83,7 +84,8 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       var rowlevelmgmt = RowLevelPermissionModel();
       var reportmgmt = new ReportManagementModel();
       var reportgrpmgmt = new ReportGroupManagementModel();
-
+	  var diffMap = new DiffusionManagerModel();
+	  
       function cleanUp() {
     	  if(tableaumgmt) {
     		  tableaumgmt.clearAll();
@@ -196,9 +198,18 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function tabdashboardPage() {
         return showPageLoader(function() {
         	cleanUp();
-        	tableaumgmt.loadClients();
+        	tableaumgmt.loadClients(true);
         	tableaumgmt.loadDashboardData();
         	return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+        });
+      }
+      
+      function diffusionmapPage() {
+        return showPageLoader(function() {
+        	cleanUp();
+        	tableaumgmt.loadClients(false);
+        	tableaumgmt.loadDashboardData();
+        	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{tableaumgmt:tableaumgmt});
         });
       }
 

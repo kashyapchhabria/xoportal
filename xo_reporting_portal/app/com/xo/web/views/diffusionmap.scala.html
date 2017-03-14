@@ -1,0 +1,62 @@
+<script id="diffusion_map" type="text/html">
+<!-- 
+<ul class="large-block-grid-3">
+	<li>1</li>
+	<li>2</li>
+	<li>3</li>
+	<li>4</li>
+	<li>5</li>
+	<li>6</li>
+</ul> -->
+	<section id="tableauReportsPageSection" style="background-color: white;">
+		<div style="margin-top:40px">
+			<div class="large-2 columns end">
+				<div class="row collapse">
+            		<div class="small-10 columns">
+						<dl class="dropdown"> 
+							<dt>
+								<a data-bind="click:tableaumgmt.toggleClass">
+									Select &#x25BC;
+									<p class="multiSel"></p>  
+								</a>
+							</dt>
+							<dd>
+								<div class="mutliSelect" >
+									<ul>
+										<li style="list-style: none;">
+											<label>
+		        								<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
+		        								<span>All</span>
+		        							</label>
+		    							</li>
+									<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
+										<li style="list-style: none;">
+											<label>
+		        								<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
+		        								<span data-bind="text:sub_sgmt.name"></span>
+		        							</label>
+		    							</li>
+									<!-- /ko -->
+									</ul>
+								</div>
+							</dd>
+						</dl>
+            		</div>
+            		<div class="small-2 columns">
+              			<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
+            		</div>
+          		</div>
+			</div>
+		</div>
+		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
+			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
+			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
+		</center>
+		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
+			<span class="alert">
+				<h3>Report Loading Error:</h3>
+				<p data-bind="text:tableaumgmt.errorText"></p>
+			</span>
+		</center>
+	</section>
+</script>
