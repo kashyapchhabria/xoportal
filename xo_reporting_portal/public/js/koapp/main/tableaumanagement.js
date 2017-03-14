@@ -499,12 +499,11 @@ define(['knockout', 'jquery'], function(ko, $) {
 			}
 		}
 
-		self.cancelSelected = function() {
-        	for(var i=0; i<self.filterList().length;i++) {
-    			self.filterList()[i]['isChecked'](false);
-    			self.filterList()[i]['isDisabled'](false);
-        	}
-       	}
+		 
+		 
+		 
+		
+		
 
 
         return {
@@ -532,8 +531,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             getSelectedFilters:self.getSelectedFilters,
             selectedFilters:self.selectedFilters,
             isAllSelected:self.isAllSelected,
-            someFunction:self.someFunction,
-            cancelSelected:self.cancelSelected
+            someFunction:self.someFunction
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
