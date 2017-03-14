@@ -446,10 +446,10 @@ public class TableauObjectLogic {
 		String urlWorkbookName = tableauWorkbook.replaceAll(" ", "");
 		String urlViewName = tableauView.replaceAll(" ", "");
 		StringBuilder tableauImageurl = new StringBuilder();
-		tableauImageurl.append("http://192.175.112.82");
+		tableauImageurl.append(this.tableauPublicHost);
 		tableauImageurl.append(TableauRESTConnector.URL_QUERY_TRUSTED_IP_TICKET);
 		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(tableauConnector.getTicket("http://192.175.112.82", /*this.userDomain + "\\" + */"Etisalat", "182.75.83.250", "Xo_Prod"));
+		tableauImageurl.append(tableauConnector.getTicket(this.tableauInternalHost, /*this.userDomain + "\\" + */this.tableauUserName, this.clientIP, "Xo_Prod"));
 		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
 		tableauImageurl.append(TABLEAU_MULTI_SITE);
 		tableauImageurl.append(SYMPOL_FORWARD_SLASH);

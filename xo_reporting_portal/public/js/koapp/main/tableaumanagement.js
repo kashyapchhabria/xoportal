@@ -19,6 +19,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.selectedFilters = ko.observableArray([]);
 		self.selectedList = ko.observableArray([]);
 		self.isAllSelected = ko.observable(true);
+		self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
 		
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -477,25 +478,33 @@ define(['knockout', 'jquery'], function(ko, $) {
         	}
         	sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
-			
-			for(var i = 0; i < self.selectedFilters().length; i++) {
-				alert(worksheetArray[i].getName());
-				//alert(self.selectedFilters()[i]);
-				worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[i], 'REPLACE');
+				
+			for(var k = 0; k < self.selectedFilters().length; k++) {
+				//alert(self.selectedFilters()[k]);
+				j=k*5;
+				for(var i = 0; i < worksheetArray.length; i++) {
+					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
+						worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[k], 'REPLACE');	
+				}
+				
 			}
-        	for(var i = self.selectedFilters().length; i < 6; i++) {
-				//alert(worksheetArray[i].getName());
-				//alert(i);
-				worksheetArray[i].applyFilterAsync("Status", null, 'REPLACE');
+				
+			for(var k = self.selectedFilters().length; k < 6; k++) {
+				j=k*5;
+				for(var i = 0; i < worksheetArray.length; i++) {
+					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
+						worksheetArray[i].applyFilterAsync("Status", null , 'REPLACE');	
+				}
+				
 			}
-        	
-        }
+		}
 
-		 
-		 
-		 
-		
-		
+		self.cancelSelected = function() {
+        	for(var i=0; i<self.filterList().length;i++) {
+    			self.filterList()[i]['isChecked'](false);
+    			self.filterList()[i]['isDisabled'](false);
+        	}
+       	}
 
 
         return {
@@ -523,7 +532,8 @@ define(['knockout', 'jquery'], function(ko, $) {
             getSelectedFilters:self.getSelectedFilters,
             selectedFilters:self.selectedFilters,
             isAllSelected:self.isAllSelected,
-            someFunction:self.someFunction
+            someFunction:self.someFunction,
+            cancelSelected:self.cancelSelected
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);

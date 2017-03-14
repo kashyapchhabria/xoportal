@@ -8,49 +8,67 @@
 	<li>5</li>
 	<li>6</li>
 </ul> -->
+	
 	<section id="tableauReportsPageSection" style="background-color: white;">
-		<div style="margin-top:40px">
-			<div class="large-2 columns end">
-				<div class="row collapse">
-            		<div class="small-10 columns">
-						<dl class="dropdown"> 
-							<dt>
-								<a data-bind="click:tableaumgmt.toggleClass">
-									Select &#x25BC;
-									<p class="multiSel"></p>  
-								</a>
-							</dt>
-							<dd>
-								<div class="mutliSelect" >
-									<ul>
-										<li style="list-style: none;">
-											<label>
-		        								<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
-		        								<span>All</span>
-		        							</label>
-		    							</li>
-									<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
-										<li style="list-style: none;">
-											<label>
-		        								<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
-		        								<span data-bind="text:sub_sgmt.name"></span>
-		        							</label>
-		    							</li>
-									<!-- /ko -->
-									</ul>
-								</div>
-							</dd>
-						</dl>
-            		</div>
-            		<div class="small-2 columns">
-              			<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
-            		</div>
-          		</div>
-			</div>
+		
+		<div style="margin-top:10px">
 		</div>
 		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
 			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
+			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
+				<div style="padding-left:0; padding-right:0;">
+					<div class="large-11 columns" style="padding-left:0; padding-right:0;">
+						<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:0px"><p style="color:#fff">VAS Diffusion Map</p>
+						</nav>
+					</div>
+					<div class="large-1 columns" style="padding-left:0; padding-right:0;"	>
+						<img width="70" height="25" align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
+					</div>
+				</div>
+	    			<div class="large-2 columns end">
+						<div class="row collapse">
+            				<div class="small-10 columns">
+								<dl class="dropdown"> 
+									<dt>
+										<a data-bind="click:tableaumgmt.toggleClass">
+											<p class="multiSel" style="font-size:11; color:#000000; text-align:left">Select &#x25BC;</p>  
+										</a>
+									</dt>
+									<dd>
+										<div class="mutliSelect" >
+											<ul style="margin : 0,padding:0 20px">
+												<ul class="button-group radius">
+													  <li><a href="#" class="button">Button 1</a></li>
+													  <li><a href="#" class="button">Button 2</a></li>
+													  <li><a href="#" class="button">Button 3</a></li>
+													  <li><a href="#" class="button">Button 4</a></li>
+												</ul>
+												<li style="list-style: none;">
+													<label style="line-height:0.1">
+		        										<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
+		        										<span style="font-size:11;">All</span>
+		        									</label>
+		    									</li>
+												<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
+												<li style="list-style: none;">
+													<label>
+		        										<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
+		        										<span data-bind="text:sub_sgmt.name" style="font-size:11;"></span>
+		        									</label>
+		    									</li>
+												<!-- /ko -->
+											</ul>
+										</div>
+									</dd>
+								</dl>
+            				</div>
+            				<!--
+            				<div class="small-2 columns">
+              					<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
+            				</div> -->
+          				</div>
+					</div>
+			</div>
 		</center>
 		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
 			<span class="alert">
