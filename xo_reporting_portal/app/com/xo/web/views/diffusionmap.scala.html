@@ -36,9 +36,24 @@
 			</div>
 		</div>
 		<div style="margin-top:40px">
+			
+		</div>
+		<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
+			<img style="border: 0px" data-bind='visible: (diffMap.placeHolderImageUrl().length > 0), attr: {src: diffMap.placeHolderImageUrl}'></img>
+			<div id="tableauViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
+				<div style="padding-left:0; padding-right:0;">
+					<div class="large-11 columns" style="padding-left:0; padding-right:0;">
+						<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:0px"><p style="color:#fff">VAS Diffusion Map</p>
+						</nav>
+					</div>
+					<div class="large-1 columns" style="padding-left:0; padding-right:0;"	>
+						<img width="70" height="25" align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
+					</div>
+				</div>
+			</div>
 			<div class="large-2 columns end">
 				<div class="row collapse">
-            		<div class="small-10 columns">
+					<div class="small-10 columns">
 						<dl class="dropdown"> 
 							<dt>
 								<a data-bind="click:diffMap.toggleClass">
@@ -70,10 +85,6 @@
             		</div>
           		</div>
 			</div>
-		</div>
-		<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
-			<img style="border: 0px" data-bind='visible: (diffMap.placeHolderImageUrl().length > 0), attr: {src: diffMap.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
 		</center>
 		<center data-bind="visible:(diffMap.errorText() && diffMap.errorText().length > 0)" >
 			<span class="alert">
