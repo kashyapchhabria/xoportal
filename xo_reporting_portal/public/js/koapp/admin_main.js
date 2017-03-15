@@ -207,9 +207,10 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function diffusionmapPage() {
         return showPageLoader(function() {
         	cleanUp();
-        	tableaumgmt.loadClients(false);
-        	tableaumgmt.loadDashboardData();
-        	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{tableaumgmt:tableaumgmt});
+        	diffMap.loadClients(false);
+        	diffMap.loadDashboardData();
+        	diffMap.getComments();
+        	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }
 
