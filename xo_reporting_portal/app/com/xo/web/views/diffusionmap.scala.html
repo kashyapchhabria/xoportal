@@ -1,21 +1,47 @@
 <script id="diffusion_map" type="text/html">
-<!-- 
-<ul class="large-block-grid-3">
-	<li>1</li>
-	<li>2</li>
-	<li>3</li>
-	<li>4</li>
-	<li>5</li>
-	<li>6</li>
-</ul> -->
+<div id="mySidenav" class="sidenav">
+	<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:diffMap.closeNav">x</a></span>
+	<div class="row">
+		<center>
+			<textarea placeholder="Enter your Comment here..." data-bind="value:diffMap.inputText" rows="3" maxlength="200" style="width:350px;"></textarea>
+		</center>
+	</div>
+	<div>
+		<div class="small-8 columns"></div>
+		<div class="small-4 columns">
+			<a style="color:#ffffff" data-bind="click: diffMap.submitComment" class="small button">Comment</a>
+		</div>
+	</div>
+	<div class="row">
+		<center>
+		<!-- ko foreach: { data: diffMap.msgs ,as:'comments' } -->
+		<div style="text-align:left;" class="stcommentbody" >
+			<div class="stcommenttext">
+				<b data-bind="text:comments.user+': '"></b>
+				<b style="color:#000;font-weight:normal" data-bind="text:comments.message"></b>
+				<div class="stcommenttime" data-bind="text:comments.ts"></div> 
+			</div>
+		</div>
+		<!-- /ko -->
+		</center>
+	</div>
+</div>
 	<section id="tableauReportsPageSection" style="background-color: white;">
+		<div>
+			<div class="large-11 columns"></div>
+			<div style="margin-top:-30px" class="large-1 columns">
+				<span>
+					<a data-bind="click:diffMap.openNav" class="button">&#9776;</a>
+				</span>
+			</div>
+		</div>
 		<div style="margin-top:40px">
 			<div class="large-2 columns end">
 				<div class="row collapse">
             		<div class="small-10 columns">
 						<dl class="dropdown"> 
 							<dt>
-								<a data-bind="click:tableaumgmt.toggleClass">
+								<a data-bind="click:diffMap.toggleClass">
 									Select &#x25BC;
 									<p class="multiSel"></p>  
 								</a>
@@ -25,11 +51,11 @@
 									<ul>
 										<li style="list-style: none;">
 											<label>
-		        								<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
-		        								<span>All</span>
+  												<a class="small button fi-x" data-bind="click:diffMap.cancelSelected"> Cancel</a>
+  												<a class="small button fi-check" data-bind="click:diffMap.getSelectedFilters"> Apply</a>
 		        							</label>
 		    							</li>
-									<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
+									<!-- ko foreach: { data: diffMap.filterList ,as:'sub_sgmt' } -->
 										<li style="list-style: none;">
 											<label>
 		        								<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
@@ -42,20 +68,17 @@
 							</dd>
 						</dl>
             		</div>
-            		<div class="small-2 columns">
-              			<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
-            		</div>
           		</div>
 			</div>
 		</div>
-		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
-			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
+		<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
+			<img style="border: 0px" data-bind='visible: (diffMap.placeHolderImageUrl().length > 0), attr: {src: diffMap.placeHolderImageUrl}'></img>
+			<div id="tableauViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
 		</center>
-		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
+		<center data-bind="visible:(diffMap.errorText() && diffMap.errorText().length > 0)" >
 			<span class="alert">
 				<h3>Report Loading Error:</h3>
-				<p data-bind="text:tableaumgmt.errorText"></p>
+				<p data-bind="text:diffMap.errorText"></p>
 			</span>
 		</center>
 	</section>

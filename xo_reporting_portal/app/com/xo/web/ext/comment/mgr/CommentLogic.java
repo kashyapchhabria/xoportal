@@ -1,0 +1,68 @@
+package com.xo.web.ext.comment.mgr;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Set;
+
+import com.xo.web.core.XODAOException;
+import com.xo.web.ext.comment.models.Comment;
+import com.xo.web.ext.comment.models.CommentDao;
+import com.xo.web.ext.comment.models.CommentDaoImpl;
+import com.xo.web.ext.comment.viewdtos.CommentDto;
+import com.xo.web.mgr.BaseLogic;
+import com.xo.web.models.dao.UserDAO;
+import com.xo.web.models.dao.UserDAOImpl;
+import com.xo.web.models.system.User;
+import com.xo.web.util.XoUtil;
+
+public class CommentLogic extends BaseLogic<Comment, Integer> {
+	
+	private final CommentDao commentDAO;
+	private final UserDAO userDAO;
+	
+	public CommentLogic() {
+		super(new CommentDaoImpl());
+		this.commentDAO = (CommentDao) entityDao;       
+		this.userDAO = new UserDAOImpl();
+	}
+	
+	public Set<CommentDto> readAllComments() {
+		Collection<Comment> allComments=null;
+		try {
+			allComments = this.commentDAO.readAllComments();
+		} catch (XODAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return convertChatEntitiesToDtos(allComments);
+	}
+
+	public Comment save(CommentDto commentDto) throws ParseException {
+		Comment comment = null;
+		Date datetime=null;	
+		if(commentDto != null) {
+			User user = userDAO.findByEmail(commentDto.user);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			System.out.println(commentDto.ts);
+			datetime =(Date) df.parse(df.format(new Date(Long.parseLong(commentDto.ts))));
+			comment = new Comment(commentDto.message,datetime,user);
+			comment = this.commentDAO.save(comment);
+		}
+		return comment;
+	}
+	
+	private Set<CommentDto> convertChatEntitiesToDtos(Collection<Comment> allComments) {
+		Set<CommentDto> chatDtos = new HashSet<CommentDto>();
+		if(XoUtil.hasData(allComments)) {
+			for(Comment comment : allComments) {		
+				chatDtos.add(new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName()));				
+			}
+		}
+		return chatDtos;
+	}
+
+}

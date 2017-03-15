@@ -166,3 +166,5 @@ GET      /tableauview/checkdashboard/:viewGroupId                     @com.xo.we
 # Diffusion Map
 POST	 /diffusionMap												  @com.xo.web.controllers.DashboardController.getDiffusionMap()
 GET		 /filterlist												  @com.xo.web.controllers.DashboardController.getFilterList()
+POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()
+GET		 /allComments												  @com.xo.web.ext.comment.controllers.CommentController.readAllComments()
