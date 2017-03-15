@@ -1,80 +1,74 @@
 <script id="diffusion_map" type="text/html">
-<!-- 
-<ul class="large-block-grid-3">
-	<li>1</li>
-	<li>2</li>
-	<li>3</li>
-	<li>4</li>
-	<li>5</li>
-	<li>6</li>
-</ul> -->
-	
 	<section id="tableauReportsPageSection" style="background-color: white;">
-		
-		<div style="margin-top:10px">
+		<ul class="tabs" data-tab>
+			<li class="tab-title active"><a href="#panel1">Tab 1</a></li>
+			<li class="tab-title"><a href="#panel2">Tab 2</a></li>
+		</ul>
+		<div class="tabs-content">
+	  		<div class="content active" id="panel1">
+				<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
+					<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
+					<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
+						<div style="padding-left:0; padding-right:0;">
+							<div class="large-11 columns" style="padding-left:0; padding-right:0;">
+								<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:10px; font-family: Calibri;"><p style="font-size:14; color:#fff">VAS Diffusion Map</p>
+								</nav>
+							</div>
+							<div class="large-1 columns" style="padding-left:0; padding-right:0; "	>
+								<img width="70" height="25" margin-top="-10px" align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
+							</div>
+						</div>
+			    			<div class="large-2 columns end">
+								<div class="row collapse">
+		            				<div class="small-10 columns">
+										<dl class="dropdown"> 
+											<dt>
+												<a data-bind="click:tableaumgmt.toggleClass">
+													<p class="multiSel" style="font-size:12; color:#000000; text-align:left;font-family: Calibri; ">Select &#x25BC;</p>  
+												</a>
+											</dt>
+											<dd>
+												<div class="mutliSelect" >
+													<ul style="margin : 0,padding:0">
+														<li style="list-style: none;">
+															<label style="line-height:0.1">
+				        										<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
+				        										<span style="font-size:11;">All</span>
+				        									</label>
+				    									</li>
+														<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
+														<li style="list-style: none;">
+															<label>
+				        										<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
+				        										<span data-bind="text:sub_sgmt.name" style="font-size:11;"></span>
+				        									</label>
+				    									</li>
+														<!-- /ko -->
+														<li style="display:inline-block;"><a href="#" class="button">Button 1</a></li>
+														<li style="display:inline-block;"><a href="#" class="button">Button 2</a></li>
+													</ul>
+												</div>
+											</dd>
+										</dl>
+		            				</div>
+		            				<!--
+		            				<div class="small-2 columns">
+		              					<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
+		            				</div> -->
+		          				</div>
+							</div>
+					</div>
+				</center>
+				<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
+					<span class="alert">
+						<h3>Report Loading Error:</h3>
+						<p data-bind="text:tableaumgmt.errorText"></p>
+					</span>
+				</center>
+	  		</div>
+	  		<div class="content" id="panel2">
+	    		<p>This is the second panel of the basic tab example. This is the second panel of the basic tab example.</p>
+	  		</div>
 		</div>
-		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
-			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
-				<div style="padding-left:0; padding-right:0;">
-					<div class="large-11 columns" style="padding-left:0; padding-right:0;">
-						<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:0px"><p style="color:#fff">VAS Diffusion Map</p>
-						</nav>
-					</div>
-					<div class="large-1 columns" style="padding-left:0; padding-right:0;"	>
-						<img width="70" height="25" align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
-					</div>
-				</div>
-	    			<div class="large-2 columns end">
-						<div class="row collapse">
-            				<div class="small-10 columns">
-								<dl class="dropdown"> 
-									<dt>
-										<a data-bind="click:tableaumgmt.toggleClass">
-											<p class="multiSel" style="font-size:11; color:#000000; text-align:left">Select &#x25BC;</p>  
-										</a>
-									</dt>
-									<dd>
-										<div class="mutliSelect" >
-											<ul style="margin : 0,padding:0 20px">
-												<ul class="button-group radius">
-													  <li><a href="#" class="button">Button 1</a></li>
-													  <li><a href="#" class="button">Button 2</a></li>
-													  <li><a href="#" class="button">Button 3</a></li>
-													  <li><a href="#" class="button">Button 4</a></li>
-												</ul>
-												<li style="list-style: none;">
-													<label style="line-height:0.1">
-		        										<input type="checkbox" data-bind=" checked: tableaumgmt.isAllSelected" />
-		        										<span style="font-size:11;">All</span>
-		        									</label>
-		    									</li>
-												<!-- ko foreach: { data: tableaumgmt.filterList ,as:'sub_sgmt' } -->
-												<li style="list-style: none;">
-													<label>
-		        										<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
-		        										<span data-bind="text:sub_sgmt.name" style="font-size:11;"></span>
-		        									</label>
-		    									</li>
-												<!-- /ko -->
-											</ul>
-										</div>
-									</dd>
-								</dl>
-            				</div>
-            				<!--
-            				<div class="small-2 columns">
-              					<a data-bind="click:tableaumgmt.getSelectedFilters" class="button postfix">Go</a>
-            				</div> -->
-          				</div>
-					</div>
-			</div>
-		</center>
-		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
-			<span class="alert">
-				<h3>Report Loading Error:</h3>
-				<p data-bind="text:tableaumgmt.errorText"></p>
-			</span>
-		</center>
 	</section>
 </script>
