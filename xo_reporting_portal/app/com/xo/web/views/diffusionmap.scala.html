@@ -28,9 +28,8 @@
 </div>
 	<section id="diffusionReportsPageSection" style="background-color: white;">
 				<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
-					<img style="border: 0px" data-bind='visible: (diffMap.placeHolderImageUrl().length > 0), attr: {src: diffMap.placeHolderImageUrl}'></img>
 					<div id="diffusionViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
-						<div>	
+						<div data-bind="visible:diffMap.isTitleVisible()">	
 							<div class="large-11 columns" style="padding-left:0; padding-right:0;">
 								<div>
 										<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:10px; font-family: Calibri;"><p style="font-size:14; color:#fff">VAS Diffusion Map</p>
@@ -49,7 +48,7 @@
 								<img width="70" height="25"  align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
 							</div>		
 						</div>
-								<div class="row collapse">
+								<div class="row collapse" data-bind="visible:diffMap.isTitleVisible()">
 		            				<div class="small-10 columns">
 										<dl class="dropdown2"> 
 											<dt>

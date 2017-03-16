@@ -197,8 +197,8 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 
       function tabdashboardPage() {
         return showPageLoader(function() {
-        	cleanUp();
-        	tableaumgmt.loadClients(true);
+        	tableaumgmt.clearAll();
+        	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
         	return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
@@ -206,9 +206,8 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       
       function diffusionmapPage() {
         return showPageLoader(function() {
-        	cleanUp();
-        	diffMap.loadClients(false);
-        	diffMap.loadDashboardData();
+        	diffMap.clearAll();
+        	diffMap.loadClients();
         	diffMap.getComments();
         	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });

@@ -39,9 +39,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
         self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
         
-        self.isTableau = ko.observable(true);
+        self.isTitleVisible = ko.observable(false);
 
         self.selectedSupClient.subscribe(function(latestClient) {
+        	self.isTitleVisible(true);
+        	self.isFullScreenAvailable(true);
         	self.showDiffusionMap(latestClient);
             return true;
         });
@@ -482,22 +484,34 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         };
 
         self.clearAll = function() {
-            self.menuData.removeAll();
+        	self.menuData.removeAll();
             self.dashboardData.removeAll();
             self.imageUrl('');
             self.placeHolderImageUrl('');
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
-            self.isFullScreenAvailable(false);
+            self.errorText('');
+            self.filterList.removeAll();
+            self.selectedFilters.removeAll();
+            self.selectedDiffFilters.removeAll();
+            self.selectedSpendFilters.removeAll();
+            self.selectedTrendFilters.removeAll();
+    		self.selectedList.removeAll();
+    		self.isAllSelected(true);
+    		self.msgs.removeAll();
+    		self.inputText("");
+    		
+            self.visibility(false);
+            self.allClients.removeAll();
+            self.selectedSupClient();
         };
 
-        self.loadClients = function(isTableau) {
+        self.loadClients = function() {
             $.ajax({
                 'url': xoappcontext + '/clients',
                 'type': 'GET',
                 'cache': false,
                 'success': function(serverResponse) {
-        			self.isTableau(isTableau);
                     self.buildClientDropDown(serverResponse);
                 },
                 'error': function(jqXHR, textStatus, errorThrown) {
@@ -685,7 +699,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             openNav:self.openNav,
             closeNav:self.closeNav,
             changeActiveSheet:self.changeActiveSheet,
-            cancelSelected:self.cancelSelected
+            cancelSelected:self.cancelSelected,
+            isTitleVisible:self.isTitleVisible
         };
     }
 	
