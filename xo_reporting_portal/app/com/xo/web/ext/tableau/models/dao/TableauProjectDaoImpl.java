@@ -13,7 +13,7 @@ import com.xo.web.models.dao.GenericDAOImpl;
 
 public class TableauProjectDaoImpl implements TableauProjectDao {
 	
-	public static String connectionUrl = "jdbc:impala://10.10.10.15:21050/everest_v2";
+	public static String connectionUrl = "jdbc:impala://10.11.50.86:21050/vas_diffusion";
 	public static String jdbcDriverName="com.cloudera.impala.jdbc41.Driver";
 	public static Connection con = null;
 	public static Statement stmt;

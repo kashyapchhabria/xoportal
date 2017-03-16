@@ -32,6 +32,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.selectedReportMenuItem = ko.observable("Select Report");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
         self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
+        self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
+        self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
         
         self.isTableau = ko.observable(true);
 
@@ -519,19 +521,73 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         };
         
         self.toggleClass = function () {
-        	$(".dropdown dd ul").slideToggle('fast');
+        	$(".dropdown2 dd ul").slideToggle('fast');
+        }
+        
+        self.changeActiveSheet = function (sheetName) {
+        	viz.getWorkbook().activateSheetAsync(sheetName);
         }
         
         self.getSelectedFilters = function () {
+        	self.toggleClass();
+        	views=viz.getWorkbook().getPublishedSheetsInfo();
+        	//console.log(views);
         	self.selectedFilters([]);
         	for ( var i=0; i<self.filterList().length; i++ ) {
         		if (self.filterList()[i]['isChecked']() && !self.filterList()[i]['isDisabled']()) {
         			self.selectedFilters.push(self.filterList()[i]['name']);
         		}
         	}
-        	sheet = viz.getWorkbook().getActiveSheet();
+        	for(var i=0; i<views.length;i++) {
+        		if(views[i]['$0']['isActive']) {
+        			if(views[i]['$0']['name'] === "Diffusion Map") 
+        				self.applyDiffusionFilters();
+        			else if(views[i]['$0']['name'] === "Spend Segment")
+        				self.applySpendSegmentFilters();
+        			else
+        				self.applyTrendsensorFilters();
+        		}
+        	}
+		}
+		
+		self.applyTrendsensorFilters = function() {
+			sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
+			if(self.selectedFilters().length==1)
+				for(var i = 0; i < worksheetArray.length; i++) {
+					worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[0], 'REPLACE');							
+				}
+			else
+				alert("Select only 1 Option");
+		}
+		
+		self.applySpendSegmentFilters = function() {
+			sheet = viz.getWorkbook().getActiveSheet();
+			worksheetArray = sheet.getWorksheets();
+			j=0;
+			for(var k = 0; k < self.selectedFilters().length; k++) {
+				for(var i = 0; i < worksheetArray.length; i++) {
+					if(worksheetArray[i].getName()==self.spendArray()[j]) {
+						worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[k], 'REPLACE');	
+						
+					}
+				}j++;
+			}
 				
+			for(k = self.selectedFilters().length; k < 6; k++) {
+				for(var i = 0; i < worksheetArray.length; i++) {
+					if(worksheetArray[i].getName()==self.spendArray()[j]) {
+						
+						worksheetArray[i].applyFilterAsync("Status", null , 'REPLACE');	
+					}
+				}j++;
+			}
+		}
+		
+		self.applyDiffusionFilters = function () {
+			sheet = viz.getWorkbook().getActiveSheet();
+			worksheetArray = sheet.getWorksheets();
+			//console.log(worksheetArray);
 			for(var k = 0; k < self.selectedFilters().length; k++) {
 				//alert(self.selectedFilters()[k]);
 				j=k*5;
@@ -542,7 +598,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				
 			}
 				
-			for(var k = self.selectedFilters().length; k < 6; k++) {
+			for(k = self.selectedFilters().length; k < 6; k++) {
 				j=k*5;
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
@@ -582,7 +638,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             getComments:self.getComments,
             msgs:self.msgs,
             openNav:self.openNav,
-            closeNav:self.closeNav
+            closeNav:self.closeNav,
+            changeActiveSheet:self.changeActiveSheet,
+            cancelSelected:self.cancelSelected
         };
     }
 	

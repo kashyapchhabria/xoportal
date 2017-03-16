@@ -456,50 +456,51 @@ html:fullscreen {
     font-size:30px;
     top:0px;
 }
-.dropdown {
+.dropdown2 {
   position: absolute;
   top:50%;
   transform: translateY(-50%);
 }
 
-.dropdown dd,
-.dropdown dt {
+.dropdown2 dd,
+.dropdown2 dt {
   
   margin: 0px;
   padding: 0px;
 }
 
-.dropdown ul {
+.dropdown2 ul {
   border: 1;
   text-align:left;
   
 }
 
-.dropdown dd {
+.dropdown2 dd {
   position: relative;
 }
 
-.dropdown a,
-.dropdown a:visited {
+.dropdown2 a,
+.dropdown2 a:visited {
   color: black;
   font-weight: bold;
   font-size: 14px;
   text-align: center;
 }
 
-.dropdown dt a {
+.dropdown2 dt a {
   background-color: white;
   display: block;
   border: 1px #d3d3d3 solid;
   padding: 2px 20px 2px 2px;
   overflow: hidden;
-  width: 153px;
+  width: 148px;
   height: 25px;
-  margin-top: 110px;
-  margin-left: -7px;
+  margin-top: 37px;
+  margin-left: -140px;
 }
 
-.dropdown dt a span,
+
+.dropdown2 dt a span,
 .multiSel span {
   cursor: pointer;
   display: inline-block;
@@ -507,32 +508,32 @@ html:fullscreen {
   
 }
 
-.dropdown dd ul {    
+.dropdown2 dd ul {    
 	background-color: white;
     border: 1px #d3d3d3 solid;
     color: black;
     display: none;
-    left: -24px;
+    left: -158px;
     padding: 0px 17px 2px 5px;
     position: absolute;
     top: 2px;
-    width: 153px;
+    width: 149px;
     list-style: none;
     height: auto;
     overflow: auto;
 }
 
-.dropdown span.value {
+.dropdown2 span.value {
   display: none;
 }
 
-.dropdown dd ul li a {
-  padding: 1px;
+.dropdown2 dd ul li a {
+  padding: 0px;
   display: block;
   
 }
 
-.dropdown dd ul li a:hover {
+.dropdown2 dd ul li a:hover {
   background-color: #fff;
 }
 
@@ -559,6 +560,7 @@ button {
 #accordion:hover div:hover {
    height: auto;
    overflow: auto; }
+
    /* Comment */
 .stcommentbody
 {

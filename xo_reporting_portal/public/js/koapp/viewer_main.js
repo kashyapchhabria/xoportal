@@ -34,8 +34,8 @@ requirejs.config({
 });
 
 define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'foundation', 
-         'datatables', 'DataTable', 'Responsive', 'main/usermanagement', 'main/tableaumanagement'],
-         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, UserManagerModel, TableauManagerModel) {
+         'datatables', 'DataTable', 'Responsive', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map'],
+         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
 
     var initializePages = function(){
 
@@ -43,13 +43,15 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
 
       // More specific matches should come first.
       var urlMapping = {        
-        home:   { match: /^$/,                    page: tabdashboardPage},
+        home:   { match: /^$/,                    page: diffusionmapPage},
         changepassword: { match: /^changepassword/,        page: changepasswordPage},
+        diffusionmap: { match: /^diffusionmap$/, page: diffusionmapPage},
         tabdashboard: { match: /^tabdashboard$/, page: tabdashboardPage}
       };
 
       var usermgmt = new UserManagerModel();
       var tableaumgmt = new TableauManagerModel();
+      var diffMap = new DiffusionManagerModel();
 
       function changepasswordPage(){
           return showPageLoader(function() {
@@ -61,6 +63,14 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
         return showPageLoader(function() {
           tableaumgmt.loadDashboardData();
           return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+        });
+      }
+      
+      function diffusionmapPage() {
+        return showPageLoader(function() {
+        	diffMap.loadDashboardData();
+        	diffMap.getComments();
+        	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }
 
