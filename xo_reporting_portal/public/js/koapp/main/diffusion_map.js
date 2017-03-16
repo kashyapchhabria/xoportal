@@ -7,10 +7,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
         BaseModel.call(this, ko, $);
         var viz = null;
-        self.dashboardData = ko.observableArray([]);
-        self.menuData = ko.observableArray([]);
         self.imageUrl = ko.observable('');
-        self.placeHolderImageUrl = ko.observable('');
         self.errorText = ko.observable('');
         self.isFullScreenEnabled = ko.observable(false);
         self.isFullScreenAvailable = ko.observable(false);
@@ -29,24 +26,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.visibility = ko.observable(false);
         var workbook = null;
         var activeSheet = null;
-        self.allClients = ko.observableArray([]);
-        self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
-        self.selectedReportMenuItem = ko.observable("Select Report");
-        self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
         self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
         self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
         self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
         
         self.isTitleVisible = ko.observable(false);
 
-        self.selectedSupClient.subscribe(function(latestClient) {
-        	self.isTitleVisible(true);
-        	self.isFullScreenAvailable(true);
-        	self.showDiffusionMap(latestClient);
-            return true;
-        });
-        
         self.submitComment = function () {
         	if(self.inputText() === '') {
         		alert("Enter a comment and then click Comment button")
@@ -115,6 +101,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.showDiffusionMap = function (latestClient) {
+        	self.isFullScreenAvailable(true);
         	$(".se-pre-con").show(true);
             $.ajax({
                 'url': xoappcontext + '/diffusionMap',
@@ -125,7 +112,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 },
                 'success': function(responsedata) {
                     if (responsedata) {
-                        self.buildDashboardData(responsedata, null);
+                        self.buildDiffusionDashboardData(responsedata);
                         self.getFilterList();
                     }
                     $(".se-pre-con").fadeOut("slow");
@@ -222,157 +209,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	}
         }
 
-        self.loadDashboardData = function(latestClient) {
-            self.isFullScreenAvailable(true);
-            $(".se-pre-con").show(true);
-            $.ajax({
-                'url': xoappcontext + '/dashboard',
-                'type': 'POST',
-                'cache': false,
-                headers: {
-                    'X-Super-Client': latestClient ? latestClient.clientId : -1
-                },
-                'success': function(responsedata) {
-                    if (responsedata) {
-                        self.buildDashboardData(responsedata, true);
-                    }
-                    $(".se-pre-con").fadeOut("slow");
-
-                },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "general");
-                    $(".se-pre-con").fadeOut("slow");
-                }
-            });
-        };
-
-        self.loadPageData = function(data, event) {
-
-            $(".se-pre-con").show(true);
-            if (data && event) {
-            	self.selectedReportMenuItem(data.name);
-                $.ajax({
-                    'url': data.pageUrl,
-                    'type': 'POST',
-                    'cache': false,
-                    'success': function(responsedata) {
-                        if (responsedata) {
-                            self.buildDashboardData(responsedata, false);
-                        } else {
-                            setGlobalMessage(responsedata, "general");
-                        }
-                        $(".se-pre-con").fadeOut("slow");
-                    },
-                    'error': function(jqXHR, textStatus, errorThrown) {
-                        setGlobalMessage({
-                            message: textStatus,
-                            messageType: 'alert'
-                        }, "general");
-                        $(".se-pre-con").fadeOut("slow");
-                    }
-                });
-            }
-        };
-
-        self.buildDashboardData = function(responsedata, isNewMenus) {
+        self.buildDiffusionDashboardData = function(responsedata) {
 
             var dashboardItems = [];
-            self.dashboardData([]);
 
-            if (isNewMenus) {
-                self.menuData([]);
-            }
-
-            self.imageUrl(responsedata.imageUrl);
-            //self.isTopBarVisibile(responsedata.isMainDashboard);
-            self.renderTableauReport(responsedata);
-            self.placeHolderImageUrl(responsedata.placeHolderImageUrl);
+            self.renderDiffusionMap(responsedata);
             self.errorText(responsedata.errorText);
-
-            // Processing page content items
-            if(isNewMenus !== null) {
-            	if (responsedata.contentDtos) {
-                	var totalItems = responsedata.contentDtos.length;
-                	var dashboardItem = null;
-                	var i = 0;
-                	for (; i < totalItems; i++) {
-                    	dashboardItem = responsedata.contentDtos[i];
-                    	self.setloaderMethod(dashboardItem);
-                    	dashboardItems.push(dashboardItem);
-                	}
-            	}
-
-            	// Setting all screen items
-            	if (isNewMenus) {
-                	self.menuData(self.buildMenus(responsedata));
-                	/*self.menuData.sort(function(left, right) {
-                		return left.name == right.name ? 0 : (left.name < right.name ? -1 : 1)
-                	});*/
-            	}
-            	self.dashboardData(dashboardItems);
-            }
 
             $(document).foundation('reflow');
             $(document).foundation();
-        };
-
-        self.buildMenus = function(responsedata) {
-
-            var menus = [];
-            var reportsMenu;
-            // Processing menu items
-            if (responsedata.menuDtos) {
-                totalItems = responsedata.menuDtos.length;
-                if (totalItems > 0) {
-                    var menuIndex = 0;
-                    var actualMenus = responsedata.menuDtos[0].subMenus;
-                    actualMenus.unshift(self.selectReport);
-                    totalItems = actualMenus.length;
-                    for (; menuIndex < totalItems; menuIndex++) {
-                        var menuItem = self.buildMenuItem(actualMenus[menuIndex]);
-                        if(menuIndex == 0) {
-                        	reportsMenu = menuItem;
-                        	menus.push(menuItem);
-                        } else {
-                        	reportsMenu.subMenuItems.push(menuItem);
-                        }
-                    }
-                }
-            }
-            return menus;
-        };
-
-        self.buildMenuItem = function(menuItem) {
-
-            /*if(console) {
-            	console.log('menu name : ' + menuItem.name);
-            }*/
-            // Processing menu items
-            var totalItems = menuItem.subMenus.length;
-            var subMenuItems = [];
-            menuItem.subMenuItems = ko.observableArray([]);
-            self.setloaderMethod(menuItem);
-            var submenuIndex = 0;
-            for (; submenuIndex < totalItems; submenuIndex++) {
-                var subMenuItem = menuItem.subMenus[submenuIndex];
-                subMenuItems.push(self.buildMenuItem(subMenuItem));
-            }
-            menuItem.subMenuItems(subMenuItems);
-            /*menuItem.subMenuItems.sort(function(left, right) {
-            	return left.name == right.name ? 0 : (left.name < right.name ? -1 : 1)
-            });*/
-            return menuItem;
-        };
-
-        self.setloaderMethod = function(contentItem) {
-            if (contentItem.pageUrl.indexOf('project') > 0 || contentItem.pageUrl.indexOf('view') > 0) {
-                contentItem.loadPageData = self.loadPageData;
-            } else {
-                contentItem.loadPageData = self.loadDashboardData;
-            }
         };
 
         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function() {
@@ -391,14 +236,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             }
         });
 
-        self.fullScreenView = function() {
+        self.diffusionFullScreenView = function() {
             self.isFullScreenEnabled(true);
             self.previousOverFlowValue = $('#xoportalbody').css('overflow');
             showInFullScreen("xoportalbody");
-            self.changeViewSize();
+            self.changeDiffusionViewSize();
         };
 
-        self.closeFullScreen = function() {
+        self.diffusionCloseFullScreen = function() {
             exitFullScreen();
             if (activeSheet) {
                 activeSheet.changeSizeAsync({
@@ -407,7 +252,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             }
         };
 
-        self.renderTableauReport = function(responseData) {
+        self.renderDiffusionMap = function(responseData) {
             if (responseData && responseData.imageUrl && responseData.imageUrl.length > 0) {
                 if (viz) {
                     viz.dispose();
@@ -434,15 +279,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                                 height: $('#diffusionViewPlace').height()
                             }
                           });*/
-                        self.changeViewSize();
+                        self.changeDiffusionViewSize();
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
-                //viz = new tableauSoftware.Viz(placeholderDiv, url, options);
             }
         };
 
-        self.changeViewSize = function() {
+        self.changeDiffusionViewSize = function() {
 
             if (activeSheet) {
                 // get SheetSize object
@@ -483,12 +327,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         };
 
         self.clearAll = function() {
-        	self.menuData.removeAll();
-            self.dashboardData.removeAll();
             self.imageUrl('');
-            self.placeHolderImageUrl('');
             self.isFullScreenAvailable(false);
-            self.closeFullScreen();
+            self.diffusionCloseFullScreen();
             self.errorText('');
             self.filterList.removeAll();
             self.selectedFilters.removeAll();
@@ -499,50 +340,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
     		self.isAllSelected(true);
     		self.msgs.removeAll();
     		self.inputText("");
-    		
+
             self.visibility(false);
-            self.allClients.removeAll();
             self.selectedSupClient();
         };
 
-        self.loadClients = function() {
-            $.ajax({
-                'url': xoappcontext + '/clients',
-                'type': 'GET',
-                'cache': false,
-                'success': function(serverResponse) {
-                    self.buildClientDropDown(serverResponse);
-                },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "general");
-                }
-            });
-        };
-
-        self.buildClientDropDown = function(clientDetails) {
-            var i = 0;
-            var totalClients = clientDetails.length;
-            self.allClients.removeAll();
-            for (; i < totalClients; i++) {
-                var clientobj = clientDetails[i];
-                var tempObj = {
-                    'clientId': clientobj.clientId,
-                    'name': clientobj.clientName
-                };
-                self.allClients.push(tempObj);
-            }
-        };
-
-        self.showReportMenus = function() {
-            self.isTopBarVisibile(!self.isTopBarVisibile());
-            self.changeViewSize();
-            $(document).foundation();
-            $(document).foundation('reflow');
-        };
-        
         self.toggleClass = function () {
         	$(".dropdown2 dd ul").slideToggle('fast');
         }
@@ -668,21 +470,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
         return {
             clearAll: self.clearAll,
-            loadDashboardData: self.loadDashboardData,
-            dashboardData: self.dashboardData,
-            menuData: self.menuData,
             currentPage: self.currentPage,
             visibility: self.visibility,
             imageUrl: self.imageUrl,
-            placeHolderImageUrl: self.placeHolderImageUrl,
             errorText: self.errorText,
-            fullScreenView: self.fullScreenView,
+            fullScreenView: self.diffusionFullScreenView,
             isFullScreenEnabled: self.isFullScreenEnabled,
-            closeFullScreen: self.closeFullScreen,
+            closeFullScreen: self.diffusionCloseFullScreen,
             isFullScreenAvailable: self.isFullScreenAvailable,
-            allClients: self.allClients,
-            selectedSupClient: self.selectedSupClient,
-            loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
             showReportMenus: self.showReportMenus,
             showDiffusionMap:self.showDiffusionMap,
