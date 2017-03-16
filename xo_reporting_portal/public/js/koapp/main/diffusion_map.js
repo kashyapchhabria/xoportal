@@ -22,6 +22,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.msgs=ko.observableArray([]);
 		self.inputText = ko.observable("");
 		self.user=ko.observable(xoappusername);
+		self.activeSheet = ko.observable('Diffusion Map');
 		
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -180,7 +181,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.isMaxSelected = function() {
-        	var maxSelection = 6;
+        	var maxSelection = self.activeSheet() === "Trendsensor" ? 1 : 6 ;
         	var noSelected = 0;
         	for ( var i=0; i<self.filterList().length; i++ ) {
         		if (self.filterList()[i]['isChecked']()) {
@@ -351,25 +352,26 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.changeActiveSheet = function (sheetName) {
         	self.cancelSelected();
+        	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
-        		self.retrieveFilters(self.selectedDiffFilters);
+        		self.retrieveFilters(self.selectedDiffFilters,6);
 			}
 			else if(sheetName === "Spend Segment") {
-				self.retrieveFilters(self.selectedSpendFilters);
+				self.retrieveFilters(self.selectedSpendFilters,6);
 			}
 			else {
-				self.retrieveFilters(self.selectedTrendFilters);
+				self.retrieveFilters(self.selectedTrendFilters,1);
 			}
         	viz.getWorkbook().activateSheetAsync(sheetName);
         }
         
-        self.retrieveFilters = function(selectedFilters) {
+        self.retrieveFilters = function(Filters, maxSelections) {
         	var flag = false;
-        	var selFilters = selectedFilters;
-        	if(selectedFilters().length==6)
+        	var selFilters = Filters;
+        	if(selFilters().length === maxSelections)
         		flag = true;
         	for ( var i=0; i< self.filterList().length - 1; i++ ) {
-        		if(selFilters().indexOf(self.filterList()[i]) !== -1) {
+        		if(selFilters().indexOf(self.filterList()[i]['name']) !== -1) {
         			self.filterList()[i]['isChecked'](true);
         			self.filterList()[i]['isDisabled'](false);
         		} else {
@@ -395,15 +397,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	for(var i=0; i<views.length;i++) {
         		if(views[i]['$0']['isActive']) {
         			if(views[i]['$0']['name'] === "Diffusion Map") {
-        				self.selectedDiffFilters = self.selectedFilters;
+        				self.selectedDiffFilters(self.selectedFilters.slice());
         				self.applyDiffusionFilters();
         			}
         			else if(views[i]['$0']['name'] === "Spend Segment") {
-        				self.selectedSpendFilters = self.selectedFilters;
+        				self.selectedSpendFilters(self.selectedFilters.slice());
         				self.applySpendSegmentFilters();
         			}
         			else {
-        				self.selectedTrendFilters = self.selectedFilters;
+        				self.selectedTrendFilters(self.selectedFilters.slice());
         				self.applyTrendsensorFilters();
         			}
         		}
@@ -449,7 +451,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			worksheetArray = sheet.getWorksheets();
 			//console.log(worksheetArray);
 			for(var k = 0; k < self.selectedDiffFilters().length; k++) {
-				//alert(self.selectedFilters()[k]);
 				j=k*5;
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
