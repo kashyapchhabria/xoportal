@@ -355,15 +355,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	self.cancelSelected();
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
-        		self.maxSel("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
+        		self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
         		self.retrieveFilters(self.selectedDiffFilters,6);
 			}
 			else if(sheetName === "Spend Segment") {
-				self.maxSel("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
+				self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedSpendFilters,6);
 			}
 			else {
-				self.maxSel("Select VAS (max 1) &nbsp&nbsp&nbsp &#x25BC;");
+				self.maxSel("Select VAS (max 1) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedTrendFilters,1);
 			}
         	viz.getWorkbook().activateSheetAsync(sheetName);
@@ -400,15 +400,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	for(var i=0; i<views.length;i++) {
         		if(views[i]['$0']['isActive']) {
         			if(views[i]['$0']['name'] === "Diffusion Map") {
-        				self.selectedDiffFilters(self.selectedFilters.slice());
+        				self.selectedDiffFilters(self.selectedFilters.slice(0));
         				self.applyDiffusionFilters();
         			}
         			else if(views[i]['$0']['name'] === "Spend Segment") {
-        				self.selectedSpendFilters(self.selectedFilters.slice());
+        				self.selectedSpendFilters(self.selectedFilters.slice(0));
         				self.applySpendSegmentFilters();
         			}
         			else {
-        				self.selectedTrendFilters(self.selectedFilters.slice());
+        				self.selectedTrendFilters(self.selectedFilters.slice(0));
         				self.applyTrendsensorFilters();
         			}
         		}
