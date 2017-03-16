@@ -10,10 +10,14 @@ import java.util.Map;
 
 import com.xo.web.ext.tableau.models.TableauProject;
 import com.xo.web.models.dao.GenericDAOImpl;
+import com.xo.web.util.XoAppConfigKeys;
+import com.xo.web.util.XoUtil;
 
 public class TableauProjectDaoImpl implements TableauProjectDao {
 	
-	public static String connectionUrl = "jdbc:impala://10.10.10.5:21050/everest_v2";
+	private static final String IMPALA_DB = XoUtil.getConfig(XoAppConfigKeys.IMPALA_DB);
+	private static final String IMPALA_DB_URL = XoUtil.getConfig(XoAppConfigKeys.IMPALA_DB_URL);
+	public static String connectionUrl = "jdbc:impala://"+IMPALA_DB_URL+":21050/"+IMPALA_DB;
 	public static String jdbcDriverName="com.cloudera.impala.jdbc41.Driver";
 	public static Connection con = null;
 	public static Statement stmt;
