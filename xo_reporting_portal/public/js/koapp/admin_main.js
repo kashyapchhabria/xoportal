@@ -207,8 +207,9 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function diffusionmapPage() {
         return showPageLoader(function() {
         	diffMap.clearAll();
-        	diffMap.loadClients();
+        	diffMap.showDiffusionMap();
         	diffMap.getComments();
+        	diffMap.isTitleVisible(true);
         	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }
