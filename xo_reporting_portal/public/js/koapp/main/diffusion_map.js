@@ -17,6 +17,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.previousOverFlowValue = null;
         self.filterList = ko.observableArray([]);
         self.selectedFilters = ko.observableArray([]);
+        self.selectedDiffFilters = ko.observableArray([]);
+        self.selectedSpendFilters = ko.observableArray([]);
+        self.selectedTrendFilters = ko.observableArray([]);
 		self.selectedList = ko.observableArray([]);
 		self.isAllSelected = ko.observable(true);
 		self.msgs=ko.observableArray([]);
@@ -157,6 +160,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	var subSgmt = subSgmtList.split(",");
         	var tempObj;
         	self.filterList([]);
+        	self.selectedDiffFilters([]);
+        	self.selectedSpendFilters([]);
+        	self.selectedTrendFilters([]);
+        	self.selectedTrendFilters.push(subSgmt[0]);
         	for ( var i=0; i< subSgmt.length - 1; i++ ) {
         		if(i < 6) {
 	        		tempObj = {
@@ -165,6 +172,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	        			isChecked: ko.observable(true),
 	        			isDisabled: ko.observable(false)
 	        		};
+	        		self.selectedDiffFilters.push(subSgmt[i]);
+	        		self.selectedSpendFilters.push(subSgmt[i]);
         		} else {
         			tempObj = {
 	        			name: subSgmt[i], 
@@ -401,7 +410,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 if (viz) {
                     viz.dispose();
                 }
-                var placeholderDiv = document.getElementById("tableauViewPlace");
+                var placeholderDiv = document.getElementById("diffusionViewPlace");
                 var url = responseData.imageUrl;
                 var options = {
                     width: "100%",
@@ -415,12 +424,12 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                             //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                         	behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
                         	minSize: {
-                                width: $('#tableauViewPlace').width(),
-                                height: $('#tableauViewPlace').height()
+                                width: $('#diffusionViewPlace').width(),
+                                height: $('#diffusionViewPlace').height()
                             },
                             maxSize: {
-                                width: $('#tableauViewPlace').width(),
-                                height: $('#tableauViewPlace').height()
+                                width: $('#diffusionViewPlace').width(),
+                                height: $('#diffusionViewPlace').height()
                             }
                           });*/
                         self.changeViewSize();
@@ -440,30 +449,30 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 var maxSize = sizeInfo.maxSize || "NA";
                 var minSize = sizeInfo.minSize || "NA";
 
-                var tempWidth = $('#tableauViewPlace').width();
-                var tempHeight = $('#tableauViewPlace').height();
+                var tempWidth = $('#diffusionViewPlace').width();
+                var tempHeight = $('#diffusionViewPlace').height();
                 if (maxSize != "NA") {
-                    $('#tableauViewPlace').width(maxSize.width);
-                    $('#tableauViewPlace').height(maxSize.height);
+                    $('#diffusionViewPlace').width(maxSize.width);
+                    $('#diffusionViewPlace').height(maxSize.height);
                 }
                 if (minSize != "NA") {
-                    $('#tableauViewPlace').css("min-width", maxSize.width);
-                    $('#tableauViewPlace').css("min-height", maxSize.height);
+                    $('#diffusionViewPlace').css("min-width", maxSize.width);
+                    $('#diffusionViewPlace').css("min-height", maxSize.height);
                 }
-                tempWidth = $('#tableauViewPlace').width();
-                tempHeight = $('#tableauViewPlace').height();
+                tempWidth = $('#diffusionViewPlace').width();
+                tempHeight = $('#diffusionViewPlace').height();
                 //viz.setFrameSize(tempWidth, tempHeight);
                 // Create sheetSize options
                 var sheetSize = {
                     behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
                     //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                     minSize: {
-                        width: $('#tableauViewPlace').width(),
-                        height: $('#tableauViewPlace').height()
+                        width: $('#diffusionViewPlace').width(),
+                        height: $('#diffusionViewPlace').height()
                     },
                     maxSize: {
-                        width: $('#tableauViewPlace').width(),
-                        height: $('#tableauViewPlace').height()
+                        width: $('#diffusionViewPlace').width(),
+                        height: $('#diffusionViewPlace').height()
                     }
                 };
                 // Resize sheet
@@ -525,7 +534,36 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.changeActiveSheet = function (sheetName) {
+        	self.cancelSelected();
+        	if(sheetName === "Diffusion Map") {
+        		self.retrieveFilters(self.selectedDiffFilters);
+			}
+			else if(sheetName === "Spend Segment") {
+				self.retrieveFilters(self.selectedSpendFilters);
+			}
+			else {
+				self.retrieveFilters(self.selectedTrendFilters);
+			}
         	viz.getWorkbook().activateSheetAsync(sheetName);
+        }
+        
+        self.retrieveFilters = function(selectedFilters) {
+        	var flag = false;
+        	var selFilters = selectedFilters;
+        	if(selectedFilters().length==6)
+        		flag = true;
+        	for ( var i=0; i< self.filterList().length - 1; i++ ) {
+        		if(selFilters().indexOf(self.filterList()[i]) !== -1) {
+        			self.filterList()[i]['isChecked'](true);
+        			self.filterList()[i]['isDisabled'](false);
+        		} else {
+        			self.filterList()[i]['isChecked'](false);
+        			if (flag)
+        				self.filterList()[i]['isDisabled'](true);
+        			else
+        				self.filterList()[i]['isDisabled'](false);
+        		}
+        	}
         }
         
         self.getSelectedFilters = function () {
@@ -540,12 +578,18 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	}
         	for(var i=0; i<views.length;i++) {
         		if(views[i]['$0']['isActive']) {
-        			if(views[i]['$0']['name'] === "Diffusion Map") 
+        			if(views[i]['$0']['name'] === "Diffusion Map") {
+        				self.selectedDiffFilters = self.selectedFilters;
         				self.applyDiffusionFilters();
-        			else if(views[i]['$0']['name'] === "Spend Segment")
+        			}
+        			else if(views[i]['$0']['name'] === "Spend Segment") {
+        				self.selectedSpendFilters = self.selectedFilters;
         				self.applySpendSegmentFilters();
-        			else
+        			}
+        			else {
+        				self.selectedTrendFilters = self.selectedFilters;
         				self.applyTrendsensorFilters();
+        			}
         		}
         	}
 		}
@@ -553,9 +597,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.applyTrendsensorFilters = function() {
 			sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
-			if(self.selectedFilters().length==1)
+			if(self.selectedTrendFilters().length==1)
 				for(var i = 0; i < worksheetArray.length; i++) {
-					worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[0], 'REPLACE');							
+					worksheetArray[i].applyFilterAsync("Status", self.selectedTrendFilters()[0], 'REPLACE');							
 				}
 			else
 				alert("Select only 1 Option");
@@ -565,16 +609,16 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
 			j=0;
-			for(var k = 0; k < self.selectedFilters().length; k++) {
+			for(var k = 0; k < self.selectedSpendFilters().length; k++) {
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.spendArray()[j]) {
-						worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[k], 'REPLACE');	
+						worksheetArray[i].applyFilterAsync("Status", self.selectedSpendFilters()[k], 'REPLACE');	
 						
 					}
 				}j++;
 			}
 				
-			for(k = self.selectedFilters().length; k < 6; k++) {
+			for(k = self.selectedSpendFilters().length; k < 6; k++) {
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.spendArray()[j]) {
 						
@@ -588,17 +632,17 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
 			//console.log(worksheetArray);
-			for(var k = 0; k < self.selectedFilters().length; k++) {
+			for(var k = 0; k < self.selectedDiffFilters().length; k++) {
 				//alert(self.selectedFilters()[k]);
 				j=k*5;
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
-						worksheetArray[i].applyFilterAsync("Status", self.selectedFilters()[k], 'REPLACE');	
+						worksheetArray[i].applyFilterAsync("Status", self.selectedDiffFilters()[k], 'REPLACE');	
 				}
 				
 			}
 				
-			for(k = self.selectedFilters().length; k < 6; k++) {
+			for(k = self.selectedDiffFilters().length; k < 6; k++) {
 				j=k*5;
 				for(var i = 0; i < worksheetArray.length; i++) {
 					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
