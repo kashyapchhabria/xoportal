@@ -39,7 +39,7 @@
 									<ul class="button-group">
 										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a></li>
 										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a></li>
-										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor ')">Trendsensor</a></li>
+										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a></li>
 										<li><a class="small button secondary" data-bind="click:diffMap.openNav">Comments</a></li>
 									</ul>
 								</div>	
@@ -53,7 +53,7 @@
 										<dl class="dropdown2"> 
 											<dt>
 												<a data-bind="click:diffMap.toggleClass">
-													<p class="multiSel" style="font-size:12; color:#000000; text-align:left;font-family: Calibri; ">Select VAS &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &#x25BC;</p>  
+													<p class="multiSel" style="font-size:12; color:#000000; text-align:left;font-family: Calibri;"data-bind="text: diffMap.maxSel"></p>  
 												</a>
 											</dt>
 											<dd>

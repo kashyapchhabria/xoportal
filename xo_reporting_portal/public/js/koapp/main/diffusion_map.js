@@ -26,6 +26,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.inputText = ko.observable("");
 		self.user=ko.observable(xoappusername);
 		self.activeSheet = ko.observable('Diffusion Map');
+		self.maxSel = ko.observable("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
 		
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -552,12 +553,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	self.cancelSelected();
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
+        		self.maxSel("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
         		self.retrieveFilters(self.selectedDiffFilters,6);
 			}
 			else if(sheetName === "Spend Segment") {
+				self.maxSel("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedSpendFilters,6);
 			}
 			else {
+				self.maxSel("Select VAS (max 1) &nbsp&nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedTrendFilters,1);
 			}
         	viz.getWorkbook().activateSheetAsync(sheetName);
@@ -585,7 +589,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.getSelectedFilters = function () {
         	self.toggleClass();
         	views=viz.getWorkbook().getPublishedSheetsInfo();
-        	//console.log(views);
+        	console.log(views);
         	self.selectedFilters([]);
         	for ( var i=0; i<self.filterList().length; i++ ) {
         		if (self.filterList()[i]['isChecked']() && !self.filterList()[i]['isDisabled']()) {
@@ -700,7 +704,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             closeNav:self.closeNav,
             changeActiveSheet:self.changeActiveSheet,
             cancelSelected:self.cancelSelected,
-            isTitleVisible:self.isTitleVisible
+            isTitleVisible:self.isTitleVisible,
+            maxSel:self.maxSel
         };
     }
 	
