@@ -23,7 +23,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.inputText = ko.observable("");
 		self.user=ko.observable(xoappusername);
 		self.activeSheet = ko.observable('Diffusion Map');
-		self.maxSel = ko.observable("Select VAS (max 6) &nbsp&nbsp&nbsp &#x25BC;");
+		self.maxSel = ko.observable("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
 		
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -391,7 +391,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.getSelectedFilters = function () {
         	self.toggleClass();
         	views=viz.getWorkbook().getPublishedSheetsInfo();
-        	console.log(views);
         	self.selectedFilters([]);
         	for ( var i=0; i<self.filterList().length; i++ ) {
         		if (self.filterList()[i]['isChecked']() && !self.filterList()[i]['isDisabled']()) {
