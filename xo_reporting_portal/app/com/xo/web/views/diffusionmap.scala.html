@@ -35,11 +35,12 @@
 										<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:10px; font-family: Calibri;"><p style="font-size:14; color:#fff">VAS Diffusion Map</p>
 										</nav>
 								</div>
-								<div style="margin-left:-788px;">
+								<div style="margin-left:-720px;">
 									<ul class="button-group">
 										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a></li>
 										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a></li>
 										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a></li>
+										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a></li>
 										<li><a class="small button secondary" data-bind="click:diffMap.openNav">Comments</a></li>
 									</ul>
 								</div>	
@@ -49,10 +50,10 @@
 							</div>		
 						</div>
 								<div class="row collapse" data-bind="visible:diffMap.isTitleVisible()">
-		            				<div class="small-10 columns">
+		            				<div class="small-10 columns" data-bind="visible: diffMap.showSelect"> 
 										<dl class="dropdown2"> 
 											<dt>
-												<a data-bind="click:diffMap.toggleClass">
+												<a data-bind="click:diffMap.toggleClass ">
 													<p class="multiSel" style="font-size:12; color:#000000; text-align:left;font-family: Calibri;"data-bind="html: diffMap.maxSel"></p>  
 												</a>
 											</dt>

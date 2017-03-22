@@ -24,6 +24,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.user=ko.observable(xoappusername);
 		self.activeSheet = ko.observable('Diffusion Map');
 		self.maxSel = ko.observable("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
+		showSelect= ko.observable(true);
 		
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -355,14 +356,21 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	self.cancelSelected();
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
+        		self.showSelect(true);
         		self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
         		self.retrieveFilters(self.selectedDiffFilters,6);
 			}
 			else if(sheetName === "Spend Segment") {
+				self.showSelect(true);
 				self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedSpendFilters,6);
 			}
+			else if(sheetName === "Reports") {
+				self.showSelect(false);
+				self.retrieveFilters(self.selectedSpendFilters,6);
+			}
 			else {
+				self.showSelect(true);
 				self.maxSel("Select VAS (max 1) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedTrendFilters,1);
 			}
@@ -499,7 +507,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             changeActiveSheet:self.changeActiveSheet,
             cancelSelected:self.cancelSelected,
             isTitleVisible:self.isTitleVisible,
-            maxSel:self.maxSel
+            maxSel:self.maxSel,
+            showSelect:self.showSelect
         };
     }
 	
