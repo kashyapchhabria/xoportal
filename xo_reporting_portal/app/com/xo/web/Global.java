@@ -70,14 +70,10 @@ public class Global extends GlobalSettings {
 	        });
 		}
 	}
-    /**
-     * Sync the context lifecycle with Play's.
-     */
-    @SuppressWarnings("deprecation")
+
 	@Override
     public void onStop(final Application app) {
     	if(active) {
-    		int M=10;
     		XoAsyncTaskHandler.closeAsynchHandler();
     		XoAsyncScheduler.closeAsynchScheduler();
     	}

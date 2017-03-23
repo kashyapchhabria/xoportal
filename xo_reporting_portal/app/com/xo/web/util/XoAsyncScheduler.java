@@ -4,34 +4,34 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.xo.web.persistence.XODBTransaction;
 
-import play.Logger;
-
 public final class XoAsyncScheduler {
 
-	public static  ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1000);	
+	public static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(20);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XoAsyncScheduler.class);
 
 	public final static void init() {
 		closeAsynchScheduler();
-		Logger.info("Initializing the asynchronous thread workers...");
-		scheduler = Executors.newScheduledThreadPool(1000);	
-		Logger.info("Asynchronous scheduler thread workers initialized successfully.");
+		scheduler = Executors.newScheduledThreadPool(20);
+		LOGGER.info("Asynchronous scheduler thread workers initialized successfully.");
 	}
 
 	public final static void closeAsynchScheduler() {
-		Logger.info("Shutting down the asynch thread workers...");
+		LOGGER.info("Shutting down the asynch thread workers...");
 		if (scheduler != null) {
 			scheduler.shutdown();
 		}
 		 try {
 			 scheduler.awaitTermination(1, TimeUnit.DAYS);
 	        } catch (InterruptedException ex) {
-	        	Logger.error("Could not cancel executor service.");
+	        	LOGGER.error("Could not cancel executor service.");
 	        }
 		scheduler = null;
-		Logger.info("Asynch worker threads are closed successfully.");
+		LOGGER.info("Asynch worker threads are closed successfully.");
 	}
 
 	public final static void submitAsynchSchedulerTask(XoAsynchTask asynchTask,long delay,long frequency, TimeUnit timeUnit) {
@@ -47,7 +47,7 @@ public final class XoAsyncScheduler {
 			                try {
 			                	XoAsyncTaskHandler.submitAsynchTask(asynchTask);
 			                }catch(Exception ex) {
-			                    ex.printStackTrace(); //or loggger would be better
+			                	LOGGER.error("Error while exuecuting the task.", ex);
 			                }
 			            }
 			        },delay, frequency, timeUnit);
