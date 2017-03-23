@@ -6,6 +6,7 @@ import com.xo.web.akka.xoactors.XoClientSyncActor;
 import com.xo.web.core.XOException;
 
 import com.xo.web.util.XoAppConfigKeys;
+import com.xo.web.util.XoAsyncScheduler;
 import com.xo.web.util.XoAsyncTaskHandler;
 import com.xo.web.util.XoAsynchTask;
 import com.xo.web.work.XoWorkerManager;
@@ -34,6 +35,8 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(final Application application) {
     	XoAsyncTaskHandler.init();
+    	XoAsyncScheduler.init();
+
     	try {
 			this.xoClientSyncActor = new XoClientSyncActor();
 			this.initiateWorkerManager(application);
@@ -74,8 +77,9 @@ public class Global extends GlobalSettings {
 	@Override
     public void onStop(final Application app) {
     	if(active) {
+    		int M=10;
     		XoAsyncTaskHandler.closeAsynchHandler();
-    		XoWorkerManager.getXoTaskManager().cancelAllScheduledWorks();
+    		XoAsyncScheduler.closeAsynchScheduler();
     	}
     	if(xossoStatus){
 			try {
