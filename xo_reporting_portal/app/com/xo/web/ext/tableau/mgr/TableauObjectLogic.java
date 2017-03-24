@@ -29,7 +29,6 @@ import com.xo.web.ext.tableau.models.dao.ViewGroupDaoImpl;
 import com.xo.web.mgr.XoClientJobConfigLogic;
 import com.xo.web.mgr.XoConfigInstanceLogic;
 import com.xo.web.models.system.XoClient;
-import com.xo.web.models.system.XoClientJobConfig;
 import com.xo.web.models.util.DisplayOrderComparator;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoMailContentProvider;
@@ -69,7 +68,6 @@ public class TableauObjectLogic {
 	private final XoMailContentProvider xoMailContentProvider = new XoMailContentProvider();
 	
 	private final XoClientJobConfigLogic clientJobConfigLogic = new XoClientJobConfigLogic();
-	private XoClientJobConfig clientJobConfig = null;
 	
 	private final TableauConnector tableauConnector;
 	
@@ -125,6 +123,7 @@ public class TableauObjectLogic {
 		return configJson;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public List<BreadCrumbDTO> buildBreadCrumbsGroup(DashboardItemEnum dashboardItemEnum,
 													 TableauProject tableauProject,
 													 ViewGroup viewGroup,
@@ -168,6 +167,7 @@ public class TableauObjectLogic {
 		return breadCrumbDTOs;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public DashboardDTO buildDashboardDto(DashboardItemEnum dashboardItemEnum,
 										  TableauProject tableauProject,
 										  TableauWorkbook tableauWorkbook,
@@ -193,6 +193,7 @@ public class TableauObjectLogic {
 		return dashboardDTO;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public MenuDTO buildMenu(DashboardItemEnum dashboarditem,TableauProject tableauProject,
 							 TableauWorkbook tableauWorkbook,TableauView tableauView, String applicationContext){
 		MenuDTO menuDTO = new MenuDTO();
@@ -222,6 +223,7 @@ public class TableauObjectLogic {
 
 
 
+	@SuppressWarnings("incomplete-switch")
 	public MenuDTO buildGroupMenu(DashboardItemEnum dashboarditem,TableauProject tableauProject,
 								  ViewGroup viewGroup, TableauView tableauView, String applicationContext){
 		MenuDTO menuDTO = new MenuDTO();
@@ -459,7 +461,6 @@ public class TableauObjectLogic {
 										}
 									}
 								}
-
 							}
 						}
 					}
