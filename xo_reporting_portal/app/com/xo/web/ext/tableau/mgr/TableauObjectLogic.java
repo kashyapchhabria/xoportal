@@ -447,12 +447,13 @@ public class TableauObjectLogic {
 										List<TableauView> orderedViewGroups = new ArrayList<TableauView>(tableauViews);
 										Collections.sort((orderedViewGroups), new DisplayOrderComparator());
 
-										for(TableauView tableauView : orderedViewGroups) {
-											if(tableauView.isActive()){
-												if(!tableauView.getName().toLowerCase().startsWith(MAIN_DASHBOARD_NAME)){
-
-													MenuDTO tableauViewMenuDto = this.buildGroupMenu(DashboardItemEnum.VIEW, tableauProject, tableauViewGroup, tableauView, applicationContext);
-													tableauWorkbookMenuDto.subMenus.add(tableauViewMenuDto);
+										if(orderedViewGroups.size() > 1) {
+											for(TableauView tableauView : orderedViewGroups) {
+												if(tableauView.isActive()){
+													if(!tableauView.getName().toLowerCase().startsWith(MAIN_DASHBOARD_NAME)){
+														MenuDTO tableauViewMenuDto = this.buildGroupMenu(DashboardItemEnum.VIEW, tableauProject, tableauViewGroup, tableauView, applicationContext);
+														tableauWorkbookMenuDto.subMenus.add(tableauViewMenuDto);
+													}
 												}
 											}
 										}
