@@ -16,10 +16,21 @@
     <property name="message" type="string">
       <column length="500" name="message" />
     </property>
+    <property name="sheetName" type="string">
+      <column length="30" name="sheet_name" />
+    </property>
+     <property name="dashboardName" type="string">
+      <column length="30" name="dashboard_name" />
+    </property>
   </class>
    <query name="com.xo.web.ext.comment.models.Comment.readAllComments">
         <![CDATA[
             SELECT comment FROM com.xo.web.ext.comment.models.Comment comment
         ]]>
+    </query>
+    <query name="com.xo.web.ext.comment.models.Comment.readSheetComments">
+    	<![CDATA[
+    		SELECT comment FROM com.xo.web.ext.comment.models.Comment comment WHERE sheetName = :activeSheet and dashboardName = :activeDashboard ORDER BY comment.ts ASC
+    	]]>
     </query>
 </hibernate-mapping>

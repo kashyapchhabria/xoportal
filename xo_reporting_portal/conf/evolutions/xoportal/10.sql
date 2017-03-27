@@ -8,6 +8,8 @@ CREATE TABLE `comment`(
  `ts` timestamp NOT NULL,
  `user_id` int(11) NOT NULL,
  `message` text ,
+ `sheet_name` varchar(30),
+ `dashboard_name` varchar(30),
  PRIMARY KEY (`message_id`),
  CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

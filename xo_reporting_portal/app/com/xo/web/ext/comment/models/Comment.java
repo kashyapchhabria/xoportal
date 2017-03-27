@@ -11,14 +11,18 @@ public class Comment extends AbstractEntity {
      private String message;
      private Date ts;
      private User user;
+     public String sheetName;
+     public String dashboardName;
     
      public Comment() {
      }
      
-     public Comment(String message,Date ts,User user){
+     public Comment(String message,Date ts,User user,String sheetName,String dashboardName){
 		this.message =message;
 		this.ts = ts;
 		this.user = user;
+		this.sheetName=sheetName;
+		this.dashboardName=dashboardName;
     }
     
     public Integer getMessageId() {
@@ -49,6 +53,20 @@ public class Comment extends AbstractEntity {
 	}
 	public void setTs(Date ts) {
 		this.ts = ts;
+	}
+	
+	public String getSheetName() {
+		return this.sheetName;
+	}
+	public void setSheetName(String sheetName) {
+		this.sheetName = sheetName;
+	}
+	
+	public String getDashboardName() {
+		return this.dashboardName;
+	}
+	public void setDashboardName(String dashboardName) {
+		this.dashboardName = dashboardName;
 	}
 
 }

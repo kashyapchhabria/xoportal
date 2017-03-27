@@ -168,3 +168,4 @@ POST	 /diffusionMap												  @com.xo.web.controllers.DashboardController.get
 GET		 /filterlist												  @com.xo.web.controllers.DashboardController.getFilterList()
 POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()
 GET		 /allComments												  @com.xo.web.ext.comment.controllers.CommentController.readAllComments()
+GET		 /sheetComments/:sheetName/:dashboardName					  @com.xo.web.ext.comment.controllers.CommentController.readSheetComments(sheetName: String, dashboardName: String)

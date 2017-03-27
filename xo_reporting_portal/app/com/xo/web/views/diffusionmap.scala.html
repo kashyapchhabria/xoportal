@@ -3,6 +3,7 @@
 	<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:diffMap.closeNav">x</a></span>
 	<div class="row">
 		<center>
+			<p  style="font-size:16; color:white; font-family: Calibri;"data-bind="html: diffMap.commentHeading"></p>
 			<textarea placeholder="Enter your Comment here..." data-bind="value:diffMap.inputText" rows="3" maxlength="200" style="width:350px;"></textarea>
 		</center>
 	</div>
@@ -35,13 +36,13 @@
 										<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:10px; font-family: Calibri;"><p style="font-size:14; color:#fff">VAS Diffusion Map</p>
 										</nav>
 								</div>
-								<div style="margin-left:-720px;">
+								<div style="margin-left:-719px;">
 									<ul class="button-group">
-										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a></li>
-										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a></li>
-										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a></li>
-										<li><a class="small button secondary" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a></li>
-										<li><a class="small button secondary" data-bind="click:diffMap.openNav">Comments</a></li>
+										<li><a class="small button secondary" style="background-color: #6A9A00; color:white " id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a></li>
+										<li><a class="small button secondary" id="spndSeg" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a></li>
+										<li><a class="small button secondary" id="trndSen" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a></li>
+										<li><a class="small button secondary" id="reports" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a></li>
+										<li><a class="small button secondary" id="comment" data-bind="click:diffMap.openNav">Comments</a></li>
 									</ul>
 								</div>	
 							</div>

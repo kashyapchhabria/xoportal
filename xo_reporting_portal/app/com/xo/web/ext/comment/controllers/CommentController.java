@@ -39,8 +39,8 @@ public class CommentController extends BaseController<Comment, Integer> {
 		try {
 			CommentDto commentDto = Json.fromJson(json, CommentDto.class);
 			Comment comment =this.commentLogic.save(commentDto);
-			CommentDto chatdtocontent=new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName());
-			jsonResponse = generateSuccessResponse(Messages.get(MSG_SAVED_SUCCESSFULLY),chatdtocontent);
+			CommentDto commentDtoContent=new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName(), comment.getSheetName(),comment.getDashboardName() );
+			jsonResponse = generateSuccessResponse(Messages.get(MSG_SAVED_SUCCESSFULLY),commentDtoContent);
 		}catch(Exception e) {
 			Logger.error("Error while udpating the User details.", e);
 			jsonResponse = generateErrorResponse(Messages.get(ERR_SAVING_MESSAGE));
@@ -55,11 +55,23 @@ public class CommentController extends BaseController<Comment, Integer> {
 		try {
 			jsonResponse = Json.toJson(this.commentLogic.readAllComments());    
 		} catch (Exception e) {
-		jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_ROOM));
-		      throw new XOException(e);
-		    } finally{
-		      return ok(jsonResponse);
-		    }
-		  }
+			jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_ROOM));
+			throw new XOException(e);
+		} finally{
+			return ok(jsonResponse);
+		}
+	}
+	
+	public Result readSheetComments(String sheetName, String dashboardName) {
+		JsonNode jsonResponse = null;
+		try {
+			jsonResponse = Json.toJson(this.commentLogic.readSheetComments(sheetName,dashboardName));    
+		} catch (Exception e) {
+			jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_ROOM));
+			throw new XOException(e);
+		} finally{
+			return ok(jsonResponse);
+		}
+	}
 	  
 }

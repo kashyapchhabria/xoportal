@@ -40,6 +40,17 @@ public class CommentLogic extends BaseLogic<Comment, Integer> {
 		}
 		return convertChatEntitiesToDtos(allComments);
 	}
+	
+	public Set<CommentDto> readSheetComments(String sheetName, String dashboardName) {
+		Collection<Comment> sheetComments=null;
+		try {
+			sheetComments = this.commentDAO.readSheetComments(sheetName,dashboardName);
+		} catch (XODAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return convertChatEntitiesToDtos(sheetComments);
+	}
 
 	public Comment save(CommentDto commentDto) throws ParseException {
 		Comment comment = null;
@@ -49,20 +60,20 @@ public class CommentLogic extends BaseLogic<Comment, Integer> {
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			System.out.println(commentDto.ts);
 			datetime =(Date) df.parse(df.format(new Date(Long.parseLong(commentDto.ts))));
-			comment = new Comment(commentDto.message,datetime,user);
+			comment = new Comment(commentDto.message,datetime,user,commentDto.sheetName,commentDto.dashboardName);
 			comment = this.commentDAO.save(comment);
 		}
 		return comment;
 	}
 	
 	private Set<CommentDto> convertChatEntitiesToDtos(Collection<Comment> allComments) {
-		Set<CommentDto> chatDtos = new HashSet<CommentDto>();
+		Set<CommentDto> commentDtos = new HashSet<CommentDto>();
 		if(XoUtil.hasData(allComments)) {
 			for(Comment comment : allComments) {		
-				chatDtos.add(new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName()));				
+				commentDtos.add(new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName(),comment.getSheetName(),comment.getDashboardName()));				
 			}
 		}
-		return chatDtos;
+		return commentDtos;
 	}
 
 }

@@ -8,4 +8,5 @@ import com.xo.web.models.dao.GenericDAO;
 public interface CommentDao extends GenericDAO<Comment, Integer> {
 
 	List<Comment> readAllComments() throws XODAOException;
+	List<Comment> readSheetComments(String activeSheet, String activeDashboard) throws XODAOException;
 }

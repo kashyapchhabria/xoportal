@@ -102,7 +102,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function adminPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  self.hello(true);
+    		  self.userGuide(true);
     		  return new Router.Page('Xoanon Analytics Reporting Portal', 'admin-template', {});
     	  });
       }
@@ -210,8 +210,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	diffMap.clearAll();
         	diffMap.showDiffusionMap();
         	diffMap.getComments();
-        	diffMap.isTitleVisible(true);
-        	self.hello(false);
+        	self.userGuide(false);
         	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }

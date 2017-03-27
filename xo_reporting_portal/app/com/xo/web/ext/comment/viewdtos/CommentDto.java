@@ -12,25 +12,31 @@ public class CommentDto extends BaseDto<CommentDto> {
 	public String message;
 	public String ts;
 	public String user;
+	public String sheetName;
+	public String dashboardName;
 
 	SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
     
 	public CommentDto() {
 	}
 	
-	public CommentDto(int messageId,String message,Date ts,String user)
+	public CommentDto(int messageId,String message,Date ts,String user,String sheetName,String dashboardName)
 	{
 		this.messageId=messageId;
 		this.message=message;
 		this.ts= df.format(ts);
 		this.user=user;
+		this.sheetName=sheetName;
+		this.dashboardName=dashboardName;
 	}
 	
-	public CommentDto(Comment chat) {
-        this.messageId = chat.getMessageId();
-		this.message = chat.getMessage();
-		this.ts = df.format(chat.getTs());
-		this.user=chat.getUser().getFirstName();
+	public CommentDto(Comment comments) {
+        this.messageId = comments.getMessageId();
+		this.message = comments.getMessage();
+		this.ts = df.format(comments.getTs());
+		this.user=comments.getUser().getFirstName();
+		this.sheetName=comments.getSheetName();
+		this.dashboardName=comments.getDashboardName();
 	}
 	
     @Override

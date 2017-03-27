@@ -54,12 +54,14 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       var diffMap = new DiffusionManagerModel();
 
       function changepasswordPage(){
+      	self.userGuide(true);	
           return showPageLoader(function() {
         	  return new Router.Page('Xoanon Analytics Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
           });
       }
 
       function tabdashboardPage() {
+      	self.userGuide(true);
         return showPageLoader(function() {
           tableaumgmt.loadDashboardData();
           return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
@@ -67,6 +69,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       }
       
       function diffusionmapPage() {
+      	self.userGuide(false);
         return showPageLoader(function() {
         	diffMap.showDiffusionMap();
         	diffMap.getComments();

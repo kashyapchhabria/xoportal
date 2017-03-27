@@ -24,13 +24,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.user=ko.observable(xoappusername);
 		self.activeSheet = ko.observable('Diffusion Map');
 		self.maxSel = ko.observable("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
-		showSelect= ko.observable(true);
+		self.showSelect= ko.observable(true);
+		self.commentHeading = ko.observable('Diffusion Map');
+		self.prevSelected = ko.observable('Diffusion Map');
 		
         self.visibility = ko.observable(false);
         var workbook = null;
         var activeSheet = null;
         self.isTopBarVisibile = ko.observable(true);
-        self.hello = ko.observable(false);
+        self.userGuide = ko.observable(false);
         self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
         self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
         self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
@@ -38,6 +40,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.isTitleVisible = ko.observable(false);
 
         self.submitComment = function () {
+        	var dashboardName='diffusionMap';
         	if(self.inputText() === '') {
         		alert("Enter a comment and then click Comment button")
         	} else {
@@ -46,7 +49,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         		chatContent={ 
         				message: self.inputText(),        		
         				ts: new Date().getTime(),
-        				user:self.user() 
+        				user:self.user(),
+        				sheetName: self.activeSheet(),
+        				dashboardName: dashboardName
         		} ;
         		data=JSON.stringify(chatContent);
         		$.ajax({
@@ -80,8 +85,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.getComments = function() {
+        	var dashboardName='/diffusionMap';
         	$.ajax({
-				'url': xoappcontext + '/allComments',
+				'url': xoappcontext + '/sheetComments/'+self.activeSheet()+dashboardName,
 				'type': 'GET',
 				'cache':false,
 				'contentType': "application/json; charset=utf-8",
@@ -96,6 +102,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         3
         self.formatComments = function(allComments) {
         	var noOfComments = allComments.length;
+			allComments.sort(function(a, b) {
+				return b.messageId - a.messageId;
+			});
+			self.msgs.removeAll();
         	for ( var i= noOfComments -1; i>=0; i--) {
         		var tempObj = {
         				message: allComments[i]['message'],        		
@@ -285,7 +295,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                                 height: $('#diffusionViewPlace').height()
                             }
                           });*/
-                        self.changeDiffusionViewSize();
+                          self.isTitleVisible(true);
+                          self.changeDiffusionViewSize();
+                        
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
@@ -346,9 +358,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
     		self.isAllSelected(true);
     		self.msgs.removeAll();
     		self.inputText("");
-
+			
             self.visibility(false);
             self.selectedSupClient();
+            
+            self.commentHeading('Diffusion Map');
+            self.activeSheet('Diffusion Map');
+			self.maxSel("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
+			self.showSelect(true);
         };
 
         self.toggleClass = function () {
@@ -356,28 +373,68 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.changeActiveSheet = function (sheetName) {
+        	var defaultColor = "#E7E7E7";
+        	var activeColor = "#6A9A00";
+        	var actTextColor = "white";
+        	var defTextColor = "black";
         	self.cancelSelected();
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
         		self.showSelect(true);
+        		self.commentHeading('Diffusion Map');
         		self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
         		self.retrieveFilters(self.selectedDiffFilters,6);
+        		$("#diffMap").css("background-color", activeColor);
+        		$("#diffMap").css("color", actTextColor);
 			}
 			else if(sheetName === "Spend Segment") {
 				self.showSelect(true);
+				self.commentHeading('Spend Segment');
 				self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedSpendFilters,6);
+				$("#spndSeg").css("background-color", activeColor);
+				$("#spndSeg").css("color", actTextColor);
 			}
 			else if(sheetName === "Reports") {
 				self.showSelect(false);
+				self.commentHeading('Reports');
 				self.retrieveFilters(self.selectedSpendFilters,6);
+				$("#reports").css("background-color", activeColor);
+				$("#reports").css("color", actTextColor);
 			}
 			else {
 				self.showSelect(true);
+				self.commentHeading('Trendsensor');
 				self.maxSel("Select VAS (max 1) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedTrendFilters,1);
+				$("#trndSen").css("background-color", activeColor);
+				$("#trndSen").css("color", actTextColor);
 			}
+			if (self.prevSelected() === 'Diffusion Map') {
+				if (sheetName !== 'Diffusion Map') {
+					$("#diffMap").css("background-color", defaultColor);
+					$("#diffMap").css("color", defTextColor);
+				}
+			} else if (self.prevSelected() === 'Spend Segment') {
+				if (sheetName !== 'Spend Segment') {
+					$("#spndSeg").css("background-color", defaultColor);
+					$("#spndSeg").css("color", defTextColor);
+				}
+			} else if (self.prevSelected() === 'Reports') {
+				if (sheetName !== 'Reports') {
+					$("#reports").css("background-color", defaultColor);
+					$("#reports").css("color", defTextColor);
+				}
+			} else {
+				if (sheetName !== 'Trendsensor') {
+					$("#trndSen").css("background-color", defaultColor);
+					$("#trndSen").css("color", defTextColor);
+				}
+			}
+			self.prevSelected([]);
+			self.prevSelected(sheetName);
         	viz.getWorkbook().activateSheetAsync(sheetName);
+        	self.getComments();
         }
         
         self.retrieveFilters = function(Filters, maxSelections) {
@@ -511,7 +568,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             cancelSelected:self.cancelSelected,
             isTitleVisible:self.isTitleVisible,
             maxSel:self.maxSel,
-            showSelect:self.showSelect
+            showSelect:self.showSelect,
+            commentHeading:self.commentHeading
         };
     }
 	
