@@ -102,6 +102,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function adminPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
+    		  self.hello(true);
     		  return new Router.Page('Xoanon Analytics Reporting Portal', 'admin-template', {});
     	  });
       }
@@ -210,6 +211,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	diffMap.showDiffusionMap();
         	diffMap.getComments();
         	diffMap.isTitleVisible(true);
+        	self.hello(false);
         	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }

@@ -30,6 +30,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         var workbook = null;
         var activeSheet = null;
         self.isTopBarVisibile = ko.observable(true);
+        self.hello = ko.observable(false);
         self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
         self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
         self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
@@ -40,6 +41,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	if(self.inputText() === '') {
         		alert("Enter a comment and then click Comment button")
         	} else {
+        		//sheet = viz.getWorkbook().getActiveSheet();
+        		//alert(sheet.getName());
         		chatContent={ 
         				message: self.inputText(),        		
         				ts: new Date().getTime(),
@@ -90,7 +93,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				}
 			});
         }
-        
+        3
         self.formatComments = function(allComments) {
         	var noOfComments = allComments.length;
         	for ( var i= noOfComments -1; i>=0; i--) {

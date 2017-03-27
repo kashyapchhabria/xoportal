@@ -68,8 +68,8 @@
 			 		<li class="outlink has-dropdown not-click" data-equalizer-watch>
 			 			<a href="#" style="padding:15"><i class="outlink fi-widget size-48"></i></a>
 			 			<ul class="dropdown">
-			 				<li><a href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9" target="_blank">User Guide</a></li>
-			 				<li><a id="changepassword" class="outlink" href="#changepassword">@Messages("base.changepassword")</a></li>
+			 				<li data-bind='if: hello'><a href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9" target="_blank">User Guide</a></li>
+			 				<li><a id="changepassword"  class="outlink" href="#changepassword">@Messages("base.changepassword")</a></li>
 			 				<li><a onclick="composeSupport()">Support</a></li>
  			 				<li><a class="outlink" id="xologout" href="@com.xo.web.controllers.routes.UserController.logout(session().get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN))">@Messages("base.logout")</a></li>
 			 			</ul>
