@@ -73,7 +73,6 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
         return showPageLoader(function() {
         	diffMap.showDiffusionMap();
         	diffMap.getComments();
-        	diffMap.isTitleVisible(true);
         	return new Router.Page('Xoanon Analytics Reporting Portal','diffusion_map',{diffMap:diffMap});
         });
       }
