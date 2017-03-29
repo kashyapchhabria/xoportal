@@ -201,6 +201,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	tableaumgmt.clearAll();
         	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
+        	tableaumgmt.getDashboardComments();
         	return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }

@@ -34,6 +34,7 @@
 <nav class="top-bar xoheader" role="navigation" data-topbar="">
 		<section class="top-bar-section" data-bind="if : menuData && menuData().length > 0">
 			<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
+			<ul class="left show-for-large-up" data-bind="template: { name: 'commentButton'}"></ul>
 		</section>
 		<ul class="title-area">
 			  

@@ -22,8 +22,11 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
-        self.selectedReportMenuItem = ko.observable("Select Report");
+        self.selectedReportMenuItem = ko.observable("Main Dashboard");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
+        self.dashboardCommentHeading = ko.observable('Main Dashboard');
+        self.commentText = ko.observable('');
+        self.dashboardMsgs=ko.observableArray([]);
 
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -336,6 +339,92 @@ define(['knockout', 'jquery'], function(ko, $) {
             $(document).foundation();
             $(document).foundation('reflow');
         };
+        
+        self.openCommentNav = function() {
+        	if( $("#commentDiv").width() === 0 ) {
+        		document.getElementById("commentDiv").style.width = "400px";
+        	} else {
+        		document.getElementById("commentDiv").style.width = "0px";
+        	}
+        }
+        
+        self.closeCommentNav = function() {
+        	document.getElementById("commentDiv").style.width = "0px";
+        }
+        
+        self.submitDashboardComment = function() {
+        	var dashboardName='MainDashboard';
+        	if(self.commentText() === '') {
+        		alert("Enter a comment and then click Comment button")
+        	} else {
+        		//sheet = viz.getWorkbook().getActiveSheet();
+        		//alert(sheet.getName());
+        		chatContent={ 
+        				message: self.commentText(),        		
+        				ts: new Date().getTime(),
+        				user:self.user(),
+        				sheetName: self.selectedReportMenuItem(),
+        				dashboardName: dashboardName
+        		} ;
+        		data=JSON.stringify(chatContent);
+        		$.ajax({
+        			'url': xoappcontext + '/comment',
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        				var tempObj = {
+        						message: responseData.resultobject['message'],        		
+        						ts: responseData.resultobject['ts'],
+        						user:responseData.resultobject['user']
+        				};
+        				self.dashboardMsgs.push(tempObj);
+        				self.commentText("")
+        			},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+        	}
+        }
+        
+        self.getDashboardComments = function() {
+        	var dashboardName='/MainDashboard';
+        	$.ajax({
+				'url': xoappcontext + '/sheetComments/'+self.selectedReportMenuItem()+dashboardName,
+				'type': 'GET',
+				'cache':false,
+				'contentType': "application/json; charset=utf-8",
+				'success' : function(responseData) {
+					self.formatDashboardComments(responseData);
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+				}
+			});
+        }
+        
+        self.formatDashboardComments = function(allComments) {
+        	var noOfComments = allComments.length;
+			allComments.sort(function(a, b) {
+				return b.messageId - a.messageId;
+			});
+			self.dashboardMsgs.removeAll();
+        	for ( var i= noOfComments -1; i>=0; i--) {
+        		var tempObj = {
+        				message: allComments[i]['message'],        		
+                        ts: allComments[i]['ts'],
+                        user:allComments[i]['user']
+        			};
+        		self.dashboardMsgs.push(tempObj);
+        	}
+        }
+        
+        self.selectedReportMenuItem.subscribe(function(newVal) {
+        	self.getDashboardComments();
+        	self.dashboardCommentHeading(newVal);
+        });
 
         return {
             clearAll: self.clearAll,
@@ -355,7 +444,14 @@ define(['knockout', 'jquery'], function(ko, $) {
             selectedSupClient: self.selectedSupClient,
             loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
-            showReportMenus: self.showReportMenus
+            showReportMenus: self.showReportMenus,
+            openCommentNav:self.openCommentNav,
+            closeCommentNav:self.closeCommentNav,
+            dashboardCommentHeading:self.dashboardCommentHeading,
+            commentText:self.commentText,
+            submitDashboardComment:self.submitDashboardComment,
+            dashboardMsgs:self.dashboardMsgs,
+            getDashboardComments:self.getDashboardComments
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
