@@ -1,21 +1,27 @@
 package com.xo.web.security.authorization.persistence;
 
-import com.xo.web.core.XODAOException;
-import com.xo.web.mgr.TokenActionLogic;
-import com.xo.web.models.dao.*;
-import com.xo.web.models.system.PermissionEnum;
-import com.xo.web.models.system.User;
-import com.xo.web.util.XoUtil;
-import play.libs.F.Promise;
-import play.mvc.Action;
-import play.mvc.Http.Context;
-import play.mvc.Result;
-import play.mvc.Results;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.aspectj.lang.ProceedingJoinPoint;
+
+import com.xo.web.core.XODAOException;
+import com.xo.web.mgr.TokenActionLogic;
+import com.xo.web.models.dao.ResourceInstanceExtractor;
+import com.xo.web.models.dao.RolesPermissionsResourceInstanceDAO;
+import com.xo.web.models.dao.RolesPermissionsResourceInstanceDAOImpl;
+import com.xo.web.models.dao.UsersPermissionsResourceInstanceDAO;
+import com.xo.web.models.dao.UsersPermissionsResourceInstanceDAOImpl;
+import com.xo.web.models.system.PermissionEnum;
+import com.xo.web.models.system.User;
+import com.xo.web.util.XoUtil;
+
+import play.libs.F.Promise;
+import play.mvc.Http.Context;
+import play.mvc.Result;
+import play.mvc.Results;
 
 /**
  * Security related aspects.
@@ -26,11 +32,9 @@ public class SecureRowLevelHandler {
 
 	private final TokenActionLogic TOKEN_ACTION_LOGIC = new TokenActionLogic();
 	private final Set<PermissionEnum> permissionEnums;
-	private final Context currentContext;
 
-	public SecureRowLevelHandler(final Context ctx, final PermissionEnum[] permissionEnums) {
+	public SecureRowLevelHandler(final PermissionEnum[] permissionEnums) {
 		this.permissionEnums = XoUtil.hasData(permissionEnums) ? new HashSet<PermissionEnum>(Arrays.asList(permissionEnums)) : null;
-		this.currentContext = ctx;
 	}
 
 	/**
@@ -39,10 +43,10 @@ public class SecureRowLevelHandler {
 	 * @return
 	 * @throws Throwable
 	 */
-	public Promise<Result> enableAndInjectResourceFilters(Action<?> requestHandler) throws Throwable {
+	public Object enableAndInjectResourceFilters(ProceedingJoinPoint joinPoint) throws Throwable {
 
-		Promise<Result> resultObject = null;
-		if(requestHandler != null && XoUtil.hasData(this.permissionEnums)) {
+		Object resultObject = null;
+		if(joinPoint != null && XoUtil.hasData(this.permissionEnums)) {
 
 			final RolesPermissionsResourceInstanceDAO ROLE_RESOURCE_INSTANCE_DAO = new RolesPermissionsResourceInstanceDAOImpl();
 			final UsersPermissionsResourceInstanceDAO USER_RESOURCE_INSTANCE_DAO = new UsersPermissionsResourceInstanceDAOImpl();
@@ -63,17 +67,17 @@ public class SecureRowLevelHandler {
 					rowLevelFilter.setAvailableResourceIds(resourceTypeIds);
 					rowLevelFilter.setFilterRowManager(new HibernateFilteringSupportFilterRowManager());
 					rowLevelFilter.enableResourceFilters();
-					resultObject = requestHandler.call(this.currentContext);
+					resultObject = joinPoint.proceed();
 					rowLevelFilter.disableResourceFilters();
 				} else {
-					resultObject = requestHandler.call(this.currentContext);
+					resultObject = joinPoint.proceed();
 				}
 			} else {
-				resultObject=redirectToLogin();
+				resultObject = redirectToLogin();
 			}
-		} else if(requestHandler != null) {
+		} /*else if(requestHandler != null) {
 			resultObject = requestHandler.call(this.currentContext);
-		} else {
+		}*/ else {
 			resultObject = redirectToLogin();
 		}
 		return resultObject;

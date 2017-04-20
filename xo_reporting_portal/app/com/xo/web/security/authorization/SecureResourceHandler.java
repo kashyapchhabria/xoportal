@@ -1,18 +1,17 @@
 package com.xo.web.security.authorization;
 
-import com.xo.web.mgr.TokenActionLogic;
-import com.xo.web.mgr.UserLogic;
-import com.xo.web.models.system.PermissionEnum;
-import com.xo.web.models.system.User;
-import com.xo.web.persistence.XODBTransaction;
-import com.xo.web.util.XoUtil;
-
-import play.mvc.Http.Context;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import com.xo.web.mgr.TokenActionLogic;
+import com.xo.web.mgr.UserLogic;
+import com.xo.web.models.system.PermissionEnum;
+import com.xo.web.models.system.User;
+import com.xo.web.util.XoUtil;
+
+import play.mvc.Http.Context;
 
 public class SecureResourceHandler {
 
@@ -22,7 +21,6 @@ public class SecureResourceHandler {
 	public SecureResourceHandler() {
 	}
 
-	@XODBTransaction
 	public boolean isAllowed(final String name, final String meta, final Context context) {
 
 		String authToken = this.USER_LOGIC.getCurrentAuthToken();
@@ -49,7 +47,6 @@ public class SecureResourceHandler {
 		return false;
 	}
 
-	@XODBTransaction
 	public final boolean isAllowed(final Context context, final PermissionEnum...permissions) {
 
 		String authToken = this.USER_LOGIC.getCurrentAuthToken();

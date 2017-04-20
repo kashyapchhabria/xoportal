@@ -22,11 +22,17 @@
                 <column name="view_group_id" not-null="true" />
             </key>
             <one-to-many class="com.xo.web.ext.tableau.models.TableauView" />
+            <filter name="authfill_tableau_view" condition=" tableau_view_id in (:resourceIds) " />
         </set>
+    <filter name="authfill_view_group" condition=" view_group_id in (:resourceIds) " />        
     </class>
     <query name="com.xo.web.ext.tableau.models.ViewGroup.findByName">
     	<![CDATA[
     		SELECT vg FROM com.xo.web.ext.tableau.models.ViewGroup vg WHERE vg.groupName = :groupName
     	]]>
-    </query>    
+    </query>
+  <!-- Filters section -->
+  <filter-def name="authfill_view_group">
+  		<filter-param name="resourceIds" type="string"/>
+  </filter-def>    
 </hibernate-mapping>
