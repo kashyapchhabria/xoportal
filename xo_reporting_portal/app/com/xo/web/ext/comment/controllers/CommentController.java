@@ -41,6 +41,7 @@ public class CommentController extends BaseController<Comment, Integer> {
 			Comment comment =this.commentLogic.save(commentDto);
 			CommentDto commentDtoContent=new CommentDto(comment.getMessageId(),comment.getMessage(),comment.getTs(),comment.getUser().getFirstName(), comment.getSheetName(),comment.getDashboardName() );
 			jsonResponse = generateSuccessResponse(Messages.get(MSG_SAVED_SUCCESSFULLY),commentDtoContent);
+			this.commentLogic.sendEmailToDev(comment);
 		}catch(Exception e) {
 			Logger.error("Error while udpating the User details.", e);
 			jsonResponse = generateErrorResponse(Messages.get(ERR_SAVING_MESSAGE));

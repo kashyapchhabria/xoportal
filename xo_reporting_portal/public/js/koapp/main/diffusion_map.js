@@ -67,7 +67,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         						user:responseData.resultobject['user']
         				};
         				self.msgs.push(tempObj);
-        				self.inputText("")
+        				self.inputText("");
         			},
         			'error' : function(jqXHR, textStatus, errorThrown) {
         				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
@@ -77,7 +77,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.openNav = function() {
-        	document.getElementById("mySidenav").style.width = "400px";
+        	if( $("#mySidenav").width() === 0 ) {
+        		document.getElementById("mySidenav").style.width = "400px";
+        	} else {
+        		document.getElementById("mySidenav").style.width = "0px";
+        	}
         }
         
         self.closeNav = function() {
@@ -99,7 +103,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				}
 			});
         }
-        3
+        
         self.formatComments = function(allComments) {
         	var noOfComments = allComments.length;
 			allComments.sort(function(a, b) {

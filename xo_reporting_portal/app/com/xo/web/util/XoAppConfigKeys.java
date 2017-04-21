@@ -22,5 +22,7 @@ public interface XoAppConfigKeys extends TableauConstants {
 	
 	static final String IMPALA_DB = "impala.db";
 	static final String IMPALA_DB_URL = "impala.url";
+	
+	static final String EMAIL_LIST = "email.list";
 
 }
