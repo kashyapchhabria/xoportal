@@ -80,7 +80,6 @@ public class DBAspects {
 						LOGGER.info("Transaction started for : " + callerName);
 					}
 					if(this.isAuthorizedControllerMethod(joinPoint)) {
-						LOGGER.info("Entity Manager For this thread : " + entityManager);
 						resultObject = new XOAuthroizationAction().call(joinPoint);
 					} else {
 						resultObject = joinPoint.proceed();

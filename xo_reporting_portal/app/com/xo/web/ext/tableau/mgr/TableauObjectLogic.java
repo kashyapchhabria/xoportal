@@ -24,6 +24,8 @@ import com.xo.web.ext.tableau.models.dao.TableauProjectDao;
 import com.xo.web.ext.tableau.models.dao.TableauProjectDaoImpl;
 import com.xo.web.ext.tableau.models.dao.TableauSiteDao;
 import com.xo.web.ext.tableau.models.dao.TableauSiteDaoImpl;
+import com.xo.web.ext.tableau.models.dao.TableauViewDao;
+import com.xo.web.ext.tableau.models.dao.TableauViewDaoImpl;
 import com.xo.web.ext.tableau.models.dao.ViewGroupDao;
 import com.xo.web.ext.tableau.models.dao.ViewGroupDaoImpl;
 import com.xo.web.mgr.XoClientJobConfigLogic;
@@ -62,6 +64,7 @@ public class TableauObjectLogic {
 	private static final String RECONFIGURE_REPORTS_EMAIL_TEMPLATE = "com.xo.web.views.html.email.configure_reports"; 
 
 	private final TableauProjectDao tableauProjectDao = new TableauProjectDaoImpl();
+	private final TableauViewDao tableauViewDao = new TableauViewDaoImpl();
 	private final TableauSiteDao tableauSiteDao = new TableauSiteDaoImpl();
 	private final ViewGroupDao viewGroupDao = new ViewGroupDaoImpl();
 	private final XoConfigInstanceLogic XOCONFIG_INSTANCE_LOGIC = new XoConfigInstanceLogic();
@@ -132,12 +135,19 @@ public class TableauObjectLogic {
 		TableauView viewItem = null;
 		if(XoUtil.isNotNull(viewGroup)) {
 			Set<TableauView> tableauViews = viewGroup.getTableauViews();
-			for(TableauView tabView : tableauViews) {
-				if(tabView.isActive()){
-					if (tabView.isDashboard()) {
-						viewItem = tabView;
-						break;
+			if(XoUtil.hasData(tableauViews)){
+				List<TableauView> tviews = new ArrayList<>(tableauViews);
+				Collections.sort((tviews), new DisplayOrderComparator());
+				for(TableauView tabView : tviews) {
+					if(tabView.isActive()){
+						if (tabView.isDashboard()) {
+							viewItem = tabView;
+							break;
+						}
 					}
+				}
+				if(viewItem == null) {
+					viewItem = tviews.get(0);
 				}
 			}
 		}
@@ -230,12 +240,19 @@ public class TableauObjectLogic {
 		TableauView viewItem = null;
 		if(XoUtil.isNotNull(viewGroup)) {
 			Set<TableauView> tableauViews = viewGroup.getTableauViews();
-			for(TableauView tableauView1 : tableauViews) {
-				if(tableauView1.isActive()) {
-					if (tableauView1.isDashboard()) {
-						viewItem = tableauView1;
-						break;
+			if(XoUtil.hasData(tableauViews)){
+				List<TableauView> tviews = new ArrayList<>(tableauViews);
+				Collections.sort((tviews), new DisplayOrderComparator());
+				for(TableauView tableauView1 : tviews) {
+					if(tableauView1.isActive()) {
+						if (tableauView1.isDashboard()) {
+							viewItem = tableauView1;
+							break;
+						}
 					}
+				}
+				if(viewItem == null) {
+					viewItem = tviews.get(0);
 				}
 			}
 		}
@@ -354,6 +371,7 @@ public class TableauObjectLogic {
 	public void loadDashboardGroupData(final ScreenDTO screenDto, XoClient xoClient) throws XODAOException, XOException {
 		String applicationContext = XoUtil.getApplicationContext();
 		final String tableauConfigJson = this.loadTableauConfig(xoClient);
+		Collection<ViewGroup> viewGroups = this.viewGroupDao.findAll();
 		if(tableauConfigJson != null) {
 			this.setTableauConfigs(tableauConfigJson);
 			TableauSite tableauSite = this.tableauSiteDao.findByNameAndContentUrl(this.siteName, this.siteContentUrl);
@@ -368,7 +386,6 @@ public class TableauObjectLogic {
 			}
 			if (XoUtil.hasData(tableauProjects)) {
 				for(TableauProject tableauProject : tableauProjects){
-					Collection<ViewGroup> viewGroups = this.viewGroupDao.findAll();
 					for (ViewGroup tableauViewGroup : viewGroups) {
 						if(tableauViewGroup.isActive()){
 							Set<TableauView> tableauViews = tableauViewGroup.getTableauViews();
@@ -398,14 +415,19 @@ public class TableauObjectLogic {
 			}
 		}
 
-		if(!XoUtil.hasData(screenDto.contentDtos)){
+		if(!XoUtil.hasData(screenDto.contentDtos) && !XoUtil.hasData(screenDto.menuDtos)) {
 			screenDto.placeHolderImageUrl = "vassets/images/Market_Map_Segments.jpg";
 			screenDto.breadCrumbDtos = this.buildBreadCrumbsGroup(DashboardItemEnum.DASHBOARD, null, null, null);
+		} else {	// Make the first menu as dashboard item.
+			MenuDTO firstMenuDto = screenDto.menuDtos.get(0).subMenus.get(0);
+			String viewId = firstMenuDto.pageUrl.substring(firstMenuDto.pageUrl.lastIndexOf("/")+1);
+			TableauView tableauView = this.tableauViewDao.find(viewId);
+			DashboardDTO dashboardDTO = this.buildDashboardDto(DashboardItemEnum.VIEW,	null, tableauView.getTableauWorkbook(), tableauView, applicationContext);
+			screenDto.contentDtos.add(dashboardDTO);
+			screenDto.imageUrl = dashboardDTO.imageUrl;
+			screenDto.isMainDashboard = true;
 		}
 	}
-
-
-
 
 	public Set<MenuDTO> buildGroupMenus() {
 		Set<MenuDTO> menuDtos = new HashSet<MenuDTO>();

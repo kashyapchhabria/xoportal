@@ -25,7 +25,7 @@ public abstract class XoBaseEntitySyncActor {
 	private final ServerSocket clientSyncSocket;
 	public XoBaseEntitySyncActor() throws IOException, XOException {
 		SERIALIZER = new Serializer<>(MessageDto.class);
-		clientSyncSocket = new ServerSocket(Integer.parseInt(XoUtil.getConfig(XoAppConfigKeys.XOPORTAL_PORT)));	
+		clientSyncSocket = new ServerSocket(XoUtil.getIntConfig(XoAppConfigKeys.XOPORTAL_PORT));	
 	}
 
 	public final void startSyncProcess() throws IOException, XOException {
@@ -49,7 +49,7 @@ public abstract class XoBaseEntitySyncActor {
 			}
 		});
 	}
-	
+
 	public final void onReceive(Object message) throws Exception {
 		try{
 			MessageDto messageDto = (MessageDto) message;

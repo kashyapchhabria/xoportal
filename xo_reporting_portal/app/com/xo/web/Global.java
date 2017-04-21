@@ -34,24 +34,16 @@ public class Global extends GlobalSettings {
      */
     @Override
     public void onStart(final Application application) {
+    	Configuration configuration = application.configuration();
     	XoAsyncTaskHandler.init();
     	XoAsyncScheduler.init();
-
-    	try {
-			this.xoClientSyncActor = new XoClientSyncActor();
-			this.initiateWorkerManager(application);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	this.active = configuration.getBoolean(XoAppConfigKeys.WORKER_MANAGER_ACTIVE);
+		this.xossoStatus = configuration.getBoolean(XoAppConfigKeys.XOSSO_STATUS);
+		this.initiateWorkerManager(application);
         super.onStart(application);
     }
 
 	private void initiateWorkerManager(final Application application) {
-		Configuration configuration = application.configuration();
-		active = configuration.getBoolean(XoAppConfigKeys.WORKER_MANAGER_ACTIVE);
-		xossoStatus = configuration.getBoolean(XoAppConfigKeys.XOSSO_STATUS);
-
 		if(active) {
 			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Worker Manager job loader") {
 
@@ -60,8 +52,13 @@ public class Global extends GlobalSettings {
 	            }
 	        });
 		}
-		
+
 		if(xossoStatus){
+			try {
+				this.xoClientSyncActor = new XoClientSyncActor();
+			} catch (IOException | XOException e) {
+				Logger.error("Error while initiating the client sync.", e);
+			}
 			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Xosso Actor system loader") {
 	            public void process() throws Throwable {
 	            	xoClientSyncActor.startSyncProcess();

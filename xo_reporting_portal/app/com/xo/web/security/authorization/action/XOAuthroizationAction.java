@@ -12,8 +12,6 @@ import com.xo.web.security.authorization.SecureResourceHandler;
 import com.xo.web.security.authorization.persistence.SecureRowLevelHandler;
 import com.xo.web.util.XoUtil;
 
-/*import play.libs.F.Promise;
-import play.mvc.Action;*/
 import play.libs.F.Promise;
 import play.mvc.Http.Context;
 import play.mvc.Result;
@@ -22,7 +20,7 @@ import play.mvc.Results;
 /**
  * @author maria sekar
  */
-public class XOAuthroizationAction /*extends Action<Authroize>*/
+public class XOAuthroizationAction
 {
 
 	private static final String TABLEAU_CORS = "Tableau CORS";
@@ -72,7 +70,7 @@ public class XOAuthroizationAction /*extends Action<Authroize>*/
 		}
 		return authroize;
 	}
-	
+
 	private void appendCORSHeaders(Context ctx) {
 		if (!ctx.args.containsKey(POLICY_ALREADY_SET)) {
 			ctx.args.put(POLICY_ALREADY_SET, "");

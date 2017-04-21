@@ -24,7 +24,7 @@
             <one-to-many class="com.xo.web.ext.tableau.models.TableauView" />
             <filter name="authfill_tableau_view" condition=" tableau_view_id in (:resourceIds) " />
         </set>
-    <filter name="authfill_view_group" condition=" view_group_id in (:resourceIds) " />        
+    <filter name="authfill_view_group" condition=" view_group_id in (:resourceIds) " />
     </class>
     <query name="com.xo.web.ext.tableau.models.ViewGroup.findByName">
     	<![CDATA[
