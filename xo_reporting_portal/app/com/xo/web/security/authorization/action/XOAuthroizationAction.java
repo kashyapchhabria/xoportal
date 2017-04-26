@@ -12,9 +12,7 @@ import com.xo.web.security.authorization.SecureResourceHandler;
 import com.xo.web.security.authorization.persistence.SecureRowLevelHandler;
 import com.xo.web.util.XoUtil;
 
-import play.libs.F.Promise;
 import play.mvc.Http.Context;
-import play.mvc.Result;
 import play.mvc.Results;
 
 /**
@@ -54,7 +52,7 @@ public class XOAuthroizationAction
 			resultObject = secureRowLevelHandler.enableAndInjectResourceFilters(joinPoint);
 		} else {
 			ctx.response().setContentType(XoUtil.CONTENT_TYPE_JSON);
-			resultObject = Promise.pure((Result)Results.redirect(com.xo.web.controllers.routes.UserController.jsonAccessDenied()));
+			resultObject = Results.redirect(com.xo.web.controllers.routes.UserController.jsonAccessDenied());
 		}
 		return resultObject;
 	}

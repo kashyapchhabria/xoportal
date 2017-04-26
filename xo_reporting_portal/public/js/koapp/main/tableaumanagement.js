@@ -25,6 +25,10 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.selectedReportMenuItem = ko.observable("Select Report");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
 
+        self.worksheetName = 'logo';
+        self.filterField = 'Id';
+        self.workSheet = undefined;
+
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
             self.fullScreenView();
@@ -218,6 +222,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             if (responseData && responseData.imageUrl && responseData.imageUrl.length > 0) {
                 if (viz) {
                     viz.dispose();
+                    self.workSheet = undefined;
                 }
                 var placeholderDiv = document.getElementById("tableauViewPlace");
                 var url = responseData.imageUrl;
@@ -227,6 +232,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
+                    	self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         /*activeSheet.changeSizeAsync({
@@ -245,9 +251,20 @@ define(['knockout', 'jquery'], function(ko, $) {
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
-                //viz = new tableauSoftware.Viz(placeholderDiv, url, options);
             }
         };
+
+        self.setFilterValues = function() {
+        	if(self.workSheet == undefined) {
+        		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
+        		for(var i = 0; i < worksheetArray.length; i++) {
+        			if(worksheetArray[i].getName() == self.worksheetName) {
+        				self.workSheet = worksheetArray[i]; 
+        				self.workSheet.applyFilterAsync(self.filterField, client_logo_Id, 'REPLACE');
+        			}
+        		}
+        	}
+        }
 
         self.changeViewSize = function() {
 
@@ -290,6 +307,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         };
 
         self.clearAll = function() {
+        	self.workSheet = undefined;
             self.menuData.removeAll();
             self.dashboardData.removeAll();
             self.imageUrl('');

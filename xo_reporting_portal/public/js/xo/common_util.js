@@ -4,6 +4,7 @@
 
 var xoappcontext;
 var xoappusername;
+var client_logo_Id;
 function setAppConext(appCxt) {
 	xoappcontext = appCxt;
 	window.onunload = window.location.pathname != "/" ? confirmOnPageExitOrRefresh : null;
@@ -18,7 +19,12 @@ function setAppConext(appCxt) {
 }
 
 function setAppUser(appUser){
-	xoappusername=appUser;
+	xoappusername = appUser;
+	if(xoappusername != undefined) {
+		client_logo_Id = xoappusername.indexOf('ncell') > -1 ? 2 : 1;  
+	} else {
+		client_logo_Id = 1;
+	}
 }
 
 String.prototype.supplant = function(o) {
