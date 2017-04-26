@@ -32,7 +32,7 @@
       <column name="display_order" />
     </property>
     <many-to-one class="com.xo.web.ext.tableau.models.ViewGroup"  name="viewGroup" fetch="select">
-      <column name="view_group_id" />
+      <column name="view_group_id"  />
     </many-to-one>
     <filter name="authfill_tableau_view" condition=" tableau_view_id in (:resourceIds) " />
   </class>
