@@ -1,7 +1,7 @@
 # Override default Play's validation messages
 
 # Global strings
-xo.title=Welcome To Xoanon Reporting Portal
+xo.title=Welcome To Telia Carrier Reporting Portal
 
 # --- Constraints
 constraint.required=Required
@@ -42,7 +42,7 @@ base.changepassword=Change Password
 base.logout=Logout
 
 # Login page
-login.title=Welcome to Xoanon Reporting Portal
+login.title=Welcome to Telia Carrier Reporting Portal
 login.email=Email
 login.password=Password
 login.oldPassword=Existing Password
