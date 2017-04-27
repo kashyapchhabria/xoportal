@@ -14,7 +14,7 @@
     </appender>
 
     <appender name="ACCESS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.dir}/web/logs/access.log</file>
+        <file>${user.dir}/logs/access.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover with compression -->
             <fileNamePattern>access-log-%d{yyyy-MM-dd}.gz</fileNamePattern>

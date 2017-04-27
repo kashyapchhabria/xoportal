@@ -1,9 +1,9 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Reporting Portal"""
+name := """Xo Telia Reporting Portal"""
 
-version := "4.3.2"
+version := "4.3.3"
 
 organization := "com.xo.web"
 
