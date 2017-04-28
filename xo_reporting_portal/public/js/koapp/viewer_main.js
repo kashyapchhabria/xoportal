@@ -53,14 +53,14 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
 
       function changepasswordPage(){
           return showPageLoader(function() {
-        	  return new Router.Page('Xoanon Analytics Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
+        	  return new Router.Page('Telia Carrier Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
           });
       }
 
       function tabdashboardPage() {
         return showPageLoader(function() {
           tableaumgmt.loadDashboardData();
-          return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+          return new Router.Page('Telia Carrier Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }
 
