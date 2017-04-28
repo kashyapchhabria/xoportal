@@ -34,10 +34,10 @@ accessdenied.header=Access Denied
 accessdenied.desc=The page you are requesting requires additional permissions. Please contact your administrator.
 
 # Global labels and messages
-global.title=Xoanon Reporting Portal
+global.title=Telia Carrier Reporting Portal
 
 #Base Template page
-base.title=Xoanon Reporting Portal
+base.title=Telia Carrier Reporting Portal
 base.changepassword=Change Password
 base.logout=Logout
 
@@ -81,7 +81,7 @@ user.secname=Second Name
 user.email=Email Id
 user.client=Client
 user.selclient=Select Client
-user.password.verify_email.subject=Welcome to Xoanon Reporting Portal
+user.password.verify_email.subject=Welcome to Telia Carrier Reporting Portal
 user.password.reset_email.subject=Password Reset Request
 
 # Create Role page
