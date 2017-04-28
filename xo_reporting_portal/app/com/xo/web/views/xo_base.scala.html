@@ -35,6 +35,13 @@
 		<section class="top-bar-section" data-bind="if : menuData && menuData().length > 0">
 			<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
 		</section>
+		<section class="top-bar-section" data-bind='if : menuData && menuData().length > 0'>
+			<ul class="left">
+				<li style="background:gray;" class="name">
+					<a class="button outlink" id="comment" data-bind="click:exportPdf"><i class="fi-page-export-pdf">&nbsp;</i>@Messages("base.report.export")</a>
+				</li>
+			</ul>
+		</section>
 		<ul class="title-area">
 			  
 			 @if(session().get("roleName") != null) {
@@ -58,7 +65,7 @@
 						<a data-bind='if: isFullScreenEnabled, click: closeFullScreen'><i class="fi-arrows-in">&nbsp;&nbsp;@Messages("tableau.report.exitfullscreen")</i></a>
 					</li>
 			 		@if(session().get(com.xo.web.util.XoAppConstant.HEADER_X_SUPER_CLIENT) != null) {
-			 	    <li>
+			 	    <li style="background:gray;">
 			 	    	<select style="margin:0 0 0;margin-top: 4px;" title='@Messages("user.selclient")' id="selSupSysClient" 
 				   			data-bind='options:allClients, optionsText: "name", value: selectedSupClient, optionsCaption:"@Messages("user.selclient")"'>
 				   		</select>

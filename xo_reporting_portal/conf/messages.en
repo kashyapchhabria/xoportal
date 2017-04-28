@@ -40,6 +40,7 @@ global.title=Telia Carrier Reporting Portal
 base.title=Telia Carrier Reporting Portal
 base.changepassword=Change Password
 base.logout=Logout
+base.report.export=Export As PDF
 
 # Login page
 login.title=Welcome to Telia Carrier Reporting Portal

@@ -355,6 +355,12 @@ define(['knockout', 'jquery'], function(ko, $) {
             $(document).foundation('reflow');
         };
 
+        self.exportPdf = function() {
+        	if(viz) {
+        		viz.showExportPDFDialog(); 
+        	}
+        }
+
         return {
             clearAll: self.clearAll,
             loadDashboardData: self.loadDashboardData,
@@ -373,7 +379,8 @@ define(['knockout', 'jquery'], function(ko, $) {
             selectedSupClient: self.selectedSupClient,
             loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
-            showReportMenus: self.showReportMenus
+            showReportMenus: self.showReportMenus,
+            exportPdf : self.exportPdf
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
