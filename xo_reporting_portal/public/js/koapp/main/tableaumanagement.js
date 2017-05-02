@@ -315,6 +315,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
+            self.selectedReportMenuItem("Select Report");
         };
 
         self.loadClients = function() {
@@ -380,7 +381,8 @@ define(['knockout', 'jquery'], function(ko, $) {
             loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
             showReportMenus: self.showReportMenus,
-            exportPdf : self.exportPdf
+            exportPdf : self.exportPdf,
+            selectedReportMenuItem:self.selectedReportMenuItem
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
