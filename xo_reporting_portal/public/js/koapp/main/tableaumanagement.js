@@ -28,7 +28,9 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.worksheetName = 'logo';
         self.filterField = 'Id';
         self.workSheet = undefined;
-
+		
+		self.msisdns=ko.observableArray([]);
+		
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
             self.fullScreenView();
@@ -232,6 +234,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
+                    	viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
                     	self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
@@ -359,6 +362,28 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.exportPdf = function() {
         	if(viz) {
         		viz.showExportPDFDialog(); 
+        	}
+        }
+		
+		self.onMarksSelection = function(marksEvent) {
+			if(marksEvent.getWorksheet().getName()=="Duration vs DistinctB number")
+				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+		}
+		
+		self.reportSelectedMarks = function(marks) {
+			self.msisdns([]);
+			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                for (var pairIndex = 0; pairIndex < 1; pairIndex++) {
+                   var pair = pairs[pairIndex];
+                   self.msisdns.push(pair.formattedValue);
+                }
+             }
+		}
+		
+		self.exportSel = function() {
+        	if(viz) {
+        		alert(self.msisdns());
         	}
         }
 
