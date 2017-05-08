@@ -1,7 +1,7 @@
 /**
  * Tableau management
  */
-define(['knockout', 'jquery'], function(ko, $) {
+define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 
     function TableauManagerModel() {
 
@@ -15,7 +15,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.isFullScreenEnabled = ko.observable(false);
         self.isFullScreenAvailable = ko.observable(false);
         self.previousOverFlowValue = null;
-
+		self.user=ko.observable(xoappusername);
         self.visibility = ko.observable(false);
         var workbook = null;
         var activeSheet = null;
@@ -24,12 +24,18 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.isTopBarVisibile = ko.observable(true);
         self.selectedReportMenuItem = ko.observable("Select Report");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
-
+		
         self.worksheetName = 'logo';
         self.filterField = 'Id';
         self.workSheet = undefined;
+        
+		self.exportId=ko.observableArray([]);
+		self.aNumber=ko.observableArray([]);
+		self.dateOfEvent = ko.observable();
 		
-		self.msisdns=ko.observableArray([]);
+		
+		self.msgs=ko.observableArray([]);
+		self.inputText = ko.observable("");
 		
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -65,10 +71,10 @@ define(['knockout', 'jquery'], function(ko, $) {
         };
 
         self.loadPageData = function(data, event) {
-
             $(".se-pre-con").show(true);
             if (data && event) {
             	self.selectedReportMenuItem(data.name);
+            	self.getComments();
                 $.ajax({
                     'url': data.pageUrl,
                     'type': 'POST',
@@ -234,7 +240,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
-                    	viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
+                    	self.getComments();
                     	self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
@@ -251,6 +257,8 @@ define(['knockout', 'jquery'], function(ko, $) {
                             }
                           });*/
                         self.changeViewSize();
+                        if(self.selectedReportMenuItem() == "Exploratory Analysis")
+                    		viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
@@ -371,21 +379,151 @@ define(['knockout', 'jquery'], function(ko, $) {
 		}
 		
 		self.reportSelectedMarks = function(marks) {
-			self.msisdns([]);
+			self.aNumber([]);
+			self.dateOfEvent("");
 			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
                 var pairs = marks[markIndex].getPairs();
                 for (var pairIndex = 0; pairIndex < 1; pairIndex++) {
                    var pair = pairs[pairIndex];
-                   self.msisdns.push(pair.formattedValue);
+                   self.aNumber.push(pair.formattedValue);
+                   pair = pairs[3];
+                   self.dateOfEvent(pair.formattedValue);
                 }
              }
 		}
 		
 		self.exportSel = function() {
         	if(viz) {
-        		alert(self.msisdns());
+        		//var csvName = "A Numbers.csv";
+        		var csv ='A Numbers\n';
+        		for(i=0;i<self.aNumber().length;i++)
+        			csv=csv+self.aNumber()[i]+'\n';
+				var file = new File([csv], "numbers.csv", {type: "text/csv;charset=utf-8"});
+				saveAs(file);
+				
+				
+				exportedData={ 
+        				createdDate: new Date().getTime(),
+        				user:self.user(),
+        				dateOfEvent: self.dateOfEvent(),
+        				noOfUsers: self.aNumber().length
+        		} ;
+        		data=JSON.stringify(exportedData);
+        		$.ajax({
+        			'url': xoappcontext + '/exportdata',
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        							//alert(responseData);        		
+        			},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+				
         	}
         }
+
+
+        self.submitComment = function () {
+        	var dashboardName='telia';
+        	var sheetName='';
+        	if (self.selectedReportMenuItem()=='Select Report')
+        		sheetName='Anomaly Analysis';
+        	else
+        		sheetName=self.selectedReportMenuItem();
+        	if(self.inputText() === '') {
+        		alert("Enter a comment and then click Comment button")
+        	} else {
+        		//sheet = viz.getWorkbook().getActiveSheet();
+        		//alert(sheet.getName());
+        		chatContent={ 
+        				message: self.inputText(),        		
+        				ts: new Date().getTime(),
+        				user:self.user(),
+        				sheetName: sheetName,
+        				dashboardName: dashboardName
+        		} ;
+        		data=JSON.stringify(chatContent);
+        		$.ajax({
+        			'url': xoappcontext + '/comment',
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        				var tempObj = {
+        						message: responseData.resultobject['message'],        		
+        						ts: responseData.resultobject['ts'],
+        						user:responseData.resultobject['user']
+        				};
+        				self.msgs.push(tempObj);
+        				self.inputText("");
+        			},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+        	}
+        }
+        
+        self.openNav = function() {
+        	if( $("#mySidenav").width() === 0 ) {
+        		document.getElementById("mySidenav").style.width = "400px";
+        	} else {
+        		document.getElementById("mySidenav").style.width = "0px";
+        	}
+        }
+        
+        self.closeNav = function() {
+        	document.getElementById("mySidenav").style.width = "0";
+        }
+        
+        self.getComments = function() {
+        	var dashboardName='/telia';
+        	var sheetName='';
+        	if (self.selectedReportMenuItem()=='Select Report')
+        		sheetName='Anomaly Analysis';
+        	else
+        		sheetName=self.selectedReportMenuItem();
+        	$.ajax({
+				'url': xoappcontext + '/sheetComments/'+sheetName+dashboardName,
+				'type': 'GET',
+				'cache':false,
+				'contentType': "application/json; charset=utf-8",
+				'success' : function(responseData) {
+					self.formatComments(responseData);
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+				}
+			});
+        }
+        
+        self.formatComments = function(allComments) {
+        	var noOfComments = allComments.length;
+			allComments.sort(function(a, b) {
+				return b.messageId - a.messageId;
+			});
+			self.msgs.removeAll();
+        	for ( var i= noOfComments -1; i>=0; i--) {
+        		var tempObj = {
+        				message: allComments[i]['message'],        		
+                        ts: allComments[i]['ts'],
+                        user:allComments[i]['user']
+        			};
+        		self.msgs.push(tempObj);
+        	}
+        }
+
+
+
+
+
+
+
 
         return {
             clearAll: self.clearAll,
@@ -407,7 +545,15 @@ define(['knockout', 'jquery'], function(ko, $) {
             isTopBarVisibile: self.isTopBarVisibile,
             showReportMenus: self.showReportMenus,
             exportPdf : self.exportPdf,
-            selectedReportMenuItem:self.selectedReportMenuItem
+            selectedReportMenuItem:self.selectedReportMenuItem,
+            
+            
+            submitComment:self.submitComment,
+            inputText:self.inputText,
+            getComments:self.getComments,
+            msgs:self.msgs,
+            openNav:self.openNav,
+            closeNav:self.closeNav
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);

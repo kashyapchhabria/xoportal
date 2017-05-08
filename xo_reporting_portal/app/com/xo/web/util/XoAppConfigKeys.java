@@ -19,5 +19,5 @@ public interface XoAppConfigKeys extends TableauConstants {
 	static final String XOPORTAL_PORT = "xoportal.port";
 	
 	static final String XOACTORS_USERSYNC = "xoactors.usersync";
-
+	static final String EMAIL_LIST = "email.list";
 }

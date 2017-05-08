@@ -18,7 +18,10 @@ requirejs.config({
 	'datatables-responsive': {
 		   	 	exports: 'Responsive',
 		   	 	deps:['datatables', 'foundation']
-			}
+			},
+	'FileSaver':{
+			exports : 'FileSaver'
+		}
   },
   paths : {
     jquery : 'jquery/jquery.min',
@@ -29,13 +32,14 @@ requirejs.config({
     foundation: xoappcontext + '/vassets/lib/foundation/js/foundation.min',
     datatables:  xoappcontext + '/vassets/js/datatable/jquery.dataTables',
     DataTable:  xoappcontext + '/vassets/js/datatable/foundation.datatable',
-    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive'
+    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive',
+    FileSaver: xoappcontext + '/vassets/js/koapp/FileSaver'
   }
 });
 
 define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'foundation', 
-         'datatables', 'DataTable', 'Responsive', 'main/usermanagement', 'main/tableaumanagement'],
-         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, UserManagerModel, TableauManagerModel) {
+         'datatables', 'DataTable', 'Responsive','FileSaver', 'main/usermanagement', 'main/tableaumanagement'],
+         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, FileSaver, UserManagerModel, TableauManagerModel) {
 
     var initializePages = function(){
 
@@ -51,6 +55,12 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       var usermgmt = new UserManagerModel();
       var tableaumgmt = new TableauManagerModel();
 
+	  function cleanUp() {
+    	  if(tableaumgmt) {
+    		  tableaumgmt.clearAll();
+    	  }
+      }
+
       function changepasswordPage(){
           return showPageLoader(function() {
         	  return new Router.Page('Telia Carrier Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
@@ -59,8 +69,10 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
 
       function tabdashboardPage() {
         return showPageLoader(function() {
-          tableaumgmt.loadDashboardData();
-          return new Router.Page('Telia Carrier Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+          	cleanUp();
+        	tableaumgmt.loadClients();
+        	tableaumgmt.loadDashboardData();
+        	return new Router.Page('Telia Carrier Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }
 

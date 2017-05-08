@@ -18,7 +18,10 @@ requirejs.config({
 	'datatables-responsive': {
 		   	 	exports: 'Responsive',
 		   	 	deps:['datatables', 'foundation']
-			}
+			},
+	'FileSaver':{
+			exports : 'FileSaver'
+		}
   },
   paths : {
     jquery : 'jquery/jquery.min',
@@ -29,16 +32,17 @@ requirejs.config({
     foundation: 'foundation/js/foundation.min',
     datatables:  xoappcontext + '/vassets/js/datatable/jquery.dataTables',
     DataTable:  xoappcontext + '/vassets/js/datatable/foundation.datatable',
-    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive'
+    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive',
+    FileSaver: xoappcontext + '/vassets/js/koapp/FileSaver'
   }
 });
 
 
 define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
-        'datatables', 'DataTable','Responsive', 'main/usermanagement', 'main/rolemanagement',
+        'datatables', 'DataTable','Responsive', 'FileSaver','main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
         'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management'],
-   function(ko, Router, kv, foundation, datatables, DataTable, Responsive, UserManagerModel, 
+   function(ko, Router, kv, foundation, datatables, DataTable, Responsive, FileSaver,UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
          TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel) {
 
