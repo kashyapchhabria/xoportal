@@ -1,7 +1,7 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Telia Reporting Portal"""
+name := """Xoanon Reporting Portal - CRS"""
 
 version := "4.3.3"
 

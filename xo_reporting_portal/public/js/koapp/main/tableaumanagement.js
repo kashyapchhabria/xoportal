@@ -232,7 +232,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
-                    	self.setFilterValues();
+                    	//self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         /*activeSheet.changeSizeAsync({
