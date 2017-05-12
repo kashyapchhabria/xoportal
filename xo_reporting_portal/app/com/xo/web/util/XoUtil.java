@@ -68,6 +68,14 @@ public class XoUtil implements XoAppConstant {
 		return Play.application().configuration().getString(configKey);
 	}
 
+	public static final boolean getBoolConfig(String configKey) {
+		return Play.application().configuration().getBoolean(configKey);
+	}
+	
+	public static final int getIntConfig(String configKey) {
+		return Play.application().configuration().getInt(configKey);
+	}
+	
 	public static final boolean hasData(Object[] dataHolder) {
 		return dataHolder != null && dataHolder.length > 0;
 	}

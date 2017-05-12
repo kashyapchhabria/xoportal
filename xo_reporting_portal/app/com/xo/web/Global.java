@@ -6,6 +6,7 @@ import com.xo.web.akka.xoactors.XoClientSyncActor;
 import com.xo.web.core.XOException;
 
 import com.xo.web.util.XoAppConfigKeys;
+import com.xo.web.util.XoAsyncScheduler;
 import com.xo.web.util.XoAsyncTaskHandler;
 import com.xo.web.util.XoAsynchTask;
 import com.xo.web.work.XoWorkerManager;
@@ -33,22 +34,16 @@ public class Global extends GlobalSettings {
      */
     @Override
     public void onStart(final Application application) {
+    	Configuration configuration = application.configuration();
     	XoAsyncTaskHandler.init();
-    	try {
-			this.xoClientSyncActor = new XoClientSyncActor();
-			this.initiateWorkerManager(application);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	XoAsyncScheduler.init();
+    	this.active = configuration.getBoolean(XoAppConfigKeys.WORKER_MANAGER_ACTIVE);
+		this.xossoStatus = configuration.getBoolean(XoAppConfigKeys.XOSSO_STATUS);
+		this.initiateWorkerManager(application);
         super.onStart(application);
     }
 
 	private void initiateWorkerManager(final Application application) {
-		Configuration configuration = application.configuration();
-		active = configuration.getBoolean(XoAppConfigKeys.WORKER_MANAGER_ACTIVE);
-		xossoStatus = configuration.getBoolean(XoAppConfigKeys.XOSSO_STATUS);
-
 		if(active) {
 			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Worker Manager job loader") {
 
@@ -57,8 +52,13 @@ public class Global extends GlobalSettings {
 	            }
 	        });
 		}
-		
+
 		if(xossoStatus){
+			try {
+				this.xoClientSyncActor = new XoClientSyncActor();
+			} catch (IOException | XOException e) {
+				Logger.error("Error while initiating the client sync.", e);
+			}
 			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Xosso Actor system loader") {
 	            public void process() throws Throwable {
 	            	xoClientSyncActor.startSyncProcess();
@@ -67,15 +67,12 @@ public class Global extends GlobalSettings {
 	        });
 		}
 	}
-    /**
-     * Sync the context lifecycle with Play's.
-     */
-    @SuppressWarnings("deprecation")
+
 	@Override
     public void onStop(final Application app) {
     	if(active) {
     		XoAsyncTaskHandler.closeAsynchHandler();
-    		XoWorkerManager.getXoTaskManager().cancelAllScheduledWorks();
+    		XoAsyncScheduler.closeAsynchScheduler();
     	}
     	if(xossoStatus){
 			try {
