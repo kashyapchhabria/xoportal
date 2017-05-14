@@ -33,11 +33,12 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         var activeSheet = null;
         self.isTopBarVisibile = ko.observable(true);
         self.userGuide = ko.observable(false);
-        self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
+        self.array = ko.observableArray(["1Title","2Title","3Title","4Title","5Title","6Title"]);
         self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
         self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
         
         self.isTitleVisible = ko.observable(false);
+        self.worksheetCache = [];
 
         self.submitComment = function () {
         	var dashboardName='diffusionMap';
@@ -283,6 +284,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                     onFirstInteractive: function() {
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
+                        self.buildCache();
                         /*activeSheet.changeSizeAsync({
                             //behavior: tableauSoftware.SheetSizeBehavior.AUTOMATIC,
                         	behavior: tableauSoftware.SheetSizeBehavior.EXACTLY,
@@ -303,6 +305,18 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 viz = new tableau.Viz(placeholderDiv, url, options);
             }
         };
+
+	self.buildCache = function() {
+		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
+		for(var j = 0; j < self.array().length; j++ ) {
+			var tempWorkSheetName = self.array()[j];
+			for(var i = 0; i < worksheetArray.length; i++) {
+				if(tempWorkSheetName == worksheetArray[i].getName()) {
+					self.worksheetCache[j] = { 'ws' : worksheetArray[i], 'wsname' :tempWorkSheetName}; 
+				}
+			}
+		}
+	};
 
         self.changeDiffusionViewSize = function() {
 
@@ -518,7 +532,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		}
 		
 		self.applyDiffusionFilters = function () {
-			sheet = viz.getWorkbook().getActiveSheet();
+			/*sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
 			//console.log(worksheetArray);
 			for(var k = 0; k < self.selectedDiffFilters().length; k++) {
@@ -537,6 +551,16 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 						worksheetArray[i].applyFilterAsync("Status", null , 'REPLACE');	
 				}
 				
+			}*/
+			var selectedFiltersLength = self.selectedDiffFilters().length;
+			for(var k = 0; k < selectedFiltersLength; k++) {
+					var wsobject = self.worksheetCache[k];
+					wsobject.ws.applyFilterAsync("Status", self.selectedDiffFilters()[k], 'REPLACE');
+			}
+			// Applying null filters for the remaining wheets
+			for(var l = selectedFiltersLength; l < 6; l++) {
+				var wsobject = self.worksheetCache[l];
+				wsobject.ws.applyFilterAsync("Status", null, 'REPLACE');
 			}
 		}
 
