@@ -70,7 +70,6 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       function tabdashboardPage() {
         return showPageLoader(function() {
           	cleanUp();
-        	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
         	return new Router.Page('Telia Carrier Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });

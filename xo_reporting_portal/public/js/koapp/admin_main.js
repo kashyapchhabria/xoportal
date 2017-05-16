@@ -97,49 +97,49 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function changepasswordPage(){
           return showPageLoader(function() {
         	  cleanUp();
-        	  return new Router.Page('Telia Carrier Reporting Portal', 'password-change', {usermanagement:usermgmt});
+        	  return new Router.Page('Xoanon Reporting Portal', 'password-change', {usermanagement:usermgmt});
           });
       }
 
       function adminPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Telia Carrier Reporting Portal', 'admin-template', {});
+    		  return new Router.Page('Xoanon Reporting Portal', 'admin-template', {});
     	  });
       }
 
       function createsurveyorPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Telia Carrier Reporting Portal','create-surveyor',{usermanagement:usermgmt});
+    		  return new Router.Page('Xoanon Reporting Portal','create-surveyor',{usermanagement:usermgmt});
     	  });
       }
 
       function editsurveyorPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Telia Carrier Reporting Portal','create-surveyor',{usermanagement:usermgmt});
+    		  return new Router.Page('Xoanon Reporting Portal','create-surveyor',{usermanagement:usermgmt});
     	  });
       }
 
       function createrolePage() {
         return showPageLoader(function() {
         	cleanUp();
-        	return new Router.Page('Telia Carrier Reporting Portal','create-role',{rolemanagement:rolemgmt});
+        	return new Router.Page('Xoanon Reporting Portal','create-role',{rolemanagement:rolemgmt});
         });
       }
 
       function editrolePage() {
         return showPageLoader(function() {
         	cleanUp();
-        	return new Router.Page('Telia Carrier Reporting Portal','create-role',{rolemanagement:rolemgmt});
+        	return new Router.Page('Xoanon Reporting Portal','create-role',{rolemanagement:rolemgmt});
         });
       }
 
       function uploadUsersPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Telia Carrier Reporting Portal','upload-users',{usermanagement:usermgmt});
+    		  return new Router.Page('Xoanon Reporting Portal','upload-users',{usermanagement:usermgmt});
     	  });
       }
 
@@ -147,7 +147,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     	  return showPageLoader(function() {
     		  cleanUp();
     		  usermgmt.loadUsers();
-    		  return new Router.Page('Telia Carrier Reporting Portal','user_mgmt',{usermanagement:usermgmt});
+    		  return new Router.Page('Xoanon Reporting Portal','user_mgmt',{usermanagement:usermgmt});
     	  });
       }
 
@@ -155,7 +155,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         return showPageLoader(function() {
         	cleanUp();
         	rolemgmt.loadRoles();
-        	return new Router.Page('Telia Carrier Reporting Portal','role_mgmt',{rolemanagement:rolemgmt});
+        	return new Router.Page('Xoanon Reporting Portal','role_mgmt',{rolemanagement:rolemgmt});
         });
       }
       
@@ -163,7 +163,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         return showPageLoader(function() {
         	cleanUp();
         	permissionmgmt.loadPermissions();
-        	return new Router.Page('Telia Carrier Reporting Portal','permission_mgmt',{permissionmanagement:permissionmgmt});
+        	return new Router.Page('Xoanon Reporting Portal','permission_mgmt',{permissionmanagement:permissionmgmt});
         });
       }
 
@@ -173,7 +173,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	var roleprmgmt = new RolePermissionManagerModel(rolemgmt.currentRole());
         	roleprmgmt.loadRolesPermission();
         	roleprmgmt.loadPermissions();
-        	return new Router.Page('Telia Carrier Reporting Portal','role_perm_mgmt',{rolespermissionmgmt:roleprmgmt});
+        	return new Router.Page('Xoanon Reporting Portal','role_perm_mgmt',{rolespermissionmgmt:roleprmgmt});
         });
       }
 
@@ -183,7 +183,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  var userrolemgnt = new UserRoleManagerModel(usermgmt.currentUser());
     		  userrolemgnt.loadUserRoles();
     		  userrolemgnt.loadUnassignedRoles();
-    		  return new Router.Page('Telia Carrier Reporting Portal','user_role_mgmt', {userrolemgnt: userrolemgnt});
+    		  return new Router.Page('Xoanon Reporting Portal','user_role_mgmt', {userrolemgnt: userrolemgnt});
     	  });
       }
 
@@ -193,22 +193,22 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	var userpermmgnt = new UserPermissionManagerModel(usermgmt.currentUser());
         	userpermmgnt.loadUserPermissions();
         	userpermmgnt.loadUnassignedPermissions();
-        	return new Router.Page('Telia Carrier Reporting Portal','user_perm_mgmt', {userpermmgnt: userpermmgnt});
+        	return new Router.Page('Xoanon Reporting Portal','user_perm_mgmt', {userpermmgnt: userpermmgnt});
         });
       }
 
       function tabdashboardPage() {
         return showPageLoader(function() {
-        	cleanUp();
+        	tableaumgmt.clearAll();
         	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
-        	return new Router.Page('Telia Carrier Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+        	return new Router.Page('Xoanon Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }
 
       function systemSettingsPage() {
 			return showPageLoader(function() {
-				return new Router.Page('Telia Carrier Reporting Portal', 'system_settings', {});
+				return new Router.Page('Xoanon Reporting Portal', 'system_settings', {});
 			});
 	}
       
@@ -217,7 +217,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configuration');
 				configmgmt.cleanup();
 				configmgmt.loadConfigurations();
-				return new Router.Page('Telia Carrier Reporting Portal', 'config', {configmgmt : configmgmt});
+				return new Router.Page('Xoanon Reporting Portal', 'config', {configmgmt : configmgmt});
 			});
 		}
 
@@ -226,7 +226,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configtemplate');
 				configmgmt.cleanup();
 				configmgmt.loadConfigTemplates();
-				return new Router.Page('Telia Carrier Reporting Portal',	'conftemp_mgmt', {configmgmt : configmgmt});
+				return new Router.Page('Xoanon Reporting Portal',	'conftemp_mgmt', {configmgmt : configmgmt});
 			});
 		}
 
@@ -235,7 +235,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configinstance');
 				configmgmt.cleanup();
 				configmgmt.loadConfigInstances();
-				return new Router.Page('Telia Carrier Reporting Portal',	'confinstance_mgmt', {configmgmt : configmgmt});
+				return new Router.Page('Xoanon Reporting Portal',	'confinstance_mgmt', {configmgmt : configmgmt});
 			});
       }
 
@@ -244,7 +244,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  clientjobmgmt.currentPage('clientjobconfig');
     		  clientjobmgmt.cleanup();
     		  clientjobmgmt.loadallClientJobsConfigs();
-				return new Router.Page('Telia Carrier Reporting Portal',	'clientjobconfig_mgmt', {clientjobmgmt : clientjobmgmt});
+				return new Router.Page('Xoanon Reporting Portal',	'clientjobconfig_mgmt', {clientjobmgmt : clientjobmgmt});
 			});
       }
 
@@ -254,7 +254,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
           	  reportmgmt.cleanup();
           	  reportmgmt.loadReports();
           	  reportmgmt.loadGroups();
-      				return new Router.Page('Telia Carrier Reporting Portal',	'report_mgmt', { reportmgmt:reportmgmt });
+      				return new Router.Page('Xoanon Reporting Portal',	'report_mgmt', { reportmgmt:reportmgmt });
       			});
             }
 
@@ -262,7 +262,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
               return showPageLoader(function() {
               reportgrpmgmt.currentPage('reportgrpmgmt');
               reportgrpmgmt.loadGroups();
-            	  return new Router.Page('Telia Carrier Reporting Portal',	'report_grp_mgmt', { reportgrpmgmt:reportgrpmgmt });
+            	  return new Router.Page('Xoanon Reporting Portal',	'report_grp_mgmt', { reportgrpmgmt:reportgrpmgmt });
                 });
             }
 
@@ -270,7 +270,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     	  return showPageLoader(function() {
     		  	rowlevelmgmt.currentPage('rowlevelpermission');
     		  	rowlevelmgmt.cleanup();
-				return new Router.Page('Telia Carrier Reporting Portal',	'rowlevelpermission_mgmt', {});
+				return new Router.Page('Xoanon Reporting Portal',	'rowlevelpermission_mgmt', {});
 			});
       }
 
@@ -279,7 +279,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  	rowlevelmgmt.currentPage('userrowlevelpermission');
     		  	rowlevelmgmt.cleanup();
     		  	rowlevelmgmt.selectedGroup('User');
-				return new Router.Page('Telia Carrier Reporting Portal',	'userrowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
+				return new Router.Page('Xoanon Reporting Portal',	'userrowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
 			});
       }
 
@@ -288,7 +288,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  	rowlevelmgmt.currentPage('rowlevelpermission');
     		  	rowlevelmgmt.cleanup();
     		  	rowlevelmgmt.selectedGroup('Role');
-				return new Router.Page('Telia Carrier Reporting Portal',	'rolerowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
+				return new Router.Page('Xoanon Reporting Portal',	'rolerowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
 			});
       }
 

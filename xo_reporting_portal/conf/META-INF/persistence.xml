@@ -16,17 +16,17 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
       		<property name="hibernate.archive.autodetection" value="hbm" />
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="show_sql"  value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="show_sql"  value="false"/>
             <property name="hibernate.connection.release_mode" value="after_transaction"/>
             <property name="hibernate.connection.autocommit" value="false"/>
             <property name="hibernate.connection.isolation" value="2"/>
             <property name="hibernate.ejb.interceptor" value="com.xo.web.persistence.intercept.XoEntityInterceptor"/>
 
             <!-- Hikari settings -->
-			<property name="maximumPoolSize" value="40" />
+			<property name="maximumPoolSize" value="15" />
 			<property name="autoCommit" value="false" />
-			<property name="minimumPoolSize" value="10" />
+			<property name="minimumPoolSize" value="5" />
 			<property name="idleTimeout" value="60000" />
 			<property name="maxLifetime" value="600000" />
 			<property name="connectionInitSql" value="select 1" />

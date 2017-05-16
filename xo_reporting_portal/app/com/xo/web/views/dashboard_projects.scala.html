@@ -5,6 +5,37 @@
 		<ul class="dropdown" data-bind="template: { name: 'menuTree', foreach: subMenuItems}" ></ul>
 	</li>
 </script>
+<script id="commentButton" type="text/html">
+	<li><a data-bind="click:openCommentNav">Comment</a></li>
+	<div id="commentDiv" class="sidenav">
+		<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:closeCommentNav">x</a></span>
+		<div class="row">
+			<center>
+				<p  style="font-size:16; color:white; font-family: Calibri;"data-bind="html: dashboardCommentHeading"></p>
+				<textarea placeholder="Enter your Comment here..." data-bind="value:commentText" rows="3" maxlength="200" style="width:350px;"></textarea>
+			</center>
+		</div>
+		<div>
+			<div class="small-8 columns"></div>
+			<div class="small-4 columns">
+				<a style="color:#ffffff;margin-bottom: 20px;margin-top: -15px;" data-bind="click: submitDashboardComment" class="small button">Comment</a>
+			</div>
+		</div>
+		<div class="row">
+			<center>
+			<!-- ko foreach: { data: dashboardMsgs ,as:'comments' } -->
+				<div style="text-align:left;" class="stcommentbody" >
+					<div class="stcommenttext">
+						<b data-bind="text:comments.user+': '"></b>
+						<b style="color:#000;font-weight:normal" data-bind="text:comments.message"></b>
+						<div class="stcommenttime" data-bind="text:comments.ts"></div> 
+					</div>
+				</div>
+			<!-- /ko -->
+			</center>
+		</div>
+	</div>
+</script>
 <script id="tab_dashboard" type="text/html">
 	<div id="mySidenav" class="sidenav">
 		<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:tableaumgmt.closeNav">x</a></span>

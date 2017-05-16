@@ -546,8 +546,6 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
             showReportMenus: self.showReportMenus,
             exportPdf : self.exportPdf,
             selectedReportMenuItem:self.selectedReportMenuItem,
-            
-            
             submitComment:self.submitComment,
             inputText:self.inputText,
             getComments:self.getComments,
