@@ -18,7 +18,7 @@ function setAppConext(appCxt) {
 }
 
 function setAppUser(appUser){
-	xoappusername=appUser;
+	xoappusername = appUser;
 }
 
 String.prototype.supplant = function(o) {

@@ -56,7 +56,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       function changepasswordPage(){
       	self.userGuide(true);	
           return showPageLoader(function() {
-        	  return new Router.Page('Xoanon Analytics Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
+        	  return new Router.Page('Xoanon Reporting Portal', 'password-change', {usermanagement:usermgmt, selector:koSelector});
           });
       }
 
@@ -64,7 +64,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       	self.userGuide(true);
         return showPageLoader(function() {
           tableaumgmt.loadDashboardData();
-          return new Router.Page('Xoanon Analytics Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+          return new Router.Page('Xoanon Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }
       

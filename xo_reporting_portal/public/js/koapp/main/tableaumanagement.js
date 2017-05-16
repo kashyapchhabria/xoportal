@@ -221,6 +221,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             if (responseData && responseData.imageUrl && responseData.imageUrl.length > 0) {
                 if (viz) {
                     viz.dispose();
+                    self.workSheet = undefined;
                 }
                 var placeholderDiv = document.getElementById("tableauViewPlace");
                 var url = responseData.imageUrl;
@@ -230,6 +231,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
+                    	//self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         /*activeSheet.changeSizeAsync({
@@ -248,9 +250,20 @@ define(['knockout', 'jquery'], function(ko, $) {
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
-                //viz = new tableauSoftware.Viz(placeholderDiv, url, options);
             }
         };
+
+        self.setFilterValues = function() {
+        	if(self.workSheet == undefined) {
+        		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
+        		for(var i = 0; i < worksheetArray.length; i++) {
+        			if(worksheetArray[i].getName() == self.worksheetName) {
+        				self.workSheet = worksheetArray[i]; 
+        				self.workSheet.applyFilterAsync(self.filterField, client_logo_Id, 'REPLACE');
+        			}
+        		}
+        	}
+        }
 
         self.changeViewSize = function() {
 
@@ -293,6 +306,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         };
 
         self.clearAll = function() {
+        	self.workSheet = undefined;
             self.menuData.removeAll();
             self.dashboardData.removeAll();
             self.imageUrl('');
@@ -300,6 +314,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
+            self.selectedReportMenuItem("Select Report");
         };
 
         self.loadClients = function() {
@@ -339,7 +354,13 @@ define(['knockout', 'jquery'], function(ko, $) {
             $(document).foundation();
             $(document).foundation('reflow');
         };
-        
+
+		self.exportPdf = function() {
+        	if(viz) {
+        		viz.showExportPDFDialog(); 
+        	}
+        };
+
         self.openCommentNav = function() {
         	if( $("#commentDiv").width() === 0 ) {
         		document.getElementById("commentDiv").style.width = "400px";
@@ -451,7 +472,9 @@ define(['knockout', 'jquery'], function(ko, $) {
             commentText:self.commentText,
             submitDashboardComment:self.submitDashboardComment,
             dashboardMsgs:self.dashboardMsgs,
-            getDashboardComments:self.getDashboardComments
+            getDashboardComments:self.getDashboardComments,
+            exportPdf : self.exportPdf,
+            selectedReportMenuItem:self.selectedReportMenuItem
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);
