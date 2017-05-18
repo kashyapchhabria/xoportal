@@ -13,8 +13,8 @@
     <many-to-one class="com.xo.web.models.system.User" fetch="select" name="user">
       <column length="40" name="user_id" not-null="true"/>
     </many-to-one>
-    <property name="message" type="string">
-      <column length="500" name="message" />
+    <property name="message" type="text">
+      <column name="message" />
     </property>
     <property name="sheetName" type="string">
       <column length="30" name="sheet_name" />
