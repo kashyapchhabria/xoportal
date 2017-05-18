@@ -14,12 +14,14 @@ public class CommentDaoImpl extends GenericDAOImpl<Comment, Integer> implements 
 	private static final String PARAM_SHEET = "activeSheet";
 	private static final String PARAM_DASHBOARD = "activeDashboard";
 	
-    public List<Comment> readAllComments()  throws XODAOException{
+    @SuppressWarnings("unchecked")
+	public List<Comment> readAllComments()  throws XODAOException{
     	
         Query query = getNamedQuery(QUERY_ALL_COMMENTS);
         return (List<Comment>) query.list();
     }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Comment> readSheetComments(String activeSheet, String activeDashboard) throws XODAOException {
 		

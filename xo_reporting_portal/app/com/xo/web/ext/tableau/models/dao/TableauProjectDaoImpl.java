@@ -3,13 +3,11 @@ package com.xo.web.ext.tableau.models.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.Map;
 
 import com.xo.web.ext.tableau.models.TableauProject;
-import com.xo.web.models.dao.GenericDAOImpl;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoUtil;
 

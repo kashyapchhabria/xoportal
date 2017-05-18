@@ -1,10 +1,8 @@
 package com.xo.web.models.system;
 
-import com.xo.web.audit.Auditable;
-
 import java.util.Date;
-// Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1
-import com.xo.web.viewdtos.KeyValueDTO;
+
+import com.xo.web.audit.Auditable;
 
 
 

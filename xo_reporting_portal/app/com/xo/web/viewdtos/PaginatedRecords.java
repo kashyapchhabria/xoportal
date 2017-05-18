@@ -6,6 +6,7 @@ import java.util.Collection;
  * @author sekar
  *
  */
+@SuppressWarnings("serial")
 public class PaginatedRecords extends BaseDto<PaginatedRecords>{
 
 	public Integer start = -1;
