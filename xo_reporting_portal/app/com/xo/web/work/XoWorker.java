@@ -101,7 +101,6 @@ public abstract class XoWorker implements Runnable {
         };
     }
 
-
     protected void setConfigs() throws XOException {
 		try {
 			if(XoUtil.isNotNull(this.xoClientJobConfigDto))

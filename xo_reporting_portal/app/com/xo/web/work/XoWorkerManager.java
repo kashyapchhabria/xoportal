@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 import com.xo.web.mgr.XoClientJobConfigLogic;
-import com.xo.web.persistence.XODBTransaction;
 import com.xo.web.util.XoAsyncScheduler;
 import com.xo.web.util.XoAsyncTaskHandler;
 import com.xo.web.util.XoUtil;
@@ -75,18 +74,9 @@ public final class XoWorkerManager {
 					XoClientJobConfigDto xoClientJobConfigDto = xoWorker.getXoClientJobConfigDto();
 					// Cancel existing scheduled jobs.
 					cancelScheduledWork(xoClientJobConfigDto);
-					// Schedule the work again.					
+					// Schedule the work again.
 					final ScheduledFuture<?> taskHandler = XoAsyncScheduler.scheduler.scheduleAtFixedRate(
-					        new Runnable() {
-					        	@XODBTransaction
-					            public void run() {
-					                try {
-					                	XoAsyncTaskHandler.submitAsynchTask(xoWorker.getXoAsynchTask());
-					                }catch(Exception ex) {
-					                    ex.printStackTrace(); //or loggger would be better
-					                }
-					            }
-					        },xoWorker.initialDelay, xoWorker.frequency, xoWorker.frequencyTimeInit);
+							xoWorker, xoWorker.initialDelay, xoWorker.frequency, xoWorker.frequencyTimeInit);
 					this.schedulerTasks.put(xoClientJobConfigDto, taskHandler);
 				}						
 			else{

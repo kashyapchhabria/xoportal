@@ -1,11 +1,5 @@
 package com.xo.web.controllers;
 
-import play.Logger;
-import play.i18n.Messages;
-import play.libs.Json;
-import play.libs.F.Promise;
-import play.mvc.Result;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.core.XODAOException;
 import com.xo.web.core.XOException;
@@ -14,11 +8,15 @@ import com.xo.web.models.system.ClientJobsConfigurationsId;
 import com.xo.web.models.system.PermissionEnum;
 import com.xo.web.models.system.XoClientJobConfig;
 import com.xo.web.security.authorization.action.Authroize;
-import com.xo.web.util.XoPromiseCall;
 import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.MessageDto;
 import com.xo.web.viewdtos.MessageType;
 import com.xo.web.viewdtos.XoClientJobConfigDto;
+
+import play.Logger;
+import play.i18n.Messages;
+import play.libs.Json;
+import play.mvc.Result;
 
 @SuppressWarnings("finally")
 public class XoClientJobConfigController extends BaseController<XoClientJobConfig, ClientJobsConfigurationsId> implements Configurationsl18NLabels{
@@ -141,29 +139,23 @@ public class XoClientJobConfigController extends BaseController<XoClientJobConfi
 	}
 
 	@Authroize(permissions = {PermissionEnum.READ_CLIENT_JOB_CONFIG})
-	public Promise<Result> runJob(final Integer clientId, final Integer jobId, final Integer configId){
-
-		return new XoPromiseCall<Result>() {
-
-			public Result process() throws Throwable {
-				JsonNode jsonResponse = null;
-				try {
-					ClientJobsConfigurationsId clientJobsConfigurationsId = null;
-					if(clientId > 0 && jobId > 0 && configId > 0) {
-						clientJobsConfigurationsId = new ClientJobsConfigurationsId(clientId, jobId, configId);
-						xoClientJobConfigLogic.runJobNow(clientJobsConfigurationsId);
-					}
-					jsonResponse = generateSuccessResponse(Messages.get(MSG_JOB_RUN_SUCCESS), 
-							new MessageDto(xoClientJobConfigLogic.findLastStatusMsg(clientJobsConfigurationsId), MessageType.success));
-				}catch (Exception e) {
-					Logger.error("Error while Starting th Job.", e);
-					jsonResponse = generateErrorResponse(Messages.get(ERR_JOB_RUN_FAILED));
-					throw new XOException(e);
-				} finally{
-					return ok(jsonResponse);
-				}
+	public Result runJob(final Integer clientId, final Integer jobId, final Integer configId){
+		JsonNode jsonResponse = null;
+		try {
+			ClientJobsConfigurationsId clientJobsConfigurationsId = null;
+			if(clientId > 0 && jobId > 0 && configId > 0) {
+				clientJobsConfigurationsId = new ClientJobsConfigurationsId(clientId, jobId, configId);
+				xoClientJobConfigLogic.runJobNow(clientJobsConfigurationsId);
 			}
-		}.startProcess();
+			jsonResponse = generateSuccessResponse(Messages.get(MSG_JOB_RUN_SUCCESS),
+					new MessageDto(xoClientJobConfigLogic.findLastStatusMsg(clientJobsConfigurationsId), MessageType.success));
+		}catch (Exception e) {
+			Logger.error("Error while Starting th Job.", e);
+			jsonResponse = generateErrorResponse(Messages.get(ERR_JOB_RUN_FAILED));
+			throw new XOException(e);
+		} finally{
+			return ok(jsonResponse);
+		}
 	}
 
 }
