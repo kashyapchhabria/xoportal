@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import com.xo.web.ext.comment.models.Comment;
 import com.xo.web.viewdtos.BaseDto;
 
+@SuppressWarnings("serial")
 public class CommentDto extends BaseDto<CommentDto> {
 	
 	public Integer messageId;

@@ -1,7 +1,5 @@
 package com.xo.web.security.content;
 
-import com.xo.web.util.XoAppConfigKeys;
-import com.xo.web.util.XoUtil;
 import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;

@@ -2,7 +2,6 @@ package com.xo.web.ext.tableau.mgr;
 
 
 import java.lang.reflect.Method;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +9,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.sql.RowSet;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.core.XODAOException;
@@ -443,18 +444,19 @@ public class TableauObjectLogic {
 	}
 	
 	public String getFilterList() {
-		ResultSet filterList = this.tableauProjectDao.getFilterList();
+		RowSet filterList = this.tableauProjectDao.getFilterList();
 		String filters = "";
 		try {
-			while(filterList.next()) {
-				filters += filterList.getString("status");
-				if(!filterList.isLast()) {
-					filters+=",";
+			if(filterList != null) {
+				while(filterList.next()) {
+					filters += filterList.getString("status");
+					if(!filterList.isLast()) {
+						filters+=",";
+					}
 				}
 			}
 			return filters;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

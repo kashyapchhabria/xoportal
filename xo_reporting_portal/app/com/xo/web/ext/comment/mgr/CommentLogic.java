@@ -80,6 +80,7 @@ public class CommentLogic extends BaseLogic<Comment, Integer> {
 		return commentDtos;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void sendEmailToDev(Comment comment) {
 		if(!comment.getUser().getEmail().contains("@xo.com")) {
 			List<String> emailList = (List<String>) XoUtil.getConfigsAsList(XoAppConfigKeys.EMAIL_LIST);

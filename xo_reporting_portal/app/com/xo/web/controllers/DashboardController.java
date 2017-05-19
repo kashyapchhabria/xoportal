@@ -1,12 +1,7 @@
 package com.xo.web.controllers;
 
 
-import java.util.ArrayList;
 import java.util.Set;
-
-import play.Logger;
-import play.i18n.Messages;
-import play.mvc.Result;
 
 import com.google.common.collect.Lists;
 import com.xo.web.ext.tableau.mgr.DashboardItemEnum;
@@ -27,6 +22,10 @@ import com.xo.web.util.XoAppConstant;
 import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.DashboardDTO;
 import com.xo.web.viewdtos.ScreenDTO;
+
+import play.Logger;
+import play.i18n.Messages;
+import play.mvc.Result;
 
 public class DashboardController extends BaseController<TableauSite, String> {
 

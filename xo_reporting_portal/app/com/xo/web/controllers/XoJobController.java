@@ -1,9 +1,9 @@
 package com.xo.web.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.xo.web.core.XOException;
 import com.xo.web.mgr.XoJobLogic;
 import com.xo.web.models.system.XoJob;
+
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Result;
@@ -23,10 +23,8 @@ public class XoJobController extends BaseController<XoJob, Integer> {
 			jsonResponse = Json.toJson(this.xoJobLogic.readAll());
 		} catch (Exception e) {
 			Logger.error("Error while reading the job list.", e);
-			//jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_CONFIGURATIONS));
-			throw new XOException(e);
-		} finally{
-			return ok(jsonResponse);
+			jsonResponse = generateErrorResponse("Error while reading the job list.");
 		}
+		return ok(jsonResponse);
 	}
 }

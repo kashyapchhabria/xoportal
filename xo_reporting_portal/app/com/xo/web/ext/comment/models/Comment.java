@@ -5,6 +5,7 @@ import java.util.Date;
 import com.xo.web.models.system.AbstractEntity;
 import com.xo.web.models.system.User;
 
+@SuppressWarnings("serial")
 public class Comment extends AbstractEntity {
 	
 	 private Integer messageId;

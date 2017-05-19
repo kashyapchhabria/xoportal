@@ -4,10 +4,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.xo.web.persistence.XODBTransaction;
 
 public final class XoAsyncScheduler {
 
@@ -34,24 +33,16 @@ public final class XoAsyncScheduler {
 		LOGGER.info("Asynch worker threads are closed successfully.");
 	}
 
-	public final static void submitAsynchSchedulerTask(XoAsynchTask asynchTask,long delay,long frequency, TimeUnit timeUnit) {
+	public final static ScheduledFuture<?> submitAsynchSchedulerTask(XoAsynchTask asynchTask,long delay,long frequency, TimeUnit timeUnit) {
+		ScheduledFuture<?> taskHandle = null;
 		if (asynchTask != null && asynchTask instanceof Runnable) {
 			if (scheduler == null || scheduler.isShutdown()
 					|| scheduler.isTerminated()) {
 				init();
 			}
-			final ScheduledFuture<?> taskHandle = scheduler.scheduleAtFixedRate(
-			        new Runnable() {
-			        	@XODBTransaction
-			            public void run() {
-			                try {
-			                	XoAsyncTaskHandler.submitAsynchTask(asynchTask);
-			                }catch(Exception ex) {
-			                	LOGGER.error("Error while exuecuting the task.", ex);
-			                }
-			            }
-			        },delay, frequency, timeUnit);
+			taskHandle = scheduler.scheduleAtFixedRate(asynchTask,delay, frequency, timeUnit);
 		}
+		return taskHandle;
 	}
 
 }
