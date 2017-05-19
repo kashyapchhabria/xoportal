@@ -1,9 +1,9 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xoanon Reporting Portal"""
+name := """Xo Diffusion Map Reporting Portal"""
 
-version := "4.3.3"
+version := "4.4"
 
 organization := "com.xo.web"
 
