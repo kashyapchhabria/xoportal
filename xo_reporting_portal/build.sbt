@@ -55,8 +55,6 @@ libraryDependencies ++= Seq(
 	"com.feth" %% "play-easymail" % "0.6.7",
 	// Serialization library kryo packages (To avoid asm lib issues we are using the kryo-shaded package). 
     "com.esotericsoftware" % "kryo-shaded" % "4.0.0",
-	// Akka Remoting.
-	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1",
 	"commons-io" % "commons-io" % "2.5",
 	// For Diffusion Map
 	"org.apache.thrift" % "libfb303" % "0.9.0",
