@@ -19,7 +19,7 @@ public class TableauProjectDaoImpl extends GenericDAOImpl<TableauProject, String
 	private static final String IMPALA_DB_URL = XoUtil.getConfig(XoAppConfigKeys.IMPALA_DB_URL);
 	public static String connectionUrl = "jdbc:impala://"+IMPALA_DB_URL+":21050/"+IMPALA_DB;
 	public static final String jdbcDriverName="com.cloudera.impala.jdbc41.Driver";
-	public static final String sqlStatement = "select distinct status from diffusionmap";
+	public static final String sqlStatement = "select distinct status from diffusionmap order by status asc";
 
 	static {
 		try {
