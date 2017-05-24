@@ -1,3 +1,4 @@
+@(clientlogo: String)
 <script id="diffusion_map" type="text/html">
 <div id="mySidenav" class="sidenav">
 	<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:diffMap.closeNav">x</a></span>
@@ -47,7 +48,7 @@
 								</div>	
 							</div>
 							<div class="large-1 columns">
-								<img width="70" height="25"  align="left" src='@routes.Assets.at("images/etisalat_logo.png")'>
+								<img width="70" height="25"  align="left" src='@routes.Assets.at("images/"+clientlogo+"_logo.png")'>
 							</div>		
 						</div>
 								<div class="row collapse" data-bind="visible:diffMap.isTitleVisible()">
