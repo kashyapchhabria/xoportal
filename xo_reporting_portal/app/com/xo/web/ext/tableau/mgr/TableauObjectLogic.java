@@ -442,7 +442,7 @@ public class TableauObjectLogic {
 			screenDto.placeHolderImageUrl = "vassets/images/Market_Map_Segments.jpg";
 		}
 	}
-	
+
 	public String getFilterList() {
 		RowSet filterList = this.tableauProjectDao.getFilterList();
 		String filters = "";
@@ -461,36 +461,12 @@ public class TableauObjectLogic {
 		}
 		return null;
 	}
-	
+
 	private DashboardDTO buildDiffusionDto(String tableauProject, String tableauWorkbook, String tableauView, String applicationContext) {
 		DashboardDTO dashboardDTO = new DashboardDTO();
-		
 		dashboardDTO.name = tableauView;
-		dashboardDTO.imageUrl = buildDiffusionLinkUrl(tableauWorkbook, tableauView);
-		
+		dashboardDTO.imageUrl = buildTableauLinkUrl(tableauWorkbook, tableauView);
 		return dashboardDTO;
-	}
-
-	private String buildDiffusionLinkUrl(String tableauWorkbook, String tableauView) {
-		String urlWorkbookName = tableauWorkbook.replaceAll(" ", "");
-		String urlViewName = tableauView.replaceAll(" ", "");
-		StringBuilder tableauImageurl = new StringBuilder();
-		tableauImageurl.append(this.tableauPublicHost);
-		tableauImageurl.append(TableauRESTConnector.URL_QUERY_TRUSTED_IP_TICKET);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(tableauConnector.getTicket(this.tableauInternalHost, /*this.userDomain + "\\" + */this.tableauUserName, this.clientIP, "Xo_Prod"));
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(TABLEAU_MULTI_SITE);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append("Xo_Prod");
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append("views");
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(urlWorkbookName);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(urlViewName);
-		tableauImageurl.append(TABLEAU_REPORT_URL_PARAMS);
-		return tableauImageurl.toString();
 	}
 
 	public Set<MenuDTO> buildGroupMenus() {
