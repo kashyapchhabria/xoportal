@@ -378,7 +378,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.changeActiveSheet = function (sheetName) {
         	var defaultColor = "#E7E7E7";
-        	var activeColor = "#6A9A00";
+        	var activeColor = "#07426B";
         	var actTextColor = "white";
         	var defTextColor = "black";
         	self.cancelSelected();
