@@ -100,7 +100,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
              self.loadPopup = function(data, event) {
                 self.loadPermissions();
-                $('#permissionAssignModel').foundation('reveal', 'open');
+                popup = loadPopup('myModal');
              };
 
             self.loadPermissions = function() {
@@ -112,7 +112,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                             permtbl = self.buildDataTableWithData('allAvailablePermissions_pop', 
                             		self.buildPermissionData, 
                             		serverData, 
-                            		{'responsive':true,"bLengthChange":false,"iDisplayLength":6}, 
+                            		{'responsive':true,"bLengthChange":false,"iDisplayLength":5}, 
                             		permtbl);
                         },
                         'error' : function(jqXHR, textStatus, errorThrown) {

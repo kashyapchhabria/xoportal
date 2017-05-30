@@ -1,7 +1,7 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Diffusion Map Reporting Portal"""
+name := """Xo Reporting Portal Revamp"""
 
 version := "4.4"
 
@@ -62,7 +62,9 @@ libraryDependencies ++= Seq(
 	"log4j" % "log4j" % "1.2.14",
 	"org.slf4j" % "slf4j-api" % "1.5.11",
 	"org.slf4j" % "slf4j-log4j12" % "1.5.11",
-	"org.apache.zookeeper" % "zookeeper" % "3.4.6"
+	"org.apache.zookeeper" % "zookeeper" % "3.4.6",
+	// https://mvnrepository.com/artifact/org.rythmengine/rythm-engine
+    "org.rythmengine" % "rythm-engine" % "1.0.1"
 )
 
 doc in Compile <<= target.map(_ / "none")

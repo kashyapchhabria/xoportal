@@ -1,6 +1,7 @@
 package com.xo.web.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.xo.web.core.RythmTemplateLoader;
 import com.xo.web.mgr.TokenActionLogic;
 import com.xo.web.models.system.User;
 import com.xo.web.util.XoUtil;
@@ -24,6 +25,11 @@ public class XOBaseController extends Controller {
 	protected static final String ROLE_NAME = "roleName";
 	protected static final String USER_EMAIL = "email";
 	protected final TokenActionLogic TOKEN_ACTION_LOGIC = new TokenActionLogic();
+	private final RythmTemplateLoader rtl;
+
+	public XOBaseController(){
+		this.rtl = RythmTemplateLoader.getTemplateLoader();
+	}
 
 	public Result accessDenied() {
 		return forbidden(com.xo.web.views.html.access_denied.render());
@@ -103,4 +109,7 @@ public class XOBaseController extends Controller {
 		return ok(MSG_APP_HEART_BEAT);
 	}
 
+	public String render(String templatePath, Object...arguments) {
+		return this.rtl.render(templatePath, arguments);
+	}
 }

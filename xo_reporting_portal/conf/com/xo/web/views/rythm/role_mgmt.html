@@ -1,0 +1,55 @@
+@include(temp)
+<script id="role_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br>
+				<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+	    		<a class="ui primary button" title="Create a new role" id="createNewRoleBut" data-bind='click:rolemanagement.newRole'>@Messages.get("role.mgmt.newrole")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableRoles" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("role.mgmt.name")</th>					
+						<th>@Messages.get("role.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:rolemanagement.availableRoles, as: 'roleRecord'}">
+					<tr data-bind="ifnot: roleRecord.deleted">
+						<td data-bind='html: roleRecord.name'></td>
+						<td>
+							<a class="action_link" title='@Messages.get("role.mgmt.editrole")' data-bind='attr: {id: "role_edit_"+roleRecord.roleId}, click:roleRecord.loadRole'>
+								<i class="fa fa-edit"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("role.mgmt.dactrole")'  data-bind='attr: {id: "role_active_"+roleRecord.roleId}, click:roleRecord.toggleStatus, if: roleRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("role.mgmt.actrole")' data-bind='attr: {id: "role_active_"+roleRecord.roleId}, click:roleRecord.toggleStatus,ifnot: roleRecord.active'>
+								<i class="fa fa-unlock"></i>										
+							</a>
+							<a class="action_link" title='@Messages.get("role.mgmt.delrole")' data-bind='attr: {id: "role_delete_"+roleRecord.roleId}, click:roleRecord.deleteRoleCheck'>
+								<i class="fa fa-trash"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("role.mgmt.assignpermission")' data-bind='attr: {id: "role_repass_"+roleRecord.roleId}, click:roleRecord.showRolesPermission'>
+								<i class="fa fa-key"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</section>
+</script>

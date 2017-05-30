@@ -105,7 +105,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					if (data.viewGroupId) {
 						data.isEdit(false);
 					}
-
+					$('#myModal').modal('hide');
 					setGlobalMessage(responseData, "general");
 					if (responseData.messageType == 'success') {
 						setTimeout(function() {
@@ -174,7 +174,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		};
 
 		self.loadPopup = function() {
-			$('#addgroupModel').foundation('reveal', 'open');
+			loadPopup('myModal');
 		};
 
 		return {

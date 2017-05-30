@@ -12,7 +12,8 @@ define(['knockout', 'jquery'], function(ko, $) {
 		var userroletbl = null;
 		var popup = null;
 		self.availableUnassignedRoles = ko.observableArray([]);
-		self.checkedRoles=ko.observableArray([])
+		self.checkedRoles=ko.observableArray([]);
+		var poptbl = null;
 		self.editUserRoles = function() {
 		}
 		
@@ -23,7 +24,12 @@ define(['knockout', 'jquery'], function(ko, $) {
 				'type':'GET',
 				'cache':false,
 				'success' : function(serverData) {
-					userroletbl = self.buildDataTableWithData('allAvailableUserRoles', self.buildUserRoleData, serverData, null, userroletbl);
+					userroletbl = self.buildDataTableWithData(
+									'allAvailableUserRoles', 
+									self.buildUserRoleData, 
+									serverData, 
+									null, 
+									userroletbl);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
@@ -92,11 +98,8 @@ define(['knockout', 'jquery'], function(ko, $) {
 
 		self.loadPopup = function(data, event) {
 			self.loadUnassignedRoles();
-			popup = $('#myModal').foundation('reveal', 'open');
+			loadPopup("myModal");
 		};
-
-
-		var poptbl = null;
 
 		self.loadUnassignedRoles = function() {
 
@@ -105,8 +108,12 @@ define(['knockout', 'jquery'], function(ko, $) {
 				'type':'GET',
 				'cache':false,
 				'success' : function(serverData) {
-					poptbl = self.buildDataTableWithData('UnassignedUserRoles', self.buildUnassignedRoleData, serverData, 
-							{responsive:true, "bLengthChange":false,"iDisplayLength":6}, poptbl);
+					poptbl = self.buildDataTableWithData(
+								'UnassignedUserRoles', 
+								self.buildUnassignedRoleData, 
+								serverData, 
+								{responsive:true, "bLengthChange":false,"iDisplayLength":5}, 
+								poptbl);
 
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {

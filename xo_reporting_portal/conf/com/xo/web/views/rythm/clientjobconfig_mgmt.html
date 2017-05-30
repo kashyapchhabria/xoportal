@@ -1,0 +1,103 @@
+@include(temp)
+<script id="clientjobconfig_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br>
+				<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a class="ui primary button" title="Add new Configurations" id="addconfig" data-reveal-id="addconfigModel" data-bind='click:clientjobmgmt.loadPopup'>@Messages.get("clientjobconfig.mgmt.add")</a>
+				<br><br>
+			</span>
+			<table id="allClientJobsConfigs" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("clientjobconfig.mgmt.client_name")</th>
+						<th>@Messages.get("clientjobconfig.mgmt.jobName")</th>
+						<th>@Messages.get("clientjobconfig.mgmt.configName")</th>
+						<th>@Messages.get("clientjobconfig.mgmt.lastMessage")</th>
+						<th>@Messages.get("clientjobconfig.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:clientjobmgmt.allJobs, as: 'jobConfigRecord'}">
+					<tr>
+						<td data-bind='text: jobConfigRecord.client_name'></td>
+						<td data-bind='text: jobConfigRecord.jobName'></td>
+						<td data-bind='text: jobConfigRecord.configName'></td>
+						<td>
+							<span data-bind="if:jobConfigRecord.isRunning()" style="width:100px;height:25px;">
+								<img src="/xoportal/assets/images/pageloader.gif"/>
+							</span>
+							<span data-bind="ifnot:jobConfigRecord.isRunning()">
+								<a data-bind='text: jobConfigRecord.lastMessage, attr:{class:jobConfigRecord.statusType}'>
+								</a>
+							</span>
+						</td>
+						<td>
+							<a class="action_link" title='@Messages.get("clientjobconfig.mgmt.dactconfigtempl")' data-bind='click:jobConfigRecord.toggleActiveStatus, if: jobConfigRecord.active'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("clientjobconfig.mgmt.actconfigtempl")' data-bind='click:jobConfigRecord.toggleActiveStatus,ifnot: jobConfigRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" data-bind="click:jobConfigRecord.deleteConfig" title='@Messages.get("clientjobconfig.mgmt.delconfig")'>
+								<i class="fa fa-trash"></i>
+							</a>
+							<a class="action_link" data-bind="click:jobConfigRecord.runJob" title='@Messages.get("clientjobconfig.mgmt.runconfig")'>
+								<i class="fa fa-play"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="myModal" class="ui small modal">
+		<i class="close icon"></i>
+		<div class="ui grid page"> 
+			<div class="column">
+				<span>
+					<div data-alert id="popup-box-container" class="display_message" align="center" style="display:block !important;">
+						<div class="ui success message">
+							<i class="close icon" id="close_message"></i>
+							<div class="header" id="popup-message">
+								Message Here
+							</div>
+						</div>
+					</div>
+				</span>
+				<span class="ui form">
+					@Messages.get("clientjobconfig.mgmt.add")
+					<div class="field">
+						<select title='@Messages.get("clientjobconfig.mgmt.newClient")' id="selSysClient" data-bind='options:clientjobmgmt.availableClients, optionsText: "name", value: clientjobmgmt.selectedClient, optionsCaption: "Choose Client......"'>@Messages.get("clientjobconfig.mgmt.Client")
+						</select>
+					</div>
+					<div class="field">
+						<select title='@Messages.get("clientjobconfig.mgmt.newJob")' id="selSysJob" data-bind='options:clientjobmgmt.addavailableJobs, optionsText: "jobName", value: clientjobmgmt.selectedJob, optionsCaption: "Choose Job......."'>@Messages.get("clientjobconfig.mgmt.Job")
+						</select>
+					</div>
+					<div class="field">
+						<select title='@Messages.get("clientjobconfig.mgmt.newInstance")' id="selSysInstance" data-bind='options:clientjobmgmt.addavailableInstances, optionsText: "shortName", value: clientjobmgmt.selectedInstance, optionsCaption: "Choose Instance......"'>@Messages.get("clientjobconfig.mgmt.Instance")
+						</select>
+					</div>
+					<div class="field">
+						<center data-bind="click:clientjobmgmt.saveClientJobConfig">
+							<button id="create_user" class="ui primary button" type="submit">Add</button>
+						</center>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</script>

@@ -1,0 +1,58 @@
+@include(temp)
+<script id="conftemp_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<a class="ui primary button" title='Go Back' data-bind="click:configmgmt.backPage">&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a class="ui primary button" title='@Messages.get("config.mgmt.tmpl.newconfig")' id="createNewConfigTempl" data-bind='click:configmgmt.newConfigTemplate'>@Messages.get("config.mgmt.tmpl.newconfig")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableConfigTemplates" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("config.mgmt.tmpl.name")</th>
+						<th>@Messages.get("config.mgmt.tmpl.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:configmgmt.availableConfigTemplates, as: 'configTemplateRecord'}">
+					<tr data-bind="ifnot: configTemplateRecord.deleted">
+						<td data-bind='text: configTemplateRecord.shortName'></td>
+						<td>
+							<a class="action_link" title='@Messages.get("config.mgmt.tmpl.editconfigtempl")' data-bind='attr: {id: "conftemp_edit_"+configTemplateRecord.configId()}, click:configTemplateRecord.editConfigurations'>
+								<i class="fa fa-edit"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.tmpl.dactconfigtempl")'  data-bind='attr: {id: "conftemp_active_"+configTemplateRecord.configId()}, click:configTemplateRecord.toggleStatus,if: configTemplateRecord.active'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.tmpl.actconfigtempl")' data-bind='attr: {id: "conftemp_active_"+configTemplateRecord.configId()}, click:configTemplateRecord.toggleStatus, ifnot: configTemplateRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.tmpl.delconfig")' data-bind='attr: {id: "conftemp_delete_"+configTemplateRecord.configId()}, click:configTemplateRecord.deleteConfig'>
+								<i class="fa fa-trash"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.tmpl.showconfiginstances")' data-bind='attr: {id: "conftemp_repass_"+configTemplateRecord.configId()}, click:configTemplateRecord.showConfigInstances'>
+								<i class="fa fa-th"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.inst.newconfig")' data-bind='attr: {id: "conftemp_newins_"+configTemplateRecord.configId()}, click:configTemplateRecord.newConfigInstance'>
+								<i class="fa fa-file-archive-o"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</section>
+</script>

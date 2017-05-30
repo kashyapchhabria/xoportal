@@ -1,0 +1,66 @@
+@include(temp)
+<script id="user_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+	<div class="column" id="table_holder">
+		<span>
+			<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+				<div class="ui success message">
+					<i class="close icon" id="close_message"></i>
+					<div class="header" id="alert-message">
+						Message Here
+					</div>
+				</div>
+			</div>
+			<br>
+			<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+			<a class="ui primary button" title='@Messages.get("user.mgmt.newusr")' id="createNewUserBut" data-bind='click:usermanagement.newUser'><i class="user icon"></i>@Messages.get("user.mgmt.newusr")</a>
+			<a class="ui primary button" title='@Messages.get("user.mgmt.upload")' id="createNewUserBut_bulk" data-bind='click:usermanagement.bulkUploadUsers'><i class="upload icon"></i>@Messages.get("user.mgmt.upload")</a>
+			<br><br>
+		</span>
+		<table id="allAvailableUsers" class="ui unstackable red compact selectable striped celled table">
+			<thead>
+				<tr>
+					<th>@Messages.get("user.mgmt.name")</th>
+					<th>@Messages.get("user.mgmt.email")</th>
+					<th>@Messages.get("user.mgmt.lstapp")</th>
+					<th>@Messages.get("user.mgmt.action")</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: {data:usermanagement.availableUsers, as: 'userRecord'}">
+				<tr data-bind="ifnot: userRecord.deleted">
+					<td data-bind='text: userRecord.name'></td>
+					<td data-bind="text: userRecord.email"></td>
+					<td data-bind="text: userRecord.lastLoginDt"></td>
+					<td>
+						<a class="action_link" title='@Messages.get("user.mgmt.editusr")' data-bind='attr: {id: "user_edit_"+userRecord.userId}, click:userRecord.loadUser'>
+							<i class="fa fa-edit"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("user.mgmt.dactusr")' data-bind='attr: {id: "user_active_"+userRecord.userId}, click:userRecord.toggleStatus, if: userRecord.active'>
+							<i class="fa fa-unlock"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("user.mgmt.actusr")' data-bind='attr: {id: "user_active_"+userRecord.userId}, click:userRecord.toggleStatus, ifnot: userRecord.active'>
+							<i class="fa fa-lock"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("user.mgmt.resetpass")' data-bind='attr: {id: "user_repass_"+userRecord.userId}, click:userRecord.resetpassword'>
+							<i class="fa fa-refresh"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("user.mgmt.roles")' data-bind='attr: {id: "user_repass_"+userRecord.userId}, click:userRecord.showUserRoles'>
+							<i class="fa fa-user-circle-o"></i>
+						</a>
+						<a class="action_link"  title='@Messages.get("user.mgmt.permission")' data-bind='attr: {id: "user_perm_"+userRecord.userId}, click:userRecord.showUserPermissions'>
+							<i class="fa fa-key"></i>
+						</a>
+						<!--<a class="action_link" title='@Messages.get("user.mgmt.delusr")' data-bind='attr: {id: "user_delete_"+userRecord.userId}, click:userRecord.deleteUser'>
+									<i class="fa fa-trash"></i>
+						</a> -->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+</section>
+</script>

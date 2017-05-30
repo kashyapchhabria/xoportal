@@ -1,0 +1,84 @@
+@include(temp)
+<script id="role_perm_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a class ="ui primary button" title="Create a new permission" id="assignNewRolePermissionBut" data-reveal-id="permissionAssignModel" 
+					data-bind='click:rolespermissionmgmt.loadPopup'>@Messages.get("role.perm.mgmt.newperm")</a>
+				<br><br>
+			</span>
+			<table id="allAvailablePermissions" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("role.perm.mgmt.name")</th>
+						<th>@Messages.get("role.perm.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody
+					data-bind="foreach: {data:rolespermissionmgmt.availableRolesPermission, as: 'rolePermRecord'}">
+					<tr>
+						<td data-bind='text: rolePermRecord.p_name'></td>
+						<td>
+							<a class="action_link" title='@Messages.get("role.perm.mgmt.dactrole")'
+								data-bind='attr: {id: "perm_active_"+rolePermRecord.roleId+"_"+rolePermRecord.permissionId}, click:rolePermRecord.toggleRolePermissionStatus,if: rolePermRecord.active'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("role.perm.mgmt.actrole")'
+								data-bind='attr: {id: "perm_active_"+rolePermRecord.roleId+"_"+rolePermRecord.permissionId}, click:rolePermRecord.toggleRolePermissionStatus, ifnot: rolePermRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a  class="action_link" title='@Messages.get("role.perm.mgmt.delrole")' data-bind='attr: {id: "user_active_"+rolePermRecord.roleId+"_"+rolePermRecord.permissionId}, click:rolePermRecord.deleteRolePermission'>
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="myModal" class="ui small modal">
+		<i class="close icon"></i>
+		<div class="ui grid page" style="padding-top:1% !important;"> 
+			<div class="column">
+				<span>
+					<div data-alert id="popup-box-container" class="display_message" align="center" style="display:block !important;">
+						<div class="ui success message">
+							<i class="close icon" id="close_message"></i>
+							<div class="header" id="popup-message">
+								Message Here
+							</div>
+						</div>
+					</div>
+				</span>
+				<table id="allAvailablePermissions_pop" class="ui red compact selectable striped celled table">
+					<thead>
+						<tr>
+							<th>@Messages.get("role.perm.mgmt.ungranted.name")</th>
+							<th>@Messages.get("role.perm.mgmt.action")</th>
+						</tr>
+					</thead>
+					<tbody data-bind="foreach: {data:rolespermissionmgmt.availablePermissions, as: 'permissionRecord'}">
+						<tr data-bind="ifnot: permissionRecord.deleted" >
+							<td data-bind='text: permissionRecord.name'></td>
+							<td class="text-center popupheight" ><input type="submit" class="ui tiny primary button" value="ADD" data-bind="click:permissionRecord.updateRolePermission"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</script>

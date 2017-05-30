@@ -8,14 +8,15 @@ define(['knockout', 'jquery'], function(ko, $) {
 		BaseModel.call(this, ko, $);
 		var self = this;
 		self.availablePermissions = ko.observableArray([]);
-		
+		var configtable = null;
+
 		self.loadPermissions = function() {
 			$.ajax({
 				'url':  xoappcontext + '/permissions',
 				'type':'GET',
 				'cache':false,
 				'success' : function(serverData) {
-					self.buildDataTableWithData('allAvailablePermissions', self.buildPermissionData, serverData);
+					configtable = self.buildDataTableWithData('allAvailablePermissions', self.buildPermissionData, serverData, null, configtable);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message:textStatus, messageType:'alert'},"general");

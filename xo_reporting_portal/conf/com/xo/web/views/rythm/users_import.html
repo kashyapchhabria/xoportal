@@ -1,0 +1,28 @@
+@include(temp)
+<script id="upload-users" type="text/html">
+<section>
+	<div class="ui center aligned grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<div class="thirteen wide column">
+			<form enctype="multipart/form-data" data-bind="submit: usermanagement.uploadUsers">
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<div class="ui form stacked secondary segment">
+					<div class="ui field">
+						<input multiple="multiple" class="ui small button" type="file" name="user_entries" id="user_entries" />
+					</div>
+					<br>
+					<div align="center" class="ui field">
+						<input id="uploadUserEntries" class="ui primary large button" type="submit" value="@Messages.get("admin.upload.users")"></input>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+</script>

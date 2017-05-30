@@ -94,7 +94,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					'type' : 'GET',
 					'cache' : false,
 					'success' : function(serverResponse) {
-						self.buildDataTableWithData('allAvailableConfigInstances', self.buildConfigInstanceData, serverResponse);
+						configtable = self.buildDataTableWithData('allAvailableConfigInstances', self.buildConfigInstanceData, serverResponse, null, configtable);
 					},
 					'error' : function(jqXHR, textStatus, errorThrown) {
 						setGlobalMessage({

@@ -1,0 +1,84 @@
+@include(temp)
+<script id="user_perm_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a title="Create a user permission" class="ui primary button" data-reveal-id="myModal" id="assignNewUserPermBut" 
+					data-bind='click:userpermmgnt.loadPopup'>@Messages.get("user.pr.mgmt.newusrpr")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableUserPermissions" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("user.pr.mgmt.name")</th>
+						<th>@Messages.get("user.pr.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:userpermmgnt.availableUserPermissions, as: 'userPermissionRecord'}">
+					<tr>
+						<td data-bind='text: userPermissionRecord.name'></td>
+						<td>
+							<a class="action_link" title='@Messages.get("user.pr.mgmt.dactusr")'
+								data-bind='if: userPermissionRecord.active, attr: {id: "user_active_"+userPermissionRecord.userId+"_"+userPermissionRecord.permId}, click:userPermissionRecord.toggleUserPermissionStatus'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("user.pr.mgmt.actusr")'
+								data-bind='ifnot: userPermissionRecord.active, attr: {id: "user_active_"+userPermissionRecord.userId+"_"+userPermissionRecord.permId}, click:userPermissionRecord.toggleUserPermissionStatus'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link"  title='@Messages.get("user.pr.mgmt.delusrpr")' data-bind='attr: {id: "user_active_"+userPermissionRecord.userId+"_"+userPermissionRecord.permId}, click:userPermissionRecord.deleteUserPermission'>
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="myModal" class="ui small modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" >
+		<i class="close icon"></i>
+		<div class="ui grid page" style="padding-top:1% !important;"> 
+			<div class="column">
+				<span>
+					<div data-alert id="popup-box-container" class="display_message" align="center" style="display:block !important;">
+						<div class="ui success message">
+							<i class="close icon" id="close_message"></i>
+							<div class="header" id="popup-message">
+								Message Here
+							</div>
+						</div>
+					</div>
+				</span>
+				<table id="UnassignedUserPermissions" class="ui red compact selectable striped celled table">
+					<thead>
+						<tr>
+							<th>Permissions</th>
+							<th>Assign</th>
+						</tr>
+					</thead>
+					<tbody
+						data-bind="foreach: {data:userpermmgnt.availableUnassignedPermissions, as: 'unassignedPermissionRecord'}">
+						<tr>
+							<td data-bind='text: unassignedPermissionRecord.name'></td>
+							<td><input type="submit" class="ui tiny primary button" value="ADD" data-bind="click:unassignedPermissionRecord.updateUserPermission"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</script>

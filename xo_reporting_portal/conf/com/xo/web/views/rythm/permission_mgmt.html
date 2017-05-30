@@ -1,0 +1,56 @@
+@include(temp)
+<script id="permission_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+	<div class="column" id="table_holder">
+		<span>
+			<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+				<div class="ui success message">
+					<i class="close icon" id="close_message"></i>
+					<div class="header" id="alert-message">
+						Message Here
+					</div>
+				</div>
+			</div>
+			<br><br>
+			<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+			<br><br>
+		</span>
+		<table id="allAvailablePermissions" class="ui unstackable red compact selectable striped celled table">
+			<thead>
+				<tr>
+					<th>@Messages.get("permission.mgmt.name")</th>
+					<th>@Messages.get("permission.mgmt.description")</th>
+					<th>@Messages.get("permission.mgmt.action")</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: {data:permissionmanagement.availablePermissions, as: 'permissionRecord'}">
+				<tr data-bind="ifnot: permissionRecord.deleted">
+					<td data-bind='text: permissionRecord.name'></td>
+					<td data-bind="text: permissionRecord.description"></td>
+					<td>
+						<a class="action_link" title='@Messages.get("permission.mgmt.dactprm")' data-bind='attr: {id: "permission_active_"+permissionRecord.permissionId}, click:permissionRecord.toggleStatus, if: permissionRecord.active'>
+							<i class="fa fa-unlock"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("permission.mgmt.actprm")' data-bind='attr: {id: "permission_active_"+permissionRecord.permissionId}, click:permissionRecord.toggleStatus, ifnot: permissionRecord.active'>
+							<i class="fa fa-lock"></i>
+						</a>
+						<!--<a class="action_link" title='@Messages.get("permission.mgmt.resetpass")' data-bind='attr: {id: "permission_repass_"+permissionRecord.permissionId}, click:permissionRecord.resetpassword'>
+							<i class="fa fa-refresh"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("permission.mgmt.roles")' data-bind='attr: {id: "permission_repass_"+permissionRecord.permissionId}, click:permissionRecord.showPermissionRoles'>
+							<i class="fa fa-user-circle-o"></i>
+						</a>
+						<a class="action_link" title='@Messages.get("permission.mgmt.delprm")' data-bind='attr: {id: "permission_delete_"+permissionRecord.permissionId}, click:permissionRecord.deletePermission'>
+							<i class="fa fa-trash"></i>
+						</a>-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+</section>
+</script>

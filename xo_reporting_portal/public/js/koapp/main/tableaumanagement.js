@@ -63,7 +63,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
         self.loadPageData = function(data, event) {
 
-            $(".se-pre-con").show(true);
+        	$('#preloader').show(true);
             if (data && event) {
             	self.selectedReportMenuItem(data.name);
                 $.ajax({
@@ -76,14 +76,14 @@ define(['knockout', 'jquery'], function(ko, $) {
                         } else {
                             setGlobalMessage(responsedata, "general");
                         }
-                        $(".se-pre-con").fadeOut("slow");
+                        $("#preloader").fadeOut("slow");
                     },
                     'error': function(jqXHR, textStatus, errorThrown) {
                         setGlobalMessage({
                             message: textStatus,
                             messageType: 'alert'
                         }, "general");
-                        $(".se-pre-con").fadeOut("slow");
+                        $("#preloader").fadeOut("slow");
                     }
                 });
             }
@@ -124,9 +124,6 @@ define(['knockout', 'jquery'], function(ko, $) {
                 	});*/
             }
             self.dashboardData(dashboardItems);
-
-            $(document).foundation('reflow');
-            $(document).foundation();
         };
 
         self.buildMenus = function(responsedata) {

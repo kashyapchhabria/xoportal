@@ -1,0 +1,98 @@
+@include(temp)
+@args String title = Messages.get("xo.title")
+@args play.mvc.Http.Request request = play.mvc.Http.Context.current().request(), play.mvc.Http.Response response = play.mvc.Http.Context.current().response(),Session session  = play.mvc.Http.Context.current().session()
+<!DOCTYPE HTML>
+<html>
+<head>
+	<!-- Standard Meta -->
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+	<title>@title</title>
+	<link rel="shortcut icon" href='@routes.Assets.at("images/favicon.png")'>
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("semantic/out/semantic.min.css")'>
+	<link rel="stylesheet" href='@routes.Assets.at("font-awesome/css/font-awesome.min.css")'>	
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("DataTables/media/css/dataTables.semanticui.min.css")'>
+
+	<script src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script>
+	<script src='@routes.Assets.at("semantic/out/semantic.min.js")'></script>
+	<script src='@routes.Assets.at("js/xo/common_util.js")'></script>
+
+	<script src='@routes.Assets.at("lib/knockout/knockout.js")'></script>	
+	<script src='@routes.Assets.at("DataTables/media/js/jquery.dataTables.min.js")'></script>
+		
+	<script type="application/javascript">
+	    setAppConext('@com.xo.web.util.XoUtil.getApplicationContext()');
+	    $('#preloader').show(true);
+	</script>
+
+	<style>
+	</style>
+</head>
+<body style="width: 100% !important; background-color: white !important;">
+	<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
+	<div style="width: 100% !important;">
+		@render()
+	</div>
+	<div class="footer">
+		<div class="row">
+			<div class="">
+				<p style="font-size:0.7rem; text-align:center; margin-top:10em;" class="copyright">© <a href="http://www.xoanonanalytics.com/" style="color: #002366 !important;">Xoanon Analytics.</a> All rights reserved.</p>
+			</div>
+		</div>
+	</div>
+	@if(session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN) != null) {
+		<div id="authtokenvalue" authtoken="@session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN)">
+		</div>
+	}
+	@if(session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE) != null) {
+		<div id="curpagehash" pagehash="@session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE)">
+		</div>
+	}
+	<div id="supportWidget"></div>
+</body>
+
+@if((session.get("roleName") != null) && (com.xo.web.models.system.RoleEnum.Admin.name().equalsIgnoreCase(session.get("roleName")))){
+	<script data-main="@routes.Assets.at("js/koapp/admin_main.js")" src="@routes.Assets.at("js/require.js")"></script>
+}
+@if(session.get("roleName") != null && (com.xo.web.models.system.RoleEnum.Viewer.name().equalsIgnoreCase(session.get("roleName")))){
+	<script data-main="@routes.Assets.at("js/koapp/viewer_main.js")" src="@routes.Assets.at("js/require.js")"></script>
+}
+@if(session.get("email") != null) {
+	<script type="text/javascript" src='@routes.Assets.at("js/freshdesk/freshwidget.js")'></script>
+	<script type="text/javascript">
+	function composeSupport()
+	{
+		var page_name = getLocationHash();
+		if(page_name == '') {
+			page_name = 'home';
+		}
+		var html = "<div id='supportModal' class='ui modal'>";
+		html += "<i class='close icon'></i><br><br>"
+		html += "<iframe id= 'freshIframe'title='Feedback Form' class='freshwidget-embedded-form' id='freshwidget-embedded-form' src='https://xoanonanalytics.freshdesk.com/widgets/feedback_widget/new?&widgetType=embedded&screenshot=no&helpdesk_ticket[requester]=@session.get("email")&disable[custom_field][url_320535]=true&helpdesk_ticket[custom_field][url_320535]=XoSSO "+page_name+"' scrolling='no' height='500px' width='100%' frameborder='0' >";
+		html += "</iframe>";
+		html += "</div>";
+		document.getElementById("supportWidget").innerHTML = html;
+		loadPopup('supportModal');
+	}
+	</script>
+}
+<script type="text/javascript">
+	$( document ).ready(function(){
+		if($('#authtokenvalue')) {
+			$.ajaxSetup({headers: {'X-Xoanon-Auth':$('#authtokenvalue').attr('authtoken')}});
+		}
+		if($('#alert-box-container')) {
+			$('#alert-box-container').css('visibility', 'hidden');
+		}
+		if($('#curpagehash') && $('#curpagehash').attr('pagehash')) {
+			//window.location.href = window.location.href + "#" + $('#curpagehash').attr('pagehash');
+			setLocationHash($('#curpagehash').attr('pagehash'));
+		}
+	    $('#preloader').fadeOut('slow');
+	});
+</script>
+
+</html>

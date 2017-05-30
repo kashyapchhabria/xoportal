@@ -1,0 +1,45 @@
+@include(temp)
+<script id="rowlevelpermission_mgmt" type="text/html">
+	<section>
+		<div class="row" data-equivalizer>
+	<div class="ui center aligned grid page">
+		<div class="column">
+			<div class="ui">
+				<div class="ui menu top">
+					<a class="item active" data-tab="@Messages.get("admin.land.row-level")"><i class="fa fa-key fa-lg"></i><label class="disp">@Messages.get("admin.land.row-level")</label></a>
+				</div>
+				<div class="ui tab active" data-tab="@Messages.get("admin.land.row-level")">
+					<br>
+					<div class="ui four stackable special link cards">
+						<a href="#userrowlevelpermission">
+						<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-id-card fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#userrowlevelpermission">@Messages.get("admin.land.userrow-level")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#rolerowlevelpermission">
+						<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-user-circle-o fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#rolerowlevelpermission">@Messages.get("admin.land.rolerow-level")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</div>
+	</section>
+</script>

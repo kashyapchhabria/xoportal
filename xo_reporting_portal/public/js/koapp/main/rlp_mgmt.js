@@ -140,7 +140,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			tempStatus = tempStatus && self.selectedResource() && self.selectedResource().displayText;
 			if(tempStatus) {
 				self.loadUnAssignedInstances();
-				$('#addrlpModel').foundation('reveal', 'open');
+				loadPopup('myModal');
 			} else {
 				alert('Please select the entity type and ' + self.selectedGroup() + ' in filters.');				
 			}
@@ -159,7 +159,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'type' : 'GET',
 				'cache' : false,
 				'success' : function(serverResponse) {
-					unAssinstanceTbl = self.buildDataTableWithData('allUnAssignedRlpInstances', self.buildRLPUnAssInstanceRecord, serverResponse, null, unAssinstanceTbl);
+					unAssinstanceTbl = self.buildDataTableWithData('allUnAssignedRlpInstances', self.buildRLPUnAssInstanceRecord, serverResponse, {"bLengthChange":false,"iDisplayLength":5}, unAssinstanceTbl);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message : textStatus, messageType : 'alert' }, "general");

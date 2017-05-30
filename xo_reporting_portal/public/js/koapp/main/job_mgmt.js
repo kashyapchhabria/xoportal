@@ -40,7 +40,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			self.loadClients();
 			self.loadallJobsForAdding();
 			self.loadallConfigInstances();
-			$('#addconfigModel').foundation('reveal', 'open');
+			loadPopup("myModal");
 		 };
 
         self.loadClients = function() {

@@ -1,0 +1,104 @@
+@include(temp)
+<script id="report_grp_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<a class="ui primary button" title='Go Back' onclick="backPage()">&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a class="ui primary button" title="Add new Group" id="addgroup" data-reveal-id="addgroupModel" data-bind='click:reportgrpmgmt.loadPopup'>@Messages.get("reports.grp.mgmt.add")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableGroups" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("reports.grp.mgmt.code")</th>
+						<th>@Messages.get("reports.grp.mgmt.name")</th>
+						<th>@Messages.get("reports.grp.mgmt.order")</th>
+						<th>@Messages.get("reports.grp.mgmt.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:reportgrpmgmt.availableGroups, as: 'groupRecord'}">
+					<tr>
+						<td>
+							<span data-bind="text:groupRecord.viewGroupId"></span>
+						</td>
+						<td>
+							<span data-bind='if:groupRecord.isEdit()'>
+								<input type="text" data-bind='value: groupRecord.groupName' />
+							</span>
+							<span data-bind='ifnot:groupRecord.isEdit()'>
+								<span data-bind="text:groupRecord.groupName"></span>
+							</span>
+						</td>
+						<td>
+							<span data-bind='if:groupRecord.isEdit()'>
+								<input type="text" data-bind='value: groupRecord.displayOrder' />
+							</span>
+							<span data-bind='ifnot:groupRecord.isEdit()'>
+								<span data-bind="text:groupRecord.displayOrder"></span>
+							</span>
+						</td>
+						<td>
+							<a class="action_link" title='@Messages.get("reports.grp.mgmt.edit")' data-bind='click:groupRecord.editable,ifnot:groupRecord.isEdit()'>
+								<i class="fa fa-edit"></i>
+							</a>
+							<a class="action_link" title="Save" data-bind='if:groupRecord.isEdit(), click:groupRecord.saveGroups'>
+								<i class="fa fa-save"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("reports.grp.mgmt.dact")' data-bind='click:groupRecord.toggleStatus,if: groupRecord.active'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("reports.grp.mgmt.act")' data-bind='click:groupRecord.toggleStatus, ifnot: groupRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("reports.grp.mgmt.del")' data-bind='click:groupRecord.deleteGroupCheck'>
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div id="myModal" class="ui small modal">@Messages.get("reports.grp.mgmt.add")
+		<i class="close icon"></i>
+		<div class="ui grid page" style="padding-top:1% !important;">
+			<div class="row">
+				<div class="column">
+					<span>
+						<br>
+						<div data-alert id="popup-box-container" class="display_message" align="center" style="display:block !important;">
+							<div class="ui success message">
+								<i class="close icon" id="close_message"></i>
+								<div class="header" id="popup-message">
+									Message Here
+								</div>
+							</div>
+						</div>
+						<br>
+					</span>
+					<span class="ui form">
+						<div class="ui field">
+							<input type="text" data-bind='value: reportgrpmgmt.groupName' />
+						</div>
+						<center>
+							<button data-bind="click:reportgrpmgmt.saveGroups" id="create_group" class="ui primary button" type="submit">Add</button>
+						</center>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+</script>

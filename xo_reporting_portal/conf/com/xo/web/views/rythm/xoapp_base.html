@@ -1,0 +1,25 @@
+@include(temp)
+@args List contents
+@extends(xo_base, title: Messages.get("global.title"))
+		<!-- Show the correct page content, based on the current URL fragment. -->
+		<div id="content"
+			data-bind="template: { name: router.currentPage().view,data: router.currentPage().model }" >
+		</div>
+		@for(content : contents){
+			@raw(){
+				@content
+			}
+		}
+		<!-- Templates used directly by the Router -->
+		<script id="404-template" type="text/html">
+  			<h2>404 - Page not found</h2>
+		</script>
+		
+		<script id="error-template" type="text/html">
+  			<h2>Error</h2>
+  			<p data-bind="text: error"></p>
+		</script>
+
+		<script id="loading-template" type="text/html">
+  			<h2>Loading...</h2>
+		</script>

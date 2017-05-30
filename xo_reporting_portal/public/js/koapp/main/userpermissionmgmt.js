@@ -21,13 +21,12 @@ define(['knockout', 'jquery'], function(ko, $) {
 				'url':  xoappcontext + '/userpermission/' + self.curUser().userId,
 				'type':'GET',
 				'cache':false,
-				'success' : function(data) {
-					if(userpermtbl) {
-						userpermtbl.clear();
-						userpermtbl.destroy();
-					}
-					self.buildUserPermissionData(data);
-					userpermtbl = $("#allAvailableUserPermissions").DataTable( { responsive: true } );
+				'success' : function(serverData){
+					userpermtbl = self.buildDataTableWithData('allAvailableUserPermissions',
+									self.buildUserPermissionData,
+									serverData,
+									{'responsive':false},
+									userpermtbl);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
@@ -99,8 +98,8 @@ define(['knockout', 'jquery'], function(ko, $) {
 		};
 
 		self.loadPopup = function(data, event) {
-		self.loadUnassignedPermissions();
-			popup = $('#myModal').foundation('reveal', 'open');
+			self.loadUnassignedPermissions();
+			popup = loadPopup('myModal');
 		};
 
 
@@ -112,14 +111,12 @@ define(['knockout', 'jquery'], function(ko, $) {
 				'url':  xoappcontext + '/permissions/unassigned_user_permissions/' + self.curUser().userId,
 				'type':'GET',
 				'cache':false,
-				'success' : function(data) {
-					if(poptbl) {
-						poptbl.clear();
-						poptbl.destroy();
-					}
-					self.buildUnassignedPermissionData(data);
-					poptbl = $("#UnassignedUserPermissions").DataTable( { responsive: true, "bLengthChange": false,"iDisplayLength": 6 } );
-
+				'success' : function(serverData) {
+					poptbl = self.buildDataTableWithData('UnassignedUserPermissions',
+								self.buildUnassignedPermissionData,
+								serverData,
+								{responsive: false, "bLengthChange": false, "iDisplayLength": 5 },
+								poptbl);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message:textStatus, messageType:'alert'},"popup");
