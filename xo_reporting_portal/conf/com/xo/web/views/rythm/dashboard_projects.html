@@ -1,12 +1,20 @@
 @include(temp)
 <script id="menuTree" type="text/html">
-	<li data-bind= 'attr: { class: (subMenuItems().length > 0 ? "has-dropdown not-click" : "")}'>
-		<a data-bind='text:name, click:loadPageData'></a>
-		<ul class="dropdown" data-bind="template: { name: 'menuTree', foreach: subMenuItems}" ></ul>
-	</li>
+	<!-- ko if: subMenuItems().length > 0 -->
+		<div class="ui dropdown item">
+			<a data-bind='text:name,click:loadPageData' style="color:black !important;"></a>
+			<i class="fa fa-angle-double-right"></i>
+			<div class="menu" data-bind="template: { name: 'menuTree', foreach: subMenuItems}">		
+			</div>
+		</div>
+	<!-- /ko -->
+	<!-- ko if: subMenuItems().length == 0 -->
+		<a data-bind='text:name, click:loadPageData' class="item">
+		</a>
+	<!-- /ko -->
 </script>
 <script id="commentButton" type="text/html">
-	<li><a data-bind="click:openCommentNav">Comment</a></li>
+<a data-bind="click:openCommentNav">Comment</a>
 	<div id="commentDiv" class="sidenav">
 		<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:closeCommentNav">x</a></span>
 		<div class="row">
@@ -37,10 +45,10 @@
 	</div>
 </script>
 <script id="tab_dashboard" type="text/html">
-	<section id="tableauReportsPageSection" style="background-color: white;">
+	<section id="tableauReportsPageSection" style="background-color: white;" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
 		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
 			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
-			<div id="tableauViewPlace" data-bind='attr:{style:(tableaumgmt.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'></div>
+			<div id="tableauViewPlace"></div>
 		</center>
 		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
 			<span class="alert">

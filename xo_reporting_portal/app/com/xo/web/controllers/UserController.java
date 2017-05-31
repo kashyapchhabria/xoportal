@@ -412,6 +412,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
+//			add(render("diffusionmap.html"));
 //			add(com.xo.web.views.html.diffusionmap.render(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)));
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
 				add(render("create_role.html"));

@@ -1,3 +1,9 @@
+html:-webkit-full-screen-ancestor {
+	background-color: #fff;
+}
+html:-moz-full-screen-ancestor {
+	background-color: #fff;
+}
 #preloader{
 	position: fixed; 
 	left: 0; 
@@ -151,7 +157,7 @@ div.dataTables_wrapper div.dataTables_info {
 		padding-right: 5% !important;	
 	}
 	.disp{
-		display: none;
+		display: none !important;
 	}
 	.item.active > .disp{
 		display: none;

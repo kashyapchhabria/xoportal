@@ -1,8 +1,9 @@
 @include(temp)
 @args play.mvc.Http.Request request = play.mvc.Http.Context.current().request(), play.mvc.Http.Response response = play.mvc.Http.Context.current().response(),Session session  = play.mvc.Http.Context.current().session()
 
-	<div class="ui fixed menu">
-		<div class="ui container"> 
+	<div class="ui fixed menu" id="top_nav_bar">
+		<div class="ui container">
+		@if((session.get("roleName") != null) && (com.xo.web.models.system.RoleEnum.Admin.name().equalsIgnoreCase(session.get("roleName")))){ 
 			<div class="ui simple dropdown item">
 				<i class="bars icon"></i>
 				<div class="menu">
@@ -10,7 +11,7 @@
 						<i class="fa fa-line-chart"></i>
 						&nbsp;&nbsp;Report & Settings
 					</div>
-					<a class="item" href="#applicationmanagement">
+					<a class="item" href="#tabdashboard">
 						&nbsp;&nbsp; Report
 					</a>
 					<a class="item" href="#reportmgmt">
@@ -51,17 +52,35 @@
 						&nbsp;&nbsp;Role Based Record Permissions
 					</a>
 				</div>
-				<div class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></div>
-			</div> 
+			</div>
+			}
+			<!-- ko if: menuData && menuData().length > 0 -->
+				<div class="ui simple dropdown item">
+					<i class="fa fa-tachometer"></i>
+					<div class="ui vertical menu" data-bind="template: { name: 'menuTree', foreach: menuData}">
+					</div>
+				</div>
+				<a class="item" id="rptdownload" data-bind="click:exportPdf"><i class="fa fa-download"></i></a>
+				<div class="comment" data-bind="template: { name: 'commentButton'}" style="display:none"></div>
+			<!-- /ko -->
 			<a id="home_button" class="item" href="#">
 				<i class="home icon"></i>
 			</a>
+			<a class="item" data-bind="click:openCommentNav"><i class="fa fa-comments"></i></a>
 			<div class="right menu">
-				<div class="item" data-bind="text: router.currentPage().title">
+				<div class="item disp" data-bind="text: router.currentPage().title">
 				</div>
-				<select style="margin-top:4px;" class="ui selection dropdown" title='@Messages.get("user.selclient")' id="selSupSysClient" 
-					data-bind='options:allClients, optionsText: "name", value: selectedSupClient, optionsCaption:"@Messages.get("user.selclient")"'>
-				</select>				
+			 	@if(session.get(com.xo.web.util.XoAppConstant.HEADER_X_SUPER_CLIENT) != null) {
+					<select style="margin-top:4px;" class="ui selection dropdown" title='@Messages.get("user.selclient")' id="selSupSysClient" 
+						data-bind='options:allClients, optionsText: "name", value: selectedSupClient, optionsCaption:"@Messages.get("user.selclient")"'>
+					</select>
+				}
+				<a data-bind='click: fullScreenView' class="item">
+					<i class="fa fa-arrows-alt"></i>
+				</a>
+				<a class="item" id="hide_nav_bar">
+					<i class="compress icon"></i>
+				</a>
 				<div class="ui simple right dropdown item">
 					<i class="large setting icon"></i>
 					<div class="left menu">

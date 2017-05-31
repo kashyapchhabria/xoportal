@@ -36,7 +36,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
         self.loadDashboardData = function(latestClient) {
             self.isFullScreenAvailable(true);
-            $(".se-pre-con").show(true);
+        	$('#preloader').show(true);
             $.ajax({
                 'url': xoappcontext + '/dashboard',
                 'type': 'POST',
@@ -48,21 +48,19 @@ define(['knockout', 'jquery'], function(ko, $) {
                     if (responsedata) {
                         self.buildDashboardData(responsedata, true);
                     }
-                    $(".se-pre-con").fadeOut("slow");
-
+                	$('#preloader').fadeOut("slow");
                 },
                 'error': function(jqXHR, textStatus, errorThrown) {
                     setGlobalMessage({
                         message: textStatus,
                         messageType: 'alert'
                     }, "general");
-                    $(".se-pre-con").fadeOut("slow");
+                	$('#preloader').fadeOut("slow");
                 }
             });
         };
 
         self.loadPageData = function(data, event) {
-
         	$('#preloader').show(true);
             if (data && event) {
             	self.selectedReportMenuItem(data.name);
@@ -136,16 +134,17 @@ define(['knockout', 'jquery'], function(ko, $) {
                 if (totalItems > 0) {
                     var menuIndex = 0;
                     var actualMenus = responsedata.menuDtos[0].subMenus;
-                    actualMenus.unshift(self.selectReport);
+                    //actualMenus.unshift(self.selectReport);
                     totalItems = actualMenus.length;
                     for (; menuIndex < totalItems; menuIndex++) {
                         var menuItem = self.buildMenuItem(actualMenus[menuIndex]);
-                        if(menuIndex == 0) {
+                        menus.push(menuItem);
+                        /*if(menuIndex == 0) {
                         	reportsMenu = menuItem;
                         	menus.push(menuItem);
                         } else {
                         	reportsMenu.subMenuItems.push(menuItem);
-                        }
+                        }*/
                     }
                 }
             }
@@ -347,9 +346,6 @@ define(['knockout', 'jquery'], function(ko, $) {
 
         self.showReportMenus = function() {
             self.isTopBarVisibile(!self.isTopBarVisibile());
-            self.changeViewSize();
-            $(document).foundation();
-            $(document).foundation('reflow');
         };
 
 		self.exportPdf = function() {

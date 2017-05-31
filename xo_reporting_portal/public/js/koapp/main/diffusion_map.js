@@ -235,9 +235,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
             self.renderDiffusionMap(responsedata);
             self.errorText(responsedata.errorText);
-
-            $(document).foundation('reflow');
-            $(document).foundation();
         };
 
         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange', function() {

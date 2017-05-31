@@ -22,7 +22,7 @@
 
 	<script src='@routes.Assets.at("lib/knockout/knockout.js")'></script>	
 	<script src='@routes.Assets.at("DataTables/media/js/jquery.dataTables.min.js")'></script>
-		
+	<script src='@routes.Assets.at("js/tableau/tableau-2.min.js")'></script>
 	<script type="application/javascript">
 	    setAppConext('@com.xo.web.util.XoUtil.getApplicationContext()');
 	    $('#preloader').show(true);
@@ -31,8 +31,15 @@
 	<style>
 	</style>
 </head>
-<body style="width: 100% !important; background-color: white !important;">
+<body style="width: 100% !important; background-color: white !important;" id="xoportalbody">
 	<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
+	@if(session.get("email") != null) {
+	<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;">
+		<div class="ui black big right attached fixed button">
+			<i class="expand icon"></i>
+		</div>
+	</div>
+	}
 	<div style="width: 100% !important;">
 		@render()
 	</div>

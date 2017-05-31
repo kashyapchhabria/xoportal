@@ -1,41 +1,37 @@
-$(".se-pre-con").show(true);
+$('#preloader').show(true);
 requirejs.config({
-  baseUrl :  xoappcontext + '/vassets/lib/',
-  shim : {
-    'knockout' : {exports: 'knockout'},
-	'foundation': {
-					exports:'foundation',
-					deps:['jquery']
-				},
-	"knockout.validation": {"deps": ["knockout"]},
-	'datatables': {
-		   	 	exports: 'datatables'
-			},
-	'datatables-foundation': {
-				exports: 'DataTable',
-		   	 	deps:['datatables', 'foundation']
-			},
-	'datatables-responsive': {
-		   	 	exports: 'Responsive',
-		   	 	deps:['datatables', 'foundation']
-			}
-  },
-  paths : {
-    jquery : 'jquery/jquery.min',
-    knockout : 'knockout/knockout',
-    "knockout.validation": xoappcontext + '/vassets/js/koapp/knockout.validation.min',
-    selectize : 'selectize.js/js/standalone/selectize.min',
-    main :  xoappcontext + '/vassets/js/koapp/main',
-    foundation: xoappcontext + '/vassets/lib/foundation/js/foundation.min',
-    datatables:  xoappcontext + '/vassets/js/datatable/jquery.dataTables',
-    DataTable:  xoappcontext + '/vassets/js/datatable/foundation.datatable',
-    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive'
-  }
+	waitSeconds : 0,
+	baseUrl :  xoappcontext + '/vassets/lib/',
+	shim : {
+		'knockout' : {exports: 'knockout'},
+		'semantic': {
+			exports:'semantic',
+			deps:['jquery']
+		},
+		"knockout.validation": {"deps": ["knockout"]},
+		'datatables': {
+			exports: 'datatables'
+		},
+		'datatables-semantic': {
+			exports: 'DataTable',
+			deps:['datatables', 'semantic']
+		}
+	},
+	paths : {
+		jquery : 'jquery/jquery.min',
+		knockout : 'knockout/knockout',
+		"knockout.validation": xoappcontext + '/vassets/js/koapp/knockout.validation.min',
+		selectize : 'selectize.js/js/standalone/selectize.min',
+		main :  xoappcontext + '/vassets/js/koapp/main',
+		semantic: xoappcontext + '/assets/semantic/out/semantic.min',
+		datatables:  xoappcontext + '/vassets/DataTables/media/js/jquery.dataTables.min',
+		DataTable:  xoappcontext + '/vassets/DataTables/media/js/dataTables.semanticui.min'
+	}
 });
 
-define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'foundation', 
-         'datatables', 'DataTable', 'Responsive', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map'],
-         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
+define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'semantic', 
+         'datatables', 'DataTable', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map'],
+         function(ko, Router, kv, koSelector, semantic, datatables, DataTable, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
 
     var initializePages = function(){
 

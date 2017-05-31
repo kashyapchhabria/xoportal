@@ -314,16 +314,39 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
     	  if(activeTab!==null){
     		  $('.ui.menu.top').find('.item').tab('change tab', activeTab);
     	  }
+    	  document.getElementById("show_nav_bar").style.display = "none";
       }
       
       topLevelModel.display_msgbox= {};
       topLevelModel.display_msgbox.afterRendererdHandler = function (){
+    	  
     	  $('#popup-box-container').css('visibility', 'hidden');
     	  
     	  $('#alert-box-container').css('visibility', 'hidden');
     	  $("#close_message").click(function(){
     		  $('.display_message').css('visibility', 'hidden');
     	  });
+    	  
+    	  document.getElementById("show_nav_bar").style.display = "none";
+   		  document.getElementById("top_nav_bar").style.display = "flex";
+   		  if(document.getElementById("tableauViewPlace")!=null){
+   			  document.getElementById("tableauViewPlace").style.marginTop = "3%";
+   		  }
+   		  $("#show_nav_bar").mouseover(function(){
+   			  document.getElementById("top_nav_bar").style.display = "flex";
+   			  document.getElementById("show_nav_bar").style.display = "none";
+   	   		  if(document.getElementById("tableauViewPlace")!=null){
+   	   			  document.getElementById("tableauViewPlace").style.marginTop = "3%";
+   	   		  }
+   		  });
+
+   		  $("#hide_nav_bar").click(function(){
+   			  document.getElementById("top_nav_bar").style.display = "none";
+   			  document.getElementById("show_nav_bar").style.display = "inline-block";
+   	   		  if(document.getElementById("tableauViewPlace")!=null){
+   	   			  document.getElementById("tableauViewPlace").style.marginTop = "0%";
+   	   		  }
+   		  });
       }
       // Make model accessible in global context, purely to aid debugging.
       window.topLevelModel = topLevelModel;
