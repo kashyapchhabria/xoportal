@@ -46,10 +46,10 @@
 							</span>
 						</td>
 						<td>
-							<a data-bind='click:configuration.editable' title="Edit" class="action_link">
+							<a data-bind='ifnot:configuration.isEdit(), click:configuration.editable' title="Edit" class="action_link">
 								<i class="fa fa-edit"></i>
 							</a>
-							<a  data-bind='click:configuration.update' title="Save" class="action_link">
+							<a data-bind='if:configuration.isEdit(), click:configuration.update' title="Save" class="action_link">
 								<i class="fa fa-save"></i>
 							</a>
 							<a title="Delete"  data-bind='click:configuration.deleteConfig' class="action_link">

@@ -310,7 +310,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
-            self.selectedReportMenuItem("Select Report");
+            self.selectedReportMenuItem("Main Dashboard");
         };
 
         self.loadClients = function() {

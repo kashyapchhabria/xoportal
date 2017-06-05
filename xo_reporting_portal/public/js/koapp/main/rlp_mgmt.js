@@ -21,6 +21,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		var instanceTbl = null;
 		var unAssinstanceTbl = null;
 
+		var AllUsers = null;
+		
 		self.cleanup = function() {
 			self.availableEntityInstances.removeAll();
 			self.availableroles.removeAll();
@@ -54,6 +56,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					}
 				});
 			}
+			AllUsers = dataHolder();
 			return true;
 		};
 
@@ -85,7 +88,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'type' : 'GET',
 				'cache' : false,
 				'success' : function(serverResponse) {
-					instanceTbl = self.buildDataTableWithData('allRLPEntities', self.buildRLPInstanceRecord, serverResponse, null, instanceTbl);
+					setTimeout(function(){
+						instanceTbl = self.buildDataTableWithData('allRLPEntities', 
+															self.buildRLPInstanceRecord, 
+															serverResponse, 
+															null, 
+															instanceTbl);
+					},500);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message : textStatus, messageType : 'alert'}, "general");
@@ -99,7 +108,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'type' : 'GET',
 				'cache' : false,
 				'success' : function(serverResponse) {
-					instanceTbl = self.buildDataTableWithData('allRLPEntities', self.buildRLPInstanceRecord, serverResponse, null, instanceTbl);
+					setTimeout(function(){ 
+						instanceTbl = self.buildDataTableWithData('allRLPEntities', 
+												self.buildRLPInstanceRecord, 
+												serverResponse, 
+												null, 
+												instanceTbl);
+						},500);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					setGlobalMessage({message : textStatus, messageType : 'alert'}, "general");
@@ -109,7 +124,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
 		self.reloadTbl = function() {
 			if(self.selectedGroup() == 'User') {
-				self.self.loadUserRLPData();
+				self.loadUserRLPData();
 			} else if(self.selectedGroup() == 'Role') {
 				self.loadRoleRLPData();
 			}
@@ -119,9 +134,20 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			if(serverResponse) {
 				self.availableEntityInstances.removeAll();
 				var instanceIndex = 0;
+				var usernum = 0;
 				var totalInstances = serverResponse.length;
+				var totalUser = AllUsers.length;
 				for(;instanceIndex < totalInstances; instanceIndex++) {
 					var entityInstance = serverResponse[instanceIndex];
+					for(usernum=0;usernum<totalUser;usernum++)
+					{
+						if(serverResponse[instanceIndex].userId == AllUsers[usernum].entityId){
+							entityInstance.user = AllUsers[usernum].displayText;
+						}
+						if(serverResponse[instanceIndex].roleId == AllUsers[usernum].entityId){
+							entityInstance.role = AllUsers[usernum].displayText;
+						}
+					}
 					entityInstance.active = ko.observable(serverResponse[instanceIndex].active);
 					entityInstance.deleteRecord = self.deleteRecord;
 					entityInstance.toggleActiveStatus = self.toggleActiveStatus; 

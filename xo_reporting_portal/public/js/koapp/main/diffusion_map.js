@@ -25,9 +25,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.activeSheet = ko.observable('Diffusion Map');
 		self.maxSel = ko.observable("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
 		self.showSelect= ko.observable(true);
-		self.commentHeading = ko.observable('Diffusion Map');
+		self.dashboardCommentHeading = ko.observable('Diffusion Map');
 		self.prevSelected = ko.observable('Diffusion Map');
-		
+        
         self.visibility = ko.observable(false);
         var workbook = null;
         var activeSheet = null;
@@ -363,7 +363,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             self.visibility(false);
             self.selectedSupClient();
             
-            self.commentHeading('Diffusion Map');
+            self.dashboardCommentHeading('Diffusion Map');
             self.activeSheet('Diffusion Map');
 			self.maxSel("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
 			self.showSelect(true);
@@ -382,7 +382,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
         		self.showSelect(true);
-        		self.commentHeading('Diffusion Map');
+        		self.dashboardCommentHeading('Diffusion Map');
         		self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
         		self.retrieveFilters(self.selectedDiffFilters,6);
         		$("#diffMap").css("background-color", activeColor);
@@ -390,7 +390,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			}
 			else if(sheetName === "Spend Segment") {
 				self.showSelect(true);
-				self.commentHeading('Spend Segment');
+				self.dashboardCommentHeading('Spend Segment');
 				self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedSpendFilters,6);
 				$("#spndSeg").css("background-color", activeColor);
@@ -398,14 +398,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			}
 			else if(sheetName === "Reports") {
 				self.showSelect(false);
-				self.commentHeading('Reports');
+				self.dashboardCommentHeading('Reports');
 				self.retrieveFilters(self.selectedSpendFilters,6);
 				$("#reports").css("background-color", activeColor);
 				$("#reports").css("color", actTextColor);
 			}
 			else {
 				self.showSelect(true);
-				self.commentHeading('Trendsensor');
+				self.dashboardCommentHeading('Trendsensor');
 				self.maxSel("Select VAS (max 1) &nbsp&nbsp &#x25BC;");
 				self.retrieveFilters(self.selectedTrendFilters,1);
 				$("#trndSen").css("background-color", activeColor);
@@ -570,7 +570,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             isTitleVisible:self.isTitleVisible,
             maxSel:self.maxSel,
             showSelect:self.showSelect,
-            commentHeading:self.commentHeading
+            dashboardCommentHeading:self.dashboardCommentHeading
         };
     }
 	
