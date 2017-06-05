@@ -403,7 +403,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
-			add(render("comment.html"));
 			add(render("diffusionmap.html",(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)+"_logo.png")));
 //			add(com.xo.web.views.html.diffusionmap.render(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)));
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
@@ -477,6 +476,7 @@ public class UserController extends BaseController<User, Integer> implements Use
         		add(render("role_row_level_mgmt.html"));
             }
         	add(render("changepassword.html",CHANGE_PASSWORD_FORM));
+			add(render("comment.html"));
 		}};
 	}
 
