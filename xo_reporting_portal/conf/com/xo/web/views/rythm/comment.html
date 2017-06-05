@@ -1,0 +1,42 @@
+@include(temp)
+<script id="commentButton" type="text/html">
+	<br>
+	<div class="ui grid">
+		<div class="row">
+			<div class="right aligned column">
+				<div class="ui icon button" data-bind="click:closeCommentNav" >
+					<i class="close icon"></i>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="center aligned column">
+				<h4 style="color:white;" data-bind="html: dashboardCommentHeading"></h4>
+				<textarea placeholder="Enter your Comment here..." data-bind="value:commentText" rows="3" maxlength="200" style="width:90%"></textarea>
+			</div>
+		</div>
+		<div class="row" style="width:80%">
+			<div class="center aligned column">
+				<a data-bind="click: submitDashboardComment" class="ui primary button">Comment</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<div class="ui comments">
+				<!-- ko foreach: { data: dashboardMsgs ,as:'comments' } -->
+					<div class="comment" style="background:white; border: 1px solid; border-radius:10px;">
+						<div class="content" style="padding: 10px 1px 1px 10px;">
+							<a class="author" data-bind="text:comments.user"></a>
+							<div class="metadata">
+								<span class="date" data-bind="text:comments.ts"></span>
+							</div>
+							<div class="text" data-bind="text:comments.message">
+							</div>
+						</div>
+					</div>
+				<!-- /ko -->
+				</div>
+			</div>
+		</div>
+	</div>
+</script>

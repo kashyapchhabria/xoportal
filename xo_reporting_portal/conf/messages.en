@@ -64,6 +64,7 @@ password.change=Change Password
 password.forgot=Forgot Password ?
 
 # Admin landing page
+admin.land.diff=Diffusion Map
 admin.land.security=Security
 admin.land.portalapp=Reporting Portal & Configurations  
 admin.land.usermgmt=Manage Users
@@ -239,6 +240,8 @@ clientjobconfig.mgmt.actconfigtempl=Activate Job
 clientjobconfig.mgmt.delconfig=Delete Job
 
 # Row Level Permission mgmt page
+rowlevel.crud.user=User
+rowlevel.crud.role=Role
 rowlevel.crud=Row Level Permission Management
 rowlevel.crud.chooseusorrrole=Row level access for
 rowlevel.crud.seluser=Select User

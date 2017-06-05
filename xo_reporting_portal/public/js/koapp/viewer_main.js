@@ -79,6 +79,24 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       // This is the KO ViewModel for the whole page, which contains our router, which
       // in turn keeps track of the current page.
       var topLevelModel = { router: new Router(urlMapping, randomFilter)};
+      
+      topLevelModel.display_msgbox= {};
+      topLevelModel.display_msgbox.afterRendererdHandler = function (){
+    	  
+    	  $('#popup-box-container').css('visibility', 'hidden');
+    	  
+    	  $('#alert-box-container').css('visibility', 'hidden');
+    	  $("#close_message").click(function(){
+    		  $('.display_message').css('visibility', 'hidden');
+    	  });
+    	  hidemenu();
+    	  showmenu();
+    	  if((document.getElementById("show_nav_bar").style.display != "none")&&((document.getElementById("top_nav_bar").style.display != "none"))){
+    		  document.getElementById("show_nav_bar").style.display = "none";
+    	  }
+    	  $('#multi_select').dropdown({action: 'nothing'});
+      }
+      
       // Make model accessible in global context, purely to aid debugging.
       window.topLevelModel = topLevelModel;
 
@@ -87,5 +105,5 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
     }
 
     initializePages();
-    $(".se-pre-con").fadeOut('slow');
+    $("#preloader").fadeOut('slow');
 });

@@ -25,6 +25,7 @@
 	<script src='@routes.Assets.at("js/tableau/tableau-2.min.js")'></script>
 	<script type="application/javascript">
 	    setAppConext('@com.xo.web.util.XoUtil.getApplicationContext()');
+	    setAppUser('@session.get("email")');
 	    $('#preloader').show(true);
 	</script>
 
@@ -32,33 +33,36 @@
 	</style>
 </head>
 <body style="width: 100% !important; background-color: white !important;" id="xoportalbody">
-	<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
-	@if(session.get("email") != null) {
-	<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;">
-		<div class="ui black big right attached fixed button">
-			<i class="expand icon"></i>
-		</div>
-	</div>
-	}
-	<div style="width: 100% !important;">
-		@render()
-	</div>
-	<div class="footer">
-		<div class="row">
-			<div class="">
-				<p style="font-size:0.7rem; text-align:center; margin-top:10em;" class="copyright">© <a href="http://www.xoanonanalytics.com/" style="color: #002366 !important;">Xoanon Analytics.</a> All rights reserved.</p>
+	<div data-bind="template: { name: 'commentButton'}" id="commentDiv" class="ui right sidebar" style="background-color:#757575;"></div>
+	<div class="pusher">
+		<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
+		@if(session.get("email") != null) {
+		<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;" onclick="showmenu()">
+			<div class="ui black big right attached fixed button">
+				<i class="expand icon"></i>
 			</div>
 		</div>
+		}
+		<div style="width: 100% !important;">
+			@render()
+		</div>
+		<div class="footer">
+			<div class="row">
+				<div class="">
+					<p style="font-size:0.7rem; text-align:center; margin-top:10em;" class="copyright">© <a href="http://www.xoanonanalytics.com/" style="color: #002366 !important;">Xoanon Analytics.</a> All rights reserved.</p>
+				</div>
+			</div>
+		</div>
+		@if(session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN) != null) {
+			<div id="authtokenvalue" authtoken="@session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN)">
+			</div>
+		}
+		@if(session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE) != null) {
+			<div id="curpagehash" pagehash="@session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE)">
+			</div>
+		}
+		<div id="supportWidget"></div>
 	</div>
-	@if(session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN) != null) {
-		<div id="authtokenvalue" authtoken="@session.get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN)">
-		</div>
-	}
-	@if(session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE) != null) {
-		<div id="curpagehash" pagehash="@session.get(com.xo.web.util.XoAppConstant.CURRENT_PAGE)">
-		</div>
-	}
-	<div id="supportWidget"></div>
 </body>
 
 @if((session.get("roleName") != null) && (com.xo.web.models.system.RoleEnum.Admin.name().equalsIgnoreCase(session.get("roleName")))){

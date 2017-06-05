@@ -105,7 +105,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
                 self.errors.showAllMessages();
                 return;
             }
-			$(".se-pre-con").show();
+			$("#preloader").show();
 
 			// Create a formdata object and add the files
 			var userDto = {
@@ -128,7 +128,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 				'data':data,
 				'contentType': "application/json; charset=utf-8",
 				'success' : function(responseData) {
-					$(".se-pre-con").fadeOut("slow");
+					$('#preloader').fadeOut("slow");
 					setGlobalMessage(responseData,"general");
 					if(responseData.messageType == 'success') {						
 						setTimeout(function(){
@@ -183,7 +183,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 		};
 
 		self.uploadUsers = function() {
-			$(".se-pre-con").show(true);
+			$("#preloader").show(true);
 
 			files = $('#user_entries').prop("files");
 
@@ -208,12 +208,12 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 				'success' : function(data) {
 					setGlobalMessage(data,"general");
 					setTimeout(function() {
-						$(".se-pre-con").fadeOut("slow");
+						$('#preloader').fadeOut("slow");
 						setLocationHash('usermanagement');
 					}, 5000);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
-					$(".se-pre-con").fadeOut("slow");
+					$('#preloader').fadeOut("slow");
 					setGlobalMessage(data,"general");
 				}
 			});

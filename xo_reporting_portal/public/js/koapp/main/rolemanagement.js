@@ -56,7 +56,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 		};
 
 		self.saveRole = function() {
-			$(".se-pre-con").show(true);
+			$("#preloader").show(true);
 			// Create a formdata object and add the files
 			var roleDto = {roleId:self.roleId(), name:self.name(), description:self.description()};
 			if(roleDto.roleId == false) {

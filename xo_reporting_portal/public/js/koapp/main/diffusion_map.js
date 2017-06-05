@@ -122,7 +122,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.showDiffusionMap = function (latestClient) {
         	self.isFullScreenAvailable(true);
-        	$(".se-pre-con").show(true);
+        	$("#preloader").show(true);
             $.ajax({
                 'url': xoappcontext + '/diffusionMap',
                 'type': 'POST',
@@ -135,7 +135,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                         self.buildDiffusionDashboardData(responsedata);
                         self.getFilterList();
                     }
-                    $(".se-pre-con").fadeOut("slow");
+                	$('#preloader').fadeOut("slow");
 
                 },
                 'error': function(jqXHR, textStatus, errorThrown) {
@@ -143,7 +143,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                         message: textStatus,
                         messageType: 'alert'
                     }, "general");
-                    $(".se-pre-con").fadeOut("slow");
+                	$('#preloader').fadeOut("slow");
                 }
             });
         }
@@ -375,7 +375,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.changeActiveSheet = function (sheetName) {
         	var defaultColor = "#E7E7E7";
-        	var activeColor = "#6A9A00";
+        	var activeColor = "#0ABAB5";
         	var actTextColor = "white";
         	var defTextColor = "black";
         	self.cancelSelected();

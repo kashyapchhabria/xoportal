@@ -1,100 +1,57 @@
+@args String clientlogo
 @include(temp)
 @include(nav_bar)
-@args String clientlogo
 <script id="diffusion_map" type="text/html">
-<div id="mySidenav" class="sidenav">
-	<span style="text-align:left;"><a style="color:#ffffff" class="closebtn" data-bind="click:diffMap.closeNav">x</a></span>
-	<div class="row">
-		<center>
-			<p  style="font-size:16; color:white; font-family: Calibri;"data-bind="html: diffMap.commentHeading"></p>
-			<textarea placeholder="Enter your Comment here..." data-bind="value:diffMap.inputText" rows="3" maxlength="200" style="width:350px;"></textarea>
-		</center>
-	</div>
-	<div>
-		<div class="small-8 columns"></div>
-		<div class="small-4 columns">
-			<a style="color:#ffffff" data-bind="click: diffMap.submitComment" class="small button">Comment</a>
-		</div>
-	</div>
-	<div class="row">
-		<center>
-		<!-- ko foreach: { data: diffMap.msgs ,as:'comments' } -->
-		<div style="text-align:left;" class="stcommentbody" >
-			<div class="stcommenttext">
-				<b data-bind="text:comments.user+': '"></b>
-				<b style="color:#000;font-weight:normal" data-bind="text:comments.message"></b>
-				<div class="stcommenttime" data-bind="text:comments.ts"></div> 
-			</div>
-		</div>
-		<!-- /ko -->
-		</center>
-	</div>
-</div>
-	<section id="diffusionReportsPageSection" style="background-color: white;">
-				<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
-					<div id="diffusionViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
-						<div data-bind="visible:diffMap.isTitleVisible()">	
-							<div class="large-11 columns" style="padding-left:0; padding-right:0;">
-								<div>
-										<nav class="top-bar" style="background-color: #6a9a00;  height: 20px; margin-top:10px; font-family: Calibri;"><p style="font-size:14; color:#fff">VAS Diffusion Map</p>
-										</nav>
-								</div>
-								<div style="margin-left:-719px;">
-									<ul class="button-group">
-										<li><a class="small button secondary" style="background-color: #6A9A00; color:white " id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a></li>
-										<li><a class="small button secondary" id="spndSeg" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a></li>
-										<li><a class="small button secondary" id="trndSen" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a></li>
-										<li><a class="small button secondary" id="reports" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a></li>
-										<li><a class="small button secondary" id="comment" data-bind="click:diffMap.openNav">Comments</a></li>
-									</ul>
-								</div>	
+	<section id="diffusionReportsPageSection" style="background-color: white;" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
+			<div id="diffusionViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
+				<div data-bind="visible:diffMap.isTitleVisible()">	
+					<div class="ui grid page" style="padding:0% !important;">
+						<div class="row">
+							<div class="one wide column">
+								<img class="ui tiny image" src="/xoportal/assets/images/@clientlogo">
 							</div>
-							<div class="large-1 columns">
-								<img width="70" height="25"  align="left" src="/xoportal/assets/images/'@clientlogo'_logo.png">
-							</div>		
+							<div class="fifteen wide column" align="left">
+								<div style="background-color: #67bd61;  height: 20px; margin-top:10px; font-family: Calibri;">
+									<p style="font-size:14; color:#fff">VAS Diffusion Map</p>
+								</div>
+								<a class="ui small button" style="background-color: #0ABAB5; color:white" id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a>
+								<a class="ui small button" style="color:black;" id="spndSeg" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a>
+								<a class="ui small button" style="color:black;" id="trndSen" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a>
+								<a class="ui small button" style="color:black;" id="reports" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a>
+							</div>
 						</div>
-								<div class="row collapse" data-bind="visible:diffMap.isTitleVisible()">
-		            				<div class="small-10 columns" data-bind="visible: diffMap.showSelect"> 
-										<dl class="dropdown2"> 
-											<dt>
-												<a data-bind="click:diffMap.toggleClass ">
-													<p class="multiSel" style="font-size:12; color:#000000; text-align:left;font-family: Calibri;"data-bind="html: diffMap.maxSel"></p>  
-												</a>
-											</dt>
-											<dd>
-												<div class="mutliSelect" >
-													<ul style="margin : 0,padding:0">
-														<!-- ko foreach: { data: diffMap.filterList ,as:'sub_sgmt' } -->
-														<li style="list-style: none;">
-															<label style="margin-bottom:-13px;">
-				        										<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value: sub_sgmt.name},  checked: sub_sgmt.isChecked" />
-				        										<span data-bind="text:sub_sgmt.name" style="font-size:11;"></span>
-				        									</label>
-				    									</li>
-														<!-- /ko -->
-														<li style="display:inline-block;"><a class="small button" style="background-color: #4CAF50; border: none; color: white;" data-bind="click:diffMap.getSelectedFilters" class="button">Apply</a></li>
-														<li style="display:inline-block;"><a class="small button secondary" style="background-color: #4CAF50; border: none; color: white;" data-bind="click:diffMap.cancelSelected" class="button">Cancel</a></li>
-													</ul>
-												</div>
-											</dd>
-										</dl>
-		            				</div>
-		            				<!--
-		            				<div class="small-2 columns">
-		              					<a data-bind="click:diffMap.getSelectedFilters" class="button postfix">Go</a>
-		            				</div> -->
-		          				</div>
-							
+						<div class="row" data-bind="visible:diffMap.isTitleVisible()">
+							<div data-bind="visible: diffMap.showSelect" style="margin-left: 12px;"> 
+								<div class="ui basic right labeled dropdown icon button" id="multi_select" style="box-shadow: 0 0 0 1px rgba(63, 64, 66, 0.37); padding: 2px !important; border-radius: 0px;">
+									<span data-bind="html: diffMap.maxSel" style="font-size: smaller; padding-right: 15px;"></span>
+									<div class="ui menu" style="border-radius: 0px;">
+										<!-- ko foreach: { data: diffMap.filterList ,as:'sub_sgmt' } -->
+										<label class="item" style="padding: 0.25rem 0.25rem!important;">
+											<input type="checkbox" data-bind="attr:{disabled:sub_sgmt.isDisabled,value:sub_sgmt.name},  checked: sub_sgmt.isChecked"/>
+											<span data-bind="text:sub_sgmt.name" style="font-size:11;"></span>
+										</label>
+										<!-- /ko -->
+										<div class="item" style="padding: 0.25rem 0.25rem!important;">
+											<div class="mini ui button" style="padding-bottom: .2em; padding-top: .2em; font-size: 10px;" data-bind="click:diffMap.getSelectedFilters">Apply</div>
+											<div class="mini ui button" style="padding-bottom: .2em; padding-top: .2em; font-size: 10px;" data-bind="click:diffMap.cancelSelected">Cancel</div>
+										</div>
+									</div>
+								</div>
+            				</div>
+            				<!-- <div class="small-2 columns">
+		            			<a data-bind="click:diffMap.getSelectedFilters" class="button postfix">Go</a>
+        		    		</div> -->
+          				</div>
 					</div>
-				</center>
-				<center data-bind="visible:(diffMap.errorText() && diffMap.errorText().length > 0)" >
-					<span class="alert">
-						<h3>Report Loading Error:</h3>
-						<p data-bind="text:diffMap.errorText"></p>
-					</span>
-				</center>
+					<div data-bind="visible:(diffMap.errorText() && diffMap.errorText().length > 0)">
+						<span class="alert">
+							<h3>Report Loading Error:</h3>
+							<p data-bind="text:diffMap.errorText"></p>
+						</span>
+					</div>
+	  			</div>
 	  		</div>
-	  			
+	  	</center>
 	</section>
-		
 </script>

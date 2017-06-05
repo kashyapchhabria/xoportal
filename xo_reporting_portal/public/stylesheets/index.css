@@ -1,3 +1,9 @@
+.no-margin{
+	margin-top: 0% !important;
+}
+.with-margin{
+	margin-top: 3.75% !important;
+}
 html:-webkit-full-screen-ancestor {
 	background-color: #fff;
 }
@@ -138,6 +144,9 @@ div.dataTables_wrapper div.dataTables_info {
     margin-left: 10px;
 }
 @media only screen and (max-width: 768px){
+	.with-margin{
+		margin-top: 11% !important;
+	}
 	.ui.menu.top > .active.item {
 		width: 50% !important;
 	}

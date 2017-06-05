@@ -1,5 +1,4 @@
 @include(temp)
-@include(nav_bar)
 <script id="admin-template" type="text/html">
 <section>
 	<div class="ui center aligned grid page" data-bind="template: {afterRender: $root.land.afterRendererdHandler}">
@@ -20,6 +19,18 @@
 								<div class="content">
 									<div class="header">
 										<a href="#tabdashboard">@Messages.get("admin.land.tableaumgmt")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#diffusionmap">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-delicious fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#diffusionmap">@Messages.get("admin.land.diff")</a>
 									</div>
 								</div>
 							</div>

@@ -97,7 +97,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 		} else {
 			String forgotPassurl = com.xo.web.controllers.routes.UserController.forgotPasswordPage().absoluteURL(request(), false);
 	        return ok(Html.apply(this.render("login.html",LOGIN_FORM,forgotPassurl)));
-//			return ok(com.xo.web.views.html.login.render(LOGIN_FORM, forgotPassurl));
 		}
 	}
 
@@ -106,7 +105,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 		Result result = null;
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
 			String forgotPassurl = com.xo.web.controllers.routes.UserController.forgotPasswordPage().absoluteURL(request(), false);
-			// result = ok(com.xo.web.views.html.login.render(filledForm, forgotPassurl));
 			result = ok(Html.apply(this.render("login.html",filledForm,forgotPassurl)));
 		} else {	// Everything was filled & Success
 			String authToken = session().get(XoUtil.HEADER_AUTH_TOKEN);
@@ -139,8 +137,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 	}
 
 	public Result renderResetPasswordPage(String authToken) {
-		return ok(Html.apply(this.render("reset_password.html",RESET_PASSWORD_FORM, authToken)));		
-//		return ok(com.xo.web.views.html.reset_password.render(RESET_PASSWORD_FORM, authToken));
+		return ok(Html.apply(this.render("reset_password.html",RESET_PASSWORD_FORM, authToken)));
 	}
 
 	public Result resetPassword(String authToken)
@@ -149,7 +146,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 		final Form<ResetPasswordForm> filledForm = RESET_PASSWORD_FORM.bindFromRequest();
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
 			result = ok(Html.apply(this.render("reset_password.html",filledForm, authToken)));
-//			result = ok(com.xo.web.views.html.reset_password.render(filledForm, authToken));
 		} else {	// Everything was filled & Success
 			ResetPasswordForm resetForm = filledForm.get();
 			String newPassword = resetForm.getNewPassword();
@@ -180,7 +176,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 
 	public Result forgotPasswordPage() {
 		return ok(Html.apply(this.render("forgot_password.html",FORGOT_PASSWORD_FORM)));
-//		return ok(com.xo.web.views.html.forgot_password.render(FORGOT_PASSWORD_FORM));
 	}
 
 	public Result forgotPassword()
@@ -189,12 +184,10 @@ public class UserController extends BaseController<User, Integer> implements Use
 		final Form<UserIdentity> filledForm = FORGOT_PASSWORD_FORM.bindFromRequest();
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
 			result = ok(Html.apply(this.render("forgot_password.html",filledForm)));
-//			result = ok(com.xo.web.views.html.forgot_password.render(filledForm));
 		} else {	// Everything was filled & Success
 			UserIdentity resetForm = filledForm.get();
 			this.sendVerifyEmailMailForPassReset(resetForm.getUser());
 			result = ok(Html.apply(this.render("forgot_password_result.html",Messages.get(MSG_FORGOT_PASS_MAIL_SENT_SUCCESS))));
-//			result = ok(com.xo.web.views.html.forgot_password_result.render(Messages.get(MSG_FORGOT_PASS_MAIL_SENT_SUCCESS)));
 		}
 		return result;
 	}
@@ -251,7 +244,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 				if(XoUtil.isNotNull(currentPage)) {
 					session(XoUtil.CURRENT_PAGE, currentPage);
 				}
-//				result = ok(com.xo.web.views.html.xoapp_base.render(this.getUIPages(user)));
 				result = ok(Html.apply(this.render("xoapp_base.html",this.getUIPages(user))));
 			}
 		}
@@ -407,48 +399,38 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(XoAppConstant.HEADER_X_SUPER_CLIENT, Boolean.TRUE.toString());
 				session(ROLE_NAME, RoleEnum.Admin.name());
 				add(render("useradmin_controls.html"));
-//				add(com.xo.web.views.html.useradmin_controls.render());
 			} else {
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
-//			add(render("diffusionmap.html"));
+			add(render("comment.html"));
+			add(render("diffusionmap.html",(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)+"_logo.png")));
 //			add(com.xo.web.views.html.diffusionmap.render(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)));
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
 				add(render("create_role.html"));
 				add(render("role_mgmt.html"));
-//				add(com.xo.web.views.html.create_role.render());
-//				add(com.xo.web.views.html.role_mgmt.render());
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRolePermissionMgmtPermissions())) {
 				add(render("role_permission_mgmt.html"));
-//				add(com.xo.web.views.html.role_permission_mgmt.render());
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserMgmtPermissions())) {
 				add(render("user_mgmt.html"));
 				add(render("create_user.html"));
 				add(render("users_import.html"));
-//				add(com.xo.web.views.html.user_mgmt.render());
-//				add(com.xo.web.views.html.create_user.render());
-//				add(com.xo.web.views.html.users_import.render());
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getPermissionMgmtPermissions())) {
 				add(render("permission_mgmt.html"));
-//				add(com.xo.web.views.html.permission_mgmt.render());
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserRoleMgmtPermissions())) {
 				add(render("user_role_mgmt.html"));
-//				add(com.xo.web.views.html.user_role_mgmt.render());
 			}
 			
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserPermissionMgmtPermissions())) {
 				add(render("user_perm_mgmt.html"));
-//				add(com.xo.web.views.html.user_perm_mgmt.render());
 			}
 
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getTableauPermissions())) {
 				add(render("dashboard_projects.html"));
-//				add(com.xo.web.views.html.dashboard_projects.render());
 			}
 
 			boolean isParentPageAdded = false;
@@ -461,10 +443,6 @@ public class UserController extends BaseController<User, Integer> implements Use
                 add(render("configtemp_mgmt.html"));
                 add(render("reports_mgmt.html"));
                 add(render("reports_grp_mgmt.html"));
-//				add(com.xo.web.views.html.configuration.render());
-//				add(com.xo.web.views.html.configtemp_mgmt.render());
-//				add(com.xo.web.views.html.reports_mgmt.render());
-//				add(com.xo.web.views.html.reports_grp_mgmt.render());
 			}
 
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getConfigInstancePermissions())) {
@@ -473,7 +451,6 @@ public class UserController extends BaseController<User, Integer> implements Use
             	}
             	isParentPageAdded = true;
         		add(render("configinstance_mgmt.html"));
-//                add(com.xo.web.views.html.configinstance_mgmt.render());
             }
 
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getClientJobConfigPermissions())) {
@@ -482,18 +459,15 @@ public class UserController extends BaseController<User, Integer> implements Use
             	}
             	isParentPageAdded = true;
         		add(render("clientjobconfig_mgmt.html"));
-//            	add(com.xo.web.views.html.clientjobconfig_mgmt.render());
             }
 
             isParentPageAdded = false;
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserRowLevePermissions())) {
             	if(!isParentPageAdded) {
-
 //            		add(com.xo.web.views.html.row_level_mgmt.render());
             	}
             	isParentPageAdded = true;
         		add(render("user_row_level_mgmt.html"));
-//            	add(com.xo.web.views.html.user_row_level_mgmt.render());
             }
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleRowLevePermissions())) {
             	if(!isParentPageAdded) {
@@ -501,10 +475,8 @@ public class UserController extends BaseController<User, Integer> implements Use
             	}
             	isParentPageAdded = true;
         		add(render("role_row_level_mgmt.html"));
-//            	add(com.xo.web.views.html.role_row_level_mgmt.render());
             }
         	add(render("changepassword.html",CHANGE_PASSWORD_FORM));
-//		    add(com.xo.web.views.html.changepassword.render(CHANGE_PASSWORD_FORM));
 		}};
 	}
 
@@ -590,9 +562,9 @@ public class UserController extends BaseController<User, Integer> implements Use
 			User targetUser = tokenAction.getUser();
 			if(this.userLogic.verify(targetUser, tokenAction)) {
 				String authToken = session().get(XoUtil.AUTH_TOKEN_PASSWORD_RESET);
-				result = ok(com.xo.web.views.html.reset_password.render(RESET_PASSWORD_FORM, authToken));	
+				result = ok(Html.apply(this.render("reset_password.html",RESET_PASSWORD_FORM,authToken)));
 			} else {
-				result = ok(com.xo.web.views.html.not_valid_activation_link.render());
+				result = ok(Html.apply(this.render("not_valid_activation_link.html")));
 			}
 		} catch(Exception e) {
 			result = internalServerError("Error while validating the email.");

@@ -354,17 +354,6 @@ define(['knockout', 'jquery'], function(ko, $) {
         	}
         };
 
-        self.openCommentNav = function() {
-        	if( $("#commentDiv").width() === 0 ) {
-        		document.getElementById("commentDiv").style.width = "400px";
-        	} else {
-        		document.getElementById("commentDiv").style.width = "0px";
-        	}
-        }
-        
-        self.closeCommentNav = function() {
-        	document.getElementById("commentDiv").style.width = "0px";
-        }
         
         self.submitDashboardComment = function() {
         	var dashboardName='MainDashboard';
@@ -459,8 +448,9 @@ define(['knockout', 'jquery'], function(ko, $) {
             loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
             showReportMenus: self.showReportMenus,
-            openCommentNav:self.openCommentNav,
+/*            openCommentNav:self.openCommentNav,
             closeCommentNav:self.closeCommentNav,
+*/
             dashboardCommentHeading:self.dashboardCommentHeading,
             commentText:self.commentText,
             submitDashboardComment:self.submitDashboardComment,

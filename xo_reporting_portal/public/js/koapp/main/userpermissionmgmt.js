@@ -87,11 +87,11 @@ define(['knockout', 'jquery'], function(ko, $) {
 					'success' : function(responsedata) {
 
 						setGlobalMessage(responsedata,"general");
-						$(".se-pre-con").fadeOut("slow");
+						$('#preloader').fadeOut("slow");
 					},
 					'error' : function(jqXHR, textStatus, errorThrown) {
 						setGlobalMessage({message:textStatus, messageType:'alert'},"general");
-						$(".se-pre-con").fadeOut("slow");
+						$('#preloader').fadeOut("slow");
 					}
 				});
 			}

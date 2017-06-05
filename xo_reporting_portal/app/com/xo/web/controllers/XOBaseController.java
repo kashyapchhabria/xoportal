@@ -11,6 +11,7 @@ import com.xo.web.viewdtos.MessageType;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
+import play.twirl.api.Html;
 import play.mvc.Result;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +33,7 @@ public class XOBaseController extends Controller {
 	}
 
 	public Result accessDenied() {
-		return forbidden(com.xo.web.views.html.access_denied.render());
+		return forbidden(Html.apply(this.render("access_denied.html")));
 	}
 
 	public User getCurrentRestUser() {

@@ -233,6 +233,7 @@ function BaseModel(ko, jq) {
 	};
 	
 	self.buildDataTableWithData = function(componentId, builderMethod, tblData, dtOptions, dtTblObj) {
+		$('#preloader').show(true);
 		if(dtTblObj) {
 			dtTblObj.clear();
 			dtTblObj.destroy();
@@ -247,6 +248,7 @@ function BaseModel(ko, jq) {
 			
 			dtTblObj = drawtable(componentId,dtOptions);
 		}
+		$('#preloader').fadeOut("slow");
 		return dtTblObj;
 	};
 }
@@ -418,4 +420,34 @@ function loadPopup(ModalId){
 
 function backPage(){
 	window.history.back();
+}
+
+function showmenu(){
+	document.getElementById("top_nav_bar").style.display = "flex";
+	document.getElementById("show_nav_bar").style.display = "none";
+	if(document.getElementById("tableauViewPlace")!=null){
+		document.getElementById("tableauViewPlace").setAttribute("class","with-margin");
+	}
+	if(document.getElementById("diffusionViewPlace")!=null){
+		document.getElementById("diffusionViewPlace").setAttribute("class","with-margin");
+	}
+}
+
+function hidemenu(){
+	document.getElementById("top_nav_bar").style.display = "none";
+	document.getElementById("show_nav_bar").style.display = "inline-block";
+	if(document.getElementById("tableauViewPlace")!=null){
+		document.getElementById("tableauViewPlace").setAttribute("class","no-margin");
+	}
+	if(document.getElementById("diffusionViewPlace")!=null){
+		document.getElementById("diffusionViewPlace").setAttribute("class","no-margin");
+	}
+}
+
+function openCommentNav(){
+	$('.ui.sidebar').sidebar({dimPage: false, transition: 'overlay'}).sidebar("show");
+}
+
+function closeCommentNav(){
+	$('.ui.sidebar').sidebar("hide");
 }
