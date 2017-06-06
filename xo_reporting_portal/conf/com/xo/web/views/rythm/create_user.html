@@ -1,0 +1,48 @@
+@include(temp)
+<script id="create-surveyor" type="text/html">
+<section>
+	<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<div class="column">
+			<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+				<div class="ui success message">
+					<i class="close icon" id="close_message"></i>
+					<div class="header" id="alert-message">
+						Message Here
+					</div>
+				</div>
+			</div>
+			<br><br>
+			<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+			<br><br>
+			<form data-bind="submit: usermanagement.saveSurveyor">
+				<div class="ui form holder">
+					<div class="ui required field">
+						<label>@Messages.get("user.fstname")</label>
+						<input type="text" data-bind="value: usermanagement.firstName" required="required"/>
+					</div>
+					<div class="ui required field">
+						<label>@Messages.get("user.secname")</label>
+						<input type="text" data-bind="value: usermanagement.lastName" required="required"/>
+					</div>
+					<div class="ui required field">
+					   <label>@Messages.get("user.email")</label>
+					   <input type="email" data-bind="value: usermanagement.email" required="required"/>
+					</div>
+					<div class="ui required field">
+					   <label>@Messages.get("user.client")</label>
+					   <select title='@Messages.get("user.selclient")' id="selUsrSysClient" 
+					   		data-bind='options:usermanagement.availableClients, optionsText: "name", value: usermanagement.selectedClient, optionsCaption:"@Messages.get("user.selclient")"'>
+					   </select>
+					</div>
+					<center data-bind="ifnot: usermanagement.userId">
+						<button id="create_user" class="ui large primary button" type="submit">@Messages.get("user.create")</button>
+					</center>
+					<center data-bind="if: usermanagement.userId">
+						<button id="update_surveyor" class="ui large primary button" type="submit">@Messages.get("user.update")</button>
+					</center>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+</script>

@@ -57,7 +57,9 @@ libraryDependencies ++= Seq(
     "com.esotericsoftware" % "kryo-shaded" % "4.0.0",
 	// Akka Remoting.
 	"com.typesafe.akka" % "akka-remote_2.11" % "2.4.1",
-	"commons-io" % "commons-io" % "2.5"
+	"commons-io" % "commons-io" % "2.5",	
+	// https://mvnrepository.com/artifact/org.rythmengine/rythm-engine
+    "org.rythmengine" % "rythm-engine" % "1.0.1"
 )
 
 doc in Compile <<= target.map(_ / "none")

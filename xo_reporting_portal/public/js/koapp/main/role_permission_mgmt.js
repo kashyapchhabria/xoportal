@@ -100,7 +100,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
              self.loadPopup = function(data, event) {
                 self.loadPermissions();
-                $('#permissionAssignModel').foundation('reveal', 'open');
+    			loadPopup("myModal");
              };
 
             self.loadPermissions = function() {

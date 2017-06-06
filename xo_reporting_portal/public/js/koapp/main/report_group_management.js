@@ -174,7 +174,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		};
 
 		self.loadPopup = function() {
-			$('#addgroupModel').foundation('reveal', 'open');
+			loadPopup("myModal");
 		};
 
 		return {

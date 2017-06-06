@@ -1,0 +1,143 @@
+@include(nav_bar)
+@include(temp)
+<script id="admin-template" type="text/html">
+<section>
+	<div class="ui center aligned grid page" data-bind="template: {afterRender: $root.land.afterRendererdHandler}">
+		<div class="column">
+			<div class="ui">
+				<div class="ui menu top">
+					<a class="active item" data-tab="@Messages.get("admin.land.portalapp")"><i class="fa fa-line-chart fa-lg"></i><label class="disp">@Messages.get("admin.land.portalapp")</label></a>
+					<a class="item" data-tab="@Messages.get("admin.land.settings")"><i class="fa fa-wrench fa-lg"></i><label class="disp">@Messages.get("admin.land.settings")</label></a>
+					<a class="item" data-tab="@Messages.get("admin.land.security")"><i class="fa fa-expeditedssl fa-lg"></i><label class="disp">@Messages.get("admin.land.security")</label></a>
+				</div>
+				<div class="ui tab active" data-tab="@Messages.get("admin.land.portalapp")">
+					<div class="ui six stackable special link cards">
+						<a href="#tabdashboard">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-line-chart fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#tabdashboard">@Messages.get("admin.land.tableaumgmt")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#reportmgmt">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-pie-chart fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#reportmgmt">@Messages.get("admin.land.report.settings")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#reportgrpmgmt">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-object-group fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#reportgrpmgmt">@Messages.get("admin.land.report.group.settings")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="ui tab" data-tab="@Messages.get("admin.land.settings")">
+					<div class="ui six stackable special link cards">
+						<a href="#configtemplate">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-wrench fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#configtemplate">@Messages.get("admin.land.configs")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#clientjobconfig">
+							<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-database fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#clientjobconfig">@Messages.get("admin.land.clientjobconfigs")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>				
+				<div class="ui tab" data-tab="@Messages.get("admin.land.security")">
+					<div class="ui six stackable special link cards">
+						<a href="#usermanagement">
+						<div class="card">
+							<div class="ui center aligned image" style="width: 100%;">
+								<i class="fa fa-group fa-5x" id="card_icon"></i>
+							</div>
+							<div class="content">
+								<div class="header"><a href="#usermanagement">@Messages.get("admin.land.usermgmt")</a></div>
+							</div>
+						</div>
+						</a>
+						<a href="#rolemanagement">
+						<div class="card">
+							<div class="ui center aligned image" style="width: 100%;">
+								<i class="fa fa-user-plus fa-5x" id="card_icon"></i>
+							</div>
+							<div class="content">
+								<div class="header"><a href="#rolemanagement">@Messages.get("admin.land.role")</a></div>
+							</div>
+						</div>
+						</a>					
+						<a href="#permissionmanagement">
+						<div class="card">
+							<div class="ui center aligned image" style="width: 100%;">
+								<i class="fa fa-key fa-5x" id="card_icon"></i>
+							</div>
+							<div class="content">
+								<div class="header"><a href="#permissionmanagement">@Messages.get("admin.land.permission")</a></div>
+							</div>
+						</div>
+						</a>
+						<a href="#userrowlevelpermission">
+						<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-id-card fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#userrowlevelpermission">@Messages.get("admin.land.userrow-level")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a href="#rolerowlevelpermission">
+						<div class="card">
+								<div class="ui center aligned image" style="width: 100%;">
+									<i class="fa fa-user-circle-o fa-5x" id="card_icon"></i>
+								</div>
+								<div class="content">
+									<div class="header">
+										<a href="#rolerowlevelpermission">@Messages.get("admin.land.rolerow-level")</a>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</script>

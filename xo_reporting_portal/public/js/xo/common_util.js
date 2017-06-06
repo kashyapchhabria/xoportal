@@ -121,26 +121,24 @@ function setGlobalMessage(messageObj,ui) {
 		$('#alert-box-container').removeClass('success warning info alert');
 		if(messageObj) {
 			$('#alert-box-container').addClass(messageObj.messageType)
-			$('#alert-box-container').show();
+			$('#alert-box-container').css('visibility', 'visible');
 			$('#alert-message').text(messageObj.message);
 	
 			clearTimeout(msgtId);
 			msgtId = setTimeout(function(){
-				$("#alert-box-container").hide().slideDown();
-				$("#alert-box-container").hide();			
+				$('#alert-box-container').css('visibility', 'hidden');
 			}, 2000);			
 		}
 	} else {
 		$('#popup-box-container').removeClass('success warning info alert');
 		if(messageObj) {
 			$('#popup-box-container').addClass(messageObj.messageType)
-			$('#popup-box-container').show();
+			$('#popup-box-container').css('visibility', 'visible');
 			$('#popup-message').text(messageObj.message);
 
 			clearTimeout(msgtId);
 			msgtId = setTimeout(function(){
-				$("#popup-box-container").hide().slideDown();
-				$("#popup-box-container").hide();
+				$('#popup-box-container').css('visibility', 'hidden');
 			}, 2000);		
 		}
 	}
@@ -232,6 +230,7 @@ function BaseModel(ko, jq) {
 	};
 	
 	self.buildDataTableWithData = function(componentId, builderMethod, tblData, dtOptions, dtTblObj) {
+		$('#preloader').show(true);
 		if(dtTblObj) {
 			dtTblObj.clear();
 			dtTblObj.destroy();
@@ -241,12 +240,109 @@ function BaseModel(ko, jq) {
 		}
 		if(componentId) {
 			if(!dtOptions) {
-				dtOptions = {'responsive' : true};	
+				dtOptions = {'responsive' : false};	
 			}
-			dtTblObj = jq("#" + componentId).DataTable(dtOptions);
+			
+			dtTblObj = drawtable(componentId,dtOptions);
 		}
+		$('#preloader').fadeOut("slow");
 		return dtTblObj;
 	};
+}
+function drawtable(componentId,dtOptions){
+	dtOptions.pagingType = "semantic";
+	//---------------------------Pagination--------------------//
+	$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
+	{
+	    return {
+	        "iStart":         oSettings._iDisplayStart,
+	        "iEnd":           oSettings.fnDisplayEnd(),
+	        "iLength":        oSettings._iDisplayLength,
+	        "iTotal":         oSettings.fnRecordsTotal(),
+	        "iFilteredTotal": oSettings.fnRecordsDisplay(),
+	        "iPage":          oSettings._iDisplayLength === -1 ?
+	            0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+	        "iTotalPages":    oSettings._iDisplayLength === -1 ?
+	            0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+	    };
+	}
+	 
+	/* Semantic style pagination control */
+	$.extend( $.fn.dataTableExt.oPagination, {
+	    "semantic": {
+	        "fnInit": function( oSettings, nPaging, fnDraw ) {
+	            var oLang = oSettings.oLanguage.oPaginate;
+	            var fnClickHandler = function ( e ) {
+	                e.preventDefault();
+	                if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
+	                    fnDraw( oSettings );
+	                }
+	            };
+	 
+	            $(nPaging).addClass('pagination').append(
+	                    '<div class="ui tiny prev disabled button"><a href="#">'+oLang.sPrevious+'</a></div>'+
+	                    '<div class="ui tiny next disabled button"><a href="#">'+oLang.sNext+'</a></div>'
+	            );
+	            var els = $('div', nPaging);
+	            $(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
+	            $(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
+	        },
+	 
+	        "fnUpdate": function ( oSettings, fnDraw ) {
+	            var iListLength = 5;
+	            var oPaging = oSettings.oInstance.fnPagingInfo();
+	            var an = oSettings.aanFeatures.p;
+	            var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
+	 
+	            if ( oPaging.iTotalPages < iListLength) {
+	                iStart = 1;
+	                iEnd = oPaging.iTotalPages;
+	            }
+	            else if ( oPaging.iPage <= iHalf ) {
+	                iStart = 1;
+	                iEnd = iListLength;
+	            } else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
+	                iStart = oPaging.iTotalPages - iListLength + 1;
+	                iEnd = oPaging.iTotalPages;
+	            } else {
+	                iStart = oPaging.iPage - iHalf + 1;
+	                iEnd = iStart + iListLength - 1;
+	            }
+	 
+	            for ( i=0, iLen=an.length ; i<iLen ; i++ ) {
+	                // Remove the middle elements
+	                $('div:gt(0)', an[i]).filter(':not(:last)').remove();
+	 
+	                // Add the new list items and their event handlers
+	                for ( j=iStart ; j<=iEnd ; j++ ) {
+	                    sClass = (j==oPaging.iPage+1) ? 'class="ui tiny active button"' : 'class="ui tiny button"';
+	                    $('<div '+sClass+'><a href="#">'+j+'</a></div>')
+	                        .insertBefore( $('div:last', an[i])[0] )
+	                        .bind('click', function (e) {
+	                            e.preventDefault();
+	                            oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
+	                            fnDraw( oSettings );
+	                        } );
+	                }
+	 
+	                // Add / remove disabled classes from the static elements
+	                if ( oPaging.iPage === 0 ) {
+	                    $('div:first', an[i]).addClass('ui tiny disabled button');
+	                } else {
+	                    $('div:first', an[i]).removeClass('disabled');
+	                }
+	 
+	                if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
+	                    $('div:last', an[i]).addClass('disabled');
+	                } else {
+	                    $('div:last', an[i]).removeClass('disabled');
+	                }
+	            }
+	        }
+	    }
+	} );
+	//--------------------------------End Pagination---------------------------------//
+	return $("#" + componentId).DataTable(dtOptions);
 }
 
 /**
@@ -306,4 +402,50 @@ function exitFullScreen() {
 function OpenInNewTab(url) {
 	var win = window.open(url, '_blank');
 	win.focus();
+}
+
+function loadPopup(ModalId){
+	$('#popup-box-container').css('visibility', 'hidden');
+	if(($('#'+ModalId).parent().attr("class")=="ui grid page")&(!($(".ui.modals.page").find('#'+ModalId).length>0))){
+		$('#'+ModalId).modal('setting', 'closable', false).modal('show');
+	}else if(($('#'+ModalId).parent().attr("class")=="ui grid page")&(($(".ui.modals.page").find('#'+ModalId).length>0))){
+		$(".ui.modals.page").find('#'+ModalId).remove();
+		$('#'+ModalId).modal('setting', 'closable', false).modal('show');
+	}else{
+		$('#'+ModalId).modal('setting', 'closable', false).modal('show');
+	}
+}
+
+function backPage(){
+	window.history.back();
+}
+
+function showmenu(){
+	document.getElementById("top_nav_bar").style.display = "flex";
+	document.getElementById("show_nav_bar").style.display = "none";
+	if(document.getElementById("tableauViewPlace")!=null){
+		document.getElementById("tableauViewPlace").setAttribute("class","with-margin");
+	}
+	if(document.getElementById("diffusionViewPlace")!=null){
+		document.getElementById("diffusionViewPlace").setAttribute("class","with-margin");
+	}
+}
+
+function hidemenu(){
+	document.getElementById("top_nav_bar").style.display = "none";
+	document.getElementById("show_nav_bar").style.display = "inline-block";
+	if(document.getElementById("tableauViewPlace")!=null){
+		document.getElementById("tableauViewPlace").setAttribute("class","no-margin");
+	}
+	if(document.getElementById("diffusionViewPlace")!=null){
+		document.getElementById("diffusionViewPlace").setAttribute("class","no-margin");
+	}
+}
+
+function openCommentNav(){
+	$('.ui.sidebar').sidebar({dimPage: false, transition: 'overlay'}).sidebar("show");
+}
+
+function closeCommentNav(){
+	$('.ui.sidebar').sidebar("hide");
 }

@@ -1,0 +1,59 @@
+@args Form loginForm, String forgotPassurl
+@include(temp)
+@extends(xo_base, title: Messages.get("login.title"))
+<div style="width: 100% !important; padding-top:10px !important">
+	<div class="ui stackable orange center aligned grid container" id="home" style="width:101% !important;">
+		<div class="row">
+			<div class="column" style="" id="form_holder">
+				<div class="ui stacked" style="text-align:center !important;">
+					<div class="ui medium center align image">
+						<img src='@routes.Assets.at("images/teliacarrier_logo.png")'>
+					</div>
+					<br><br>
+					@if((loginForm.hasErrors())){
+						@if((loginForm.globalError())!=null){
+							@loginForm.globalError().message()
+						}
+					}
+					<form class="ui form" action="@com.xo.web.util.XoUtil.getApplicationContext()/auth/login" method="post">
+						<div class="field">
+							<input type="text" id="email" name="email" value="" placeholder="Email">
+							<div align="right">
+								@if((loginForm.hasErrors())){
+									@if((loginForm.errors().get("email"))!=null){
+										@Messages.get(loginForm.error("email").message())
+									}
+								}							
+							</div>
+						</div>
+						<div class="field">
+							<input type="password" id="password" name="password" placeholder="Password">
+							<div align="right">
+								@if((loginForm.hasErrors())){
+									@if((loginForm.errors().get("password"))!=null){
+										@Messages.get(loginForm.error("password").message(),loginForm.error("password").arguments().get(0))
+									}
+								}
+							</div>
+						</div>
+						<br>
+						<input type="hidden" name="randKey" id="randKey">
+						<div class="field">
+							<input id="xologin" type="submit" value="Login" class="ui button green" style=" background-color: #002366 !important; width: 75%">
+						</div>
+					</form>
+					<br>
+					<div align="center" style="width:100% !important; font-size: small;">
+						<a href="@forgotPassurl" style="color: #002366 !important;">@Messages.get("password.forgot")</a>
+					</div>
+					<script type="text/javascript" >
+			            $(document).ready(function(){
+            				localStorage.setItem('activeTab',"Applications");
+             			});
+            		</script>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

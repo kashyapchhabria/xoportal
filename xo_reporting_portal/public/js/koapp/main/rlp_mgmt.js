@@ -140,7 +140,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			tempStatus = tempStatus && self.selectedResource() && self.selectedResource().displayText;
 			if(tempStatus) {
 				self.loadUnAssignedInstances();
-				$('#addrlpModel').foundation('reveal', 'open');
+				loadPopup("myModal");
 			} else {
 				alert('Please select the entity type and ' + self.selectedGroup() + ' in filters.');				
 			}

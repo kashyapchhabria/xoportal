@@ -92,7 +92,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 
 		self.loadPopup = function(data, event) {
 			self.loadUnassignedRoles();
-			popup = $('#myModal').foundation('reveal', 'open');
+			loadPopup("myModal");
 		};
 
 

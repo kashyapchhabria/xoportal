@@ -1,0 +1,69 @@
+@include(temp)
+<script id="menuTree" type="text/html">
+	<!-- ko if: subMenuItems().length > 0 -->
+		<div class="ui dropdown item">
+			<a data-bind='text:name,click:loadPageData' style="color:black !important;"></a>
+			<i class="fa fa-angle-double-right"></i>
+			<div class="menu" data-bind="template: { name: 'menuTree', foreach: subMenuItems}">		
+			</div>
+		</div>
+	<!-- /ko -->
+	<!-- ko if: subMenuItems().length == 0 -->
+		<a data-bind='text:name, click:loadPageData' class="item">
+		</a>
+	<!-- /ko -->
+</script>
+<script id="tab_dashboard" type="text/html">
+	<div id="commentDiv" class="ui right sidebar" style="background-color:#757575;">
+	<div class="ui grid">
+		<div class="row">
+			<div class="right aligned column">
+				<div class="ui icon button" data-bind="click:closeCommentNav" >
+					<i class="close icon"></i>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="center aligned column">
+				<h4 style="color:white;" data-bind="html: tableaumgmt.commentHeading"></h4>
+				<textarea placeholder="Enter your Comment here..." data-bind="value:tableaumgmt.inputText" rows="3" maxlength="200" style="width:90%"></textarea>
+			</div>
+		</div>
+		<div class="row" style="width:80%">
+			<div class="center aligned column">
+				<a data-bind="click: tableaumgmt.submitComment" class="ui primary button">Comment</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="column">
+				<div class="ui comments">
+				<!-- ko foreach: { data: msgs ,as:'comments' } -->
+					<div class="comment" style="background:white; border: 1px solid; border-radius:10px;">
+						<div class="content" style="padding: 10px 1px 1px 10px;">
+							<a class="author" data-bind="text:comments.user"></a>
+							<div class="metadata">
+								<span class="date" data-bind="text:comments.ts"></span>
+							</div>
+							<div class="text" data-bind="text:comments.message">
+							</div>
+						</div>
+					</div>
+				<!-- /ko -->
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<section id="tableauReportsPageSection" style="background-color: white;" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<center data-bind="visible:(!tableaumgmt.errorText() || tableaumgmt.errorText().length <= 0)" >
+			<img style="border: 0px" data-bind='visible: (tableaumgmt.placeHolderImageUrl().length > 0), attr: {src: tableaumgmt.placeHolderImageUrl}'></img>
+			<div id="tableauViewPlace"></div>
+		</center>
+		<center data-bind="visible:(tableaumgmt.errorText() && tableaumgmt.errorText().length > 0)" >
+			<span class="alert">
+				<h3>Report Loading Error:</h3>
+				<p data-bind="text:tableaumgmt.errorText"></p>
+			</span>
+		</center>
+	</section>
+</script>

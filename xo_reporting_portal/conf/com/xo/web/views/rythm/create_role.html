@@ -1,0 +1,39 @@
+@include(temp)
+<script id="create-role" type="text/html">
+<section>
+	<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<div class="column">
+			<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+				<div class="ui success message">
+					<i class="close icon" id="close_message"></i>
+					<div class="header" id="alert-message">
+						Message Here
+					</div>
+				</div>
+			</div>
+			<br><br>
+			<a class="ui primary button" onclick='backPage()'>&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+			<br><br>
+			<form data-bind="submit: rolemanagement.saveRole">
+				<div class="ui form holder">
+					<div class="ui required field">
+						<label>@Messages.get("role.name")</label>
+						<input type="text" data-bind="value: rolemanagement.name" required="required"/>
+					</div>
+					<br>
+					<div class="ui required field">
+						<label>@Messages.get("role.description")</label>
+						<input type="text" data-bind="value: rolemanagement.description" required="required"/>
+					</div>
+				</div><br>
+				<center data-bind="ifnot: rolemanagement.roleId">
+					<button id="create_role" class="large ui blue button" type="submit">@Messages.get("role.create")</button>
+				</center>
+				<center data-bind="if: rolemanagement.roleId">
+					<button id="update_role" class="large ui blue button" type="submit">@Messages.get("role.update")</button>
+				</center>
+			</form>
+		</div>
+	</div>
+</section>
+</script>

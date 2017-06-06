@@ -1,0 +1,198 @@
+.no-margin{
+	margin-top: 0% !important;
+}
+.with-margin{
+	margin-top: 3.75% !important;
+}
+html { background-color: white; }
+#preloader{
+	position: fixed; 
+	left: 0; 
+	top: 0; 
+	z-index: 999; 
+	width: 100%; 
+	height: 100%; 
+	overflow: visible; 
+}
+#card_icon
+{
+	font-size: 4rem;
+	text-align: center;
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+a{
+	cursor: pointer;
+}
+.ui.cards > .card a, .ui.card a {
+    color: #002366 !important;
+    font-size: 1rem !important;
+}
+.card > .content{
+	border-top: none !important;
+	padding: 5px !important;
+}
+.ui.grid.page{
+	padding: 6% !important;
+}
+.ui.primary.button {
+    background-color: #0ABAB5 !important;
+    color: #FFFFFF;
+    text-shadow: none;
+    background-image: none;
+}
+.ui.four.stackable.special.link.cards{
+	margin-top: 40px !important;
+}
+.field{
+	padding-left:5% !important;
+	padding-right:5% !important;			
+}
+#logo{
+	width: 85% !important;
+	padding:0px !important;
+}
+.right.menu > .item{
+  font-size: 1rem !important;
+  font-weight: bold !important;
+}
+.ui.fixed.menu > .ui.container
+{
+  width: 100% !important;
+}
+.ui.fixed.menu{
+  border-bottom: 2px solid #002366;
+}
+#form_holder{
+	width:25% !important;
+}
+.form.holder{
+	padding-left: 20% !important;
+	padding-right: 20% !important;	
+}
+.disp{
+	padding-left: 10px;
+	cursor: pointer;
+}
+.ui.container > .item:before{
+	content: none !important;
+}
+.right.menu > .item:before{
+	content: none !important;
+}
+.ui.table{
+	width:100% !important;
+	border-top: 0.2em solid #002366 !important;
+	border-collapse: separate !important;
+}
+.ui.table > thead{
+	border-bottom: 0.2em solid #002366 !important;
+}
+#table_holder{
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+.pagination > .ui.button{
+	font-size: 12px !important;
+	margin: 4px !important;
+	padding: 12px !important;
+	background-color: rgba(34,36,38,0.01);
+    border: 1px solid rgba(34,36,38,0.3);
+}
+div.dataTables_wrapper div.dataTables_info {
+    white-space: normal !important;
+}
+.ui.footer.segment {
+	margin: 5em 0em 0em;
+	padding: 5em 0em;
+}
+.action_link > .fa {
+	padding: 10px !important;
+	font-size: 15px !important;
+	color: #002366 !important;
+}
+.action_link{
+    display: table-cell;
+}
+.pagination > .ui.button > a{
+	color: black !important;
+	font-weight: normal;
+}
+.pagination > .ui.active.button{
+	background-color: #0ABAB5;
+    border: 1px solid rgba(34,36,38,0.3);
+}
+.ui.tab.active{
+	margin-top: 25px !important;
+}
+.ui.black.big.right.attached.fixed.button{
+	background: rgba(255, 255, 255, 0.8) !important;
+	border-bottom: 2px solid #002366;
+	color: #002366;
+	padding: 0.78571429em 1.0em 0.78571429em;
+}
+#xoapps_grid{
+	margin-top:1%;
+}
+.ui.slider.checkbox {
+    min-height: .75rem;
+    margin-left: 10px;
+}
+@media only screen and (max-width: 768px){
+	.with-margin{
+		margin-top: 11% !important;
+	}
+	.ui.menu.top > .active.item {
+		width: 50% !important;
+	}
+	.ui.menu.top > .item {
+		width: 25% !important;
+	}
+	.ui.grid.page{
+		padding: 6% !important;
+		padding-top:15% !important;
+	}
+	#table_holder{
+		padding-left: 5% !important;
+		padding-right: 5% !important;
+	}
+	.form.holder{
+		padding-left: 5% !important;
+		padding-right: 5% !important;	
+	}
+	.disp{
+		display: none !important;
+	}
+	.item.active > .disp{
+		display: none;
+	}
+	#form_holder{
+		width:100% !important;
+	}
+	.ui.simple.dropdown.item > .menu{
+		height: 350px;
+		overflow: auto;
+	}
+	.left.menu{
+		height: inherit !important;
+	}
+	.right.menu > .item{
+	  font-size: 11px !important;
+	  font-weight: normal !important;
+	}
+	.ui.form{
+		width: 100% !important;
+	}
+	#logo{
+		width: 65% !important;
+		padding:0px !important;
+	}
+	.pagination > .ui.button{
+		margin: 4px !important;
+		padding: 8px !important;
+    }
+	.action_link > .fa {
+    	padding: 5px !important;
+    	font-size: 12px !important;
+	}
+}

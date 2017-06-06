@@ -1,0 +1,84 @@
+@include(temp)
+<script id="report_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br><br>
+				<a class="ui primary button" title='Go Back' onclick="backPage()">&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableReports" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("reports.mgmt.report.name")</th>
+						<th>@Messages.get("reports.mgmt.report.display.name")</th>
+						<th>@Messages.get("reports.mgmt.report.groupname")</th>
+						<th>@Messages.get("reports.mgmt.report.order")</th>
+						<th>@Messages.get("reports.mgmt.report.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:reportmgmt.availableReports, as: 'reportsRecord'}">
+					<tr>
+						<td data-bind='text: reportsRecord.reportName'></td>
+						<td>
+							<span data-bind='if:reportsRecord.isEdit()'>
+								<input type="text" data-bind='value: reportsRecord.displayName' placeholder='@Messages.get("reports.mgmt.val")' />
+							</span>
+							<span data-bind='ifnot:reportsRecord.isEdit()'>
+								<span data-bind="text:reportsRecord.displayName"></span>
+							</span>
+						</td>
+						<td>
+							<span data-bind='if:reportsRecord.isEdit()'>
+								<select data-bind='options:reportsRecord.availableGroups, optionsText: "groupName", value: reportsRecord.selectedGroup, optionsCaption:"Choose group.."'>@Messages.get("reports.mgmt.val")</select>
+							</span>
+							<span data-bind='ifnot:reportsRecord.isEdit()'>
+								<span data-bind="text:reportsRecord.groupName"></span>
+							</span>
+	                    </td>
+    	                <td>
+							<span data-bind='if:reportsRecord.isEdit()'>
+								<input type="text" data-bind='value: reportsRecord.displayOrder' placeholder='@Messages.get("reports.mgmt.val")' />
+							</span>
+							<span data-bind='ifnot:reportsRecord.isEdit()'>
+								<span data-bind="text:reportsRecord.displayOrder"></span>
+							</span>
+        	            </td>
+            	        <td>
+							<a class="action_link" title='@Messages.get("reports.mgmt.edit")' data-bind='click:reportsRecord.editable,ifnot:reportsRecord.isEdit()'>
+								<i class="fa fa-edit"></i>
+							</a>
+							<a class="action_link" title="Save" data-bind='if:reportsRecord.isEdit(),click:reportsRecord.saveReports'>
+								<i class="fa fa-save"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("reports.mgmt.dact")' data-bind='if: reportsRecord.active,click:reportsRecord.toggleStatus'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("reports.mgmt.act")' data-bind='ifnot: reportsRecord.active, click:reportsRecord.toggleStatus'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" data-bind="if:reportsRecord.viewGroupId() , click:reportsRecord.checkDashboard" title='@Messages.get("reports.mgmt.dashboard")'>
+								<div class=" ui slider checkbox">
+								    <input class="" type="checkbox" data-bind="checked:reportsRecord.dashboard()"/>
+									<label></label>
+								</div>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</section>
+</script>

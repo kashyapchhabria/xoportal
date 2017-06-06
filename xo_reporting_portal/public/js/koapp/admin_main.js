@@ -1,48 +1,43 @@
-$(".se-pre-con").show(true);
+$('#preloader').show(true);
 requirejs.config({
-  baseUrl :  xoappcontext + '/vassets/lib/',
-  shim : {
-    'knockout' : {exports: 'knockout'},
-	'foundation': {
-					exports:'foundation',
-					deps:['jquery']
-				},
-	"knockout.validation": {"deps": ["knockout"]},
-	'datatables': {
-		   	 	exports: 'datatables'
-			},
-	'datatables-foundation': {
-				exports: 'DataTable',
-		   	 	deps:['datatables', 'foundation']
-			},
-	'datatables-responsive': {
-		   	 	exports: 'Responsive',
-		   	 	deps:['datatables', 'foundation']
-			},
-	'FileSaver':{
+	waitSeconds : 0,
+	baseUrl :  xoappcontext + '/vassets/lib/',
+	shim : {
+		'knockout' : {exports: 'knockout'},
+		'semantic': {
+			exports:'semantic',
+			deps:['jquery']
+		},
+		"knockout.validation": {"deps": ["knockout"]},
+		'datatables': {
+			exports: 'datatables'
+		},
+		'datatables-semantic': {
+			exports: 'DataTable',
+			deps:['datatables', 'semantic']
+		},
+		'FileSaver':{
 			exports : 'FileSaver'
 		}
   },
-  paths : {
-    jquery : 'jquery/jquery.min',
-    knockout : 'knockout/knockout',
-    "knockout.validation": xoappcontext + '/vassets/js/koapp/knockout.validation.min',
-    /*selectize : 'selectize.js/js/standalone/selectize.min',*/
-    main :  xoappcontext + '/vassets/js/koapp/main',
-    foundation: 'foundation/js/foundation.min',
-    datatables:  xoappcontext + '/vassets/js/datatable/jquery.dataTables',
-    DataTable:  xoappcontext + '/vassets/js/datatable/foundation.datatable',
-    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive',
-    FileSaver: xoappcontext + '/vassets/js/koapp/FileSaver'
+	paths : {
+		jquery : 'jquery/jquery.min',
+		knockout : 'knockout/knockout',
+		"knockout.validation": xoappcontext + '/vassets/js/koapp/knockout.validation.min',
+		main :  xoappcontext + '/vassets/js/koapp/main',
+		semantic: xoappcontext + '/assets/semantic/out/semantic.min',
+		datatables:  xoappcontext + '/vassets/DataTables/media/js/jquery.dataTables.min',
+		DataTable:  xoappcontext + '/vassets/DataTables/media/js/dataTables.semanticui.min',
+		FileSaver: xoappcontext + '/vassets/js/koapp/FileSaver'
   }
 });
 
 
-define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
-        'datatables', 'DataTable','Responsive', 'FileSaver','main/usermanagement', 'main/rolemanagement',
+define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
+        'datatables', 'DataTable', 'FileSaver','main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
         'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management'],
-   function(ko, Router, kv, foundation, datatables, DataTable, Responsive, FileSaver,UserManagerModel, 
+   function(ko, Router, kv, semantic, datatables, DataTable, FileSaver,UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
          TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel) {
 
@@ -97,49 +92,49 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       function changepasswordPage(){
           return showPageLoader(function() {
         	  cleanUp();
-        	  return new Router.Page('Xoanon Reporting Portal', 'password-change', {usermanagement:usermgmt});
+        	  return new Router.Page('Change Password', 'password-change', {usermanagement:usermgmt});
           });
       }
 
       function adminPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Xoanon Reporting Portal', 'admin-template', {});
+    		  return new Router.Page('Xoanon Reporting Portal', 'admin-template', {tableaumgmt: tableaumgmt});
     	  });
       }
 
       function createsurveyorPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Xoanon Reporting Portal','create-surveyor',{usermanagement:usermgmt});
+    		  return new Router.Page('Create User','create-surveyor',{usermanagement:usermgmt});
     	  });
       }
 
       function editsurveyorPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Xoanon Reporting Portal','create-surveyor',{usermanagement:usermgmt});
+    		  return new Router.Page('Edit User','create-surveyor',{usermanagement:usermgmt});
     	  });
       }
 
       function createrolePage() {
         return showPageLoader(function() {
         	cleanUp();
-        	return new Router.Page('Xoanon Reporting Portal','create-role',{rolemanagement:rolemgmt});
+        	return new Router.Page('Create Role','create-role',{rolemanagement:rolemgmt});
         });
       }
 
       function editrolePage() {
         return showPageLoader(function() {
         	cleanUp();
-        	return new Router.Page('Xoanon Reporting Portal','create-role',{rolemanagement:rolemgmt});
+        	return new Router.Page('Edit Role','create-role',{rolemanagement:rolemgmt});
         });
       }
 
       function uploadUsersPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  return new Router.Page('Xoanon Reporting Portal','upload-users',{usermanagement:usermgmt});
+    		  return new Router.Page('Upload Users','upload-users',{usermanagement:usermgmt});
     	  });
       }
 
@@ -147,7 +142,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     	  return showPageLoader(function() {
     		  cleanUp();
     		  usermgmt.loadUsers();
-    		  return new Router.Page('Xoanon Reporting Portal','user_mgmt',{usermanagement:usermgmt});
+    		  return new Router.Page('Manage Users','user_mgmt',{usermanagement:usermgmt});
     	  });
       }
 
@@ -155,7 +150,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         return showPageLoader(function() {
         	cleanUp();
         	rolemgmt.loadRoles();
-        	return new Router.Page('Xoanon Reporting Portal','role_mgmt',{rolemanagement:rolemgmt});
+        	return new Router.Page('Manage Roles','role_mgmt',{rolemanagement:rolemgmt});
         });
       }
       
@@ -163,7 +158,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         return showPageLoader(function() {
         	cleanUp();
         	permissionmgmt.loadPermissions();
-        	return new Router.Page('Xoanon Reporting Portal','permission_mgmt',{permissionmanagement:permissionmgmt});
+        	return new Router.Page('Manage Permissions','permission_mgmt',{permissionmanagement:permissionmgmt});
         });
       }
 
@@ -173,7 +168,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	var roleprmgmt = new RolePermissionManagerModel(rolemgmt.currentRole());
         	roleprmgmt.loadRolesPermission();
         	roleprmgmt.loadPermissions();
-        	return new Router.Page('Xoanon Reporting Portal','role_perm_mgmt',{rolespermissionmgmt:roleprmgmt});
+        	return new Router.Page('Manage Role Permissions','role_perm_mgmt',{rolespermissionmgmt:roleprmgmt});
         });
       }
 
@@ -183,7 +178,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  var userrolemgnt = new UserRoleManagerModel(usermgmt.currentUser());
     		  userrolemgnt.loadUserRoles();
     		  userrolemgnt.loadUnassignedRoles();
-    		  return new Router.Page('Xoanon Reporting Portal','user_role_mgmt', {userrolemgnt: userrolemgnt});
+    		  return new Router.Page('Manage User Role','user_role_mgmt', {userrolemgnt: userrolemgnt});
     	  });
       }
 
@@ -193,7 +188,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	var userpermmgnt = new UserPermissionManagerModel(usermgmt.currentUser());
         	userpermmgnt.loadUserPermissions();
         	userpermmgnt.loadUnassignedPermissions();
-        	return new Router.Page('Xoanon Reporting Portal','user_perm_mgmt', {userpermmgnt: userpermmgnt});
+        	return new Router.Page('Manage User Permissions','user_perm_mgmt', {userpermmgnt: userpermmgnt});
         });
       }
 
@@ -202,13 +197,13 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
         	tableaumgmt.clearAll();
         	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
-        	return new Router.Page('Xoanon Reporting Portal','tab_dashboard', {tableaumgmt: tableaumgmt});
+        	return new Router.Page('Dashboard','tab_dashboard', {tableaumgmt: tableaumgmt});
         });
       }
 
       function systemSettingsPage() {
 			return showPageLoader(function() {
-				return new Router.Page('Xoanon Reporting Portal', 'system_settings', {});
+				return new Router.Page('System Settings', 'system_settings', {});
 			});
 	}
       
@@ -217,7 +212,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configuration');
 				configmgmt.cleanup();
 				configmgmt.loadConfigurations();
-				return new Router.Page('Xoanon Reporting Portal', 'config', {configmgmt : configmgmt});
+				return new Router.Page('Configuration', 'config', {configmgmt : configmgmt});
 			});
 		}
 
@@ -226,7 +221,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configtemplate');
 				configmgmt.cleanup();
 				configmgmt.loadConfigTemplates();
-				return new Router.Page('Xoanon Reporting Portal',	'conftemp_mgmt', {configmgmt : configmgmt});
+				return new Router.Page('Configuration Template',	'conftemp_mgmt', {configmgmt : configmgmt});
 			});
 		}
 
@@ -235,7 +230,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
 				configmgmt.currentPage('configinstance');
 				configmgmt.cleanup();
 				configmgmt.loadConfigInstances();
-				return new Router.Page('Xoanon Reporting Portal',	'confinstance_mgmt', {configmgmt : configmgmt});
+				return new Router.Page('Config Instances',	'confinstance_mgmt', {configmgmt : configmgmt});
 			});
       }
 
@@ -244,7 +239,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  clientjobmgmt.currentPage('clientjobconfig');
     		  clientjobmgmt.cleanup();
     		  clientjobmgmt.loadallClientJobsConfigs();
-				return new Router.Page('Xoanon Reporting Portal',	'clientjobconfig_mgmt', {clientjobmgmt : clientjobmgmt});
+				return new Router.Page('Config Client Job',	'clientjobconfig_mgmt', {clientjobmgmt : clientjobmgmt});
 			});
       }
 
@@ -254,7 +249,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
           	  reportmgmt.cleanup();
           	  reportmgmt.loadReports();
           	  reportmgmt.loadGroups();
-      				return new Router.Page('Xoanon Reporting Portal',	'report_mgmt', { reportmgmt:reportmgmt });
+      				return new Router.Page('Manage Reports',	'report_mgmt', { reportmgmt:reportmgmt });
       			});
             }
 
@@ -262,7 +257,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
               return showPageLoader(function() {
               reportgrpmgmt.currentPage('reportgrpmgmt');
               reportgrpmgmt.loadGroups();
-            	  return new Router.Page('Xoanon Reporting Portal',	'report_grp_mgmt', { reportgrpmgmt:reportgrpmgmt });
+            	  return new Router.Page('Manage Reports Group',	'report_grp_mgmt', { reportgrpmgmt:reportgrpmgmt });
                 });
             }
 
@@ -270,7 +265,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     	  return showPageLoader(function() {
     		  	rowlevelmgmt.currentPage('rowlevelpermission');
     		  	rowlevelmgmt.cleanup();
-				return new Router.Page('Xoanon Reporting Portal',	'rowlevelpermission_mgmt', {});
+				return new Router.Page('Row Level Permission',	'rowlevelpermission_mgmt', {});
 			});
       }
 
@@ -279,7 +274,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  	rowlevelmgmt.currentPage('userrowlevelpermission');
     		  	rowlevelmgmt.cleanup();
     		  	rowlevelmgmt.selectedGroup('User');
-				return new Router.Page('Xoanon Reporting Portal',	'userrowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
+				return new Router.Page('User Based Permissions',	'userrowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
 			});
       }
 
@@ -288,7 +283,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
     		  	rowlevelmgmt.currentPage('rowlevelpermission');
     		  	rowlevelmgmt.cleanup();
     		  	rowlevelmgmt.selectedGroup('Role');
-				return new Router.Page('Xoanon Reporting Portal',	'rolerowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
+				return new Router.Page('Role Based Permissions',	'rolerowlevelpermission_mgmt', {'rowlevelmgmt' : rowlevelmgmt});
 			});
       }
 
@@ -298,6 +293,42 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'foundation',
       // This is the KO ViewModel for the whole page, which contains our router, which
       // in turn keeps track of the current page.
       var topLevelModel = { router: new Router(urlMapping, randomFilter)};
+      
+      topLevelModel.land = {};
+      topLevelModel.land.afterRendererdHandler = function (){
+    	  $('.menu.top .item').tab();
+    	  $('.ui.checkbox').checkbox();
+    	  $('.ui.menu.top').find('.item').click(function(){
+    			localStorage.setItem('activeTab',$(this).text());
+    	  });
+    	  var activeTab = localStorage.getItem('activeTab');
+    	  if(activeTab!==null){
+    		  $('.ui.menu.top').find('.item').tab('change tab', activeTab);
+    	  }
+    	  hidemenu();
+    	  showmenu();
+    	  if((document.getElementById("show_nav_bar").style.display != "none")&&((document.getElementById("top_nav_bar").style.display != "none"))){
+    		  document.getElementById("show_nav_bar").style.display = "none";
+    	  }
+      }
+      
+      topLevelModel.display_msgbox= {};
+      topLevelModel.display_msgbox.afterRendererdHandler = function (){
+    	  
+    	  $('#popup-box-container').css('visibility', 'hidden');
+    	  
+    	  $('#alert-box-container').css('visibility', 'hidden');
+    	  $("#close_message").click(function(){
+    		  $('.display_message').css('visibility', 'hidden');
+    	  });
+    	  hidemenu();
+    	  showmenu();
+    	  if((document.getElementById("show_nav_bar").style.display != "none")&&((document.getElementById("top_nav_bar").style.display != "none"))){
+    		  document.getElementById("show_nav_bar").style.display = "none";
+    	  }
+    	  $('#multi_select').dropdown({action: 'nothing'});
+      }
+      
       // Make model accessible in global context, purely to aid debugging.
       window.topLevelModel = topLevelModel;
 

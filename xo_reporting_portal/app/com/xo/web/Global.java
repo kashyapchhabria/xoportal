@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.xo.web.akka.xoactors.XoClientSyncActor;
 import com.xo.web.core.XOException;
 
+import com.xo.web.core.RythmTemplateLoader;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoAsyncScheduler;
 import com.xo.web.util.XoAsyncTaskHandler;
@@ -17,6 +18,9 @@ import play.GlobalSettings;
 import play.Logger;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
+
+import org.rythmengine.Rythm;
+
 /**
  */
 @SuppressWarnings("unchecked")
@@ -40,9 +44,15 @@ public class Global extends GlobalSettings {
     	this.active = configuration.getBoolean(XoAppConfigKeys.WORKER_MANAGER_ACTIVE);
 		this.xossoStatus = configuration.getBoolean(XoAppConfigKeys.XOSSO_STATUS);
 		this.initiateWorkerManager(application);
+		Rythm.shutdown();
+		initRythm(application);
         super.onStart(application);
     }
-
+	
+    public void initRythm(final Application application){
+		RythmTemplateLoader.create(application.configuration());
+    }
+	
 	private void initiateWorkerManager(final Application application) {
 		if(active) {
 			XoAsyncTaskHandler.submitAsynchTask(new XoAsynchTask("Worker Manager job loader") {

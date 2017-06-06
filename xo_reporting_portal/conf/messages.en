@@ -35,6 +35,7 @@ accessdenied.desc=The page you are requesting requires additional permissions. P
 
 # Global labels and messages
 global.title=Xoanon Reporting Portal
+xo.title=Telia Carrier Reporting Portal
 
 #Base Template page
 base.title=Xoanon Reporting Portal

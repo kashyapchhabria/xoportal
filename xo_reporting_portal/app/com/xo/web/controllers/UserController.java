@@ -96,7 +96,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 			return seeOther(loginUrlStr.toString());			
 		} else {
 			String forgotPassurl = com.xo.web.controllers.routes.UserController.forgotPasswordPage().absoluteURL(request(), false);
-			return ok(com.xo.web.views.html.login.render(LOGIN_FORM, forgotPassurl));
+	        return ok(Html.apply(this.render("login.html",LOGIN_FORM,forgotPassurl)));
 		}
 	}
 
@@ -105,7 +105,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 		Result result = null;
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
 			String forgotPassurl = com.xo.web.controllers.routes.UserController.forgotPasswordPage().absoluteURL(request(), false);
-			result = ok(com.xo.web.views.html.login.render(filledForm, forgotPassurl));
+			result = ok(Html.apply(this.render("login.html",filledForm,forgotPassurl)));
 		} else {	// Everything was filled & Success
 			String authToken = session().get(XoUtil.HEADER_AUTH_TOKEN);
 			result = redirect(com.xo.web.controllers.routes.UserController.pageDispatcher(authToken, null));
@@ -244,7 +244,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 				if(XoUtil.isNotNull(currentPage)) {
 					session(XoUtil.CURRENT_PAGE, currentPage);
 				}
-				result = ok(com.xo.web.views.html.xoapp_base.render(this.getUIPages(user)));
+				result = ok(Html.apply(this.render("xoapp_base.html",this.getUIPages(user))));
 			}
 		}
 		return result != null ? result : redirect(com.xo.web.controllers.routes.UserController.renderLoginPage());
@@ -388,9 +388,9 @@ public class UserController extends BaseController<User, Integer> implements Use
 		}
 	}
 
-	private final List<Html> getAuthorizedUIPages(final User user) {
+	private final List<String> getAuthorizedUIPages(final User user) {
 
-		return new ArrayList<Html>() {{
+		return new ArrayList<String>() {{
 			Set<PermissionEnum> permissionEnums = user.getPermissionEnums();
 			boolean isSuperUser = user != null && user.isSuperUser();
 			String emailAddress = user != null ? user.getEmail() : "admin-noreply@xoanonanalytics.com";
@@ -398,87 +398,59 @@ public class UserController extends BaseController<User, Integer> implements Use
 			if(isSuperUser) {
 				session(XoAppConstant.HEADER_X_SUPER_CLIENT, Boolean.TRUE.toString());
 				session(ROLE_NAME, RoleEnum.Admin.name());
-				add(com.xo.web.views.html.useradmin_controls.render());
+				add(render("useradmin_controls.html"));
 			} else {
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
-				add(com.xo.web.views.html.create_role.render());
-				add(com.xo.web.views.html.role_mgmt.render());
+				add(render("create_role.html"));
+				add(render("role_mgmt.html"));
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRolePermissionMgmtPermissions())) {
-				add(com.xo.web.views.html.role_permission_mgmt.render());
+				add(render("role_permission_mgmt.html"));
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserMgmtPermissions())) {
-				add(com.xo.web.views.html.user_mgmt.render());
-				add(com.xo.web.views.html.create_user.render());
-				add(com.xo.web.views.html.users_import.render());
+				add(render("user_mgmt.html"));
+				add(render("create_user.html"));
+				add(render("users_import.html"));
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getPermissionMgmtPermissions())) {
-				add(com.xo.web.views.html.permission_mgmt.render());
+				add(render("permission_mgmt.html"));
 			}
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserRoleMgmtPermissions())) {
-				add(com.xo.web.views.html.user_role_mgmt.render());
+				add(render("user_role_mgmt.html"));
 			}
-			
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserPermissionMgmtPermissions())) {
-				add(com.xo.web.views.html.user_perm_mgmt.render());
+				add(render("user_perm_mgmt.html"));
 			}
-
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getTableauPermissions())) {
-				add(com.xo.web.views.html.dashboard_projects.render());
+				add(render("dashboard_projects.html"));
 			}
-
-			boolean isParentPageAdded = false;
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getConfigTemplatePermissions())) {
-            	if(!isParentPageAdded) {
-            		add(com.xo.web.views.html.system_settings.render());
-            	}
-            	isParentPageAdded = true;
-                add(com.xo.web.views.html.configuration.render());
-                add(com.xo.web.views.html.configtemp_mgmt.render());
-				add(com.xo.web.views.html.reports_mgmt.render());
-				add(com.xo.web.views.html.reports_grp_mgmt.render());
+                add(render("configuration.html"));
+                add(render("configtemp_mgmt.html"));
+                add(render("reports_mgmt.html"));
+                add(render("reports_grp_mgmt.html"));
 			}
-
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getConfigInstancePermissions())) {
-            	if(!isParentPageAdded) {
-            		add(com.xo.web.views.html.system_settings.render());
-            	}
-            	isParentPageAdded = true;
-                add(com.xo.web.views.html.configinstance_mgmt.render());
+        		add(render("configinstance_mgmt.html"));
             }
 
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getClientJobConfigPermissions())) {
-            	if(!isParentPageAdded) {
-            		add(com.xo.web.views.html.system_settings.render());
-            	}
-            	isParentPageAdded = true;
-            	add(com.xo.web.views.html.clientjobconfig_mgmt.render());
+        		add(render("clientjobconfig_mgmt.html"));
             }
-
-            isParentPageAdded = false;
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getUserRowLevePermissions())) {
-            	if(!isParentPageAdded) {
-            		add(com.xo.web.views.html.row_level_mgmt.render());
-            	}
-            	isParentPageAdded = true;
-            	add(com.xo.web.views.html.user_row_level_mgmt.render());
+        		add(render("user_row_level_mgmt.html"));
             }
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleRowLevePermissions())) {
-            	if(!isParentPageAdded) {
-            		add(com.xo.web.views.html.row_level_mgmt.render());
-            	}
-            	isParentPageAdded = true;
-            	add(com.xo.web.views.html.role_row_level_mgmt.render());
+        		add(render("role_row_level_mgmt.html"));
             }
-
-		    add(com.xo.web.views.html.changepassword.render(CHANGE_PASSWORD_FORM));
+        	add(render("changepassword.html",CHANGE_PASSWORD_FORM));
 		}};
 	}
 
-	private List<Html> getUIPages(User user) {
+	private List<String> getUIPages(User user) {
 		return getAuthorizedUIPages(user);
 	}
 

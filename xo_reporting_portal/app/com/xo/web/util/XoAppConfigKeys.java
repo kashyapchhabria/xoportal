@@ -20,4 +20,5 @@ public interface XoAppConfigKeys extends TableauConstants {
 	
 	static final String XOACTORS_USERSYNC = "xoactors.usersync";
 	static final String EMAIL_LIST = "email.list";
+	static final String TEMPLATE_DIR = "views.dir";
 }

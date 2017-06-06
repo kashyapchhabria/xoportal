@@ -1,0 +1,52 @@
+@include(temp)
+<script id="confinstance_mgmt" type="text/html">
+<section>
+<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+	<div class="row">
+		<div class="column" id="table_holder">
+			<span>
+				<div data-alert id="alert-box-container" class="display_message" align="center" style="display:block !important;">
+					<div class="ui success message">
+						<i class="close icon" id="close_message"></i>
+						<div class="header" id="alert-message">
+							Message Here
+						</div>
+					</div>
+				</div>
+				<br>
+				<a class="ui primary button" title='Go Back' data-bind="click:configmgmt.backPage">&lt;&lt;&nbsp;@Messages.get("config.mgmt.goback")</a>
+				<a class="ui primary button" title='@Messages.get("config.mgmt.inst.newconfig")' id="createNewConfigInst" data-bind='click:configmgmt.newConfigInstance'>@Messages.get("config.mgmt.inst.newconfig")</a>
+				<br><br>
+			</span>
+			<table id="allAvailableConfigInstances" class="ui unstackable red compact selectable striped celled table">
+				<thead>
+					<tr>
+						<th>@Messages.get("config.mgmt.inst.name")</th>
+						<th>@Messages.get("config.mgmt.inst.action")</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: {data:configmgmt.availableConfigInstances, as: 'configInstanceRecord'}">
+					<tr data-bind="ifnot: configInstanceRecord.deleted">
+						<td data-bind='text: configInstanceRecord.shortName'></td>
+						<td>
+							<a class="action_link" title='@Messages.get("config.mgmt.inst.editconfigtempl")' data-bind='attr: {id: "confinstance_edit_"+configInstanceRecord.configId}, click:configInstanceRecord.editConfigurations'>
+								<i class="fa fa-edit"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.inst.dactconfigtempl")'  data-bind='attr: {id: "confinstance_active_"+configInstanceRecord.configId}, click:configInstanceRecord.toggleStatus,if: configInstanceRecord.active'>
+								<i class="fa fa-unlock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.inst.actconfigtempl")' data-bind='attr: {id: "confinstance_active_"+configInstanceRecord.configId}, click:configInstanceRecord.toggleStatus, ifnot: configInstanceRecord.active'>
+								<i class="fa fa-lock"></i>
+							</a>
+							<a class="action_link" title='@Messages.get("config.mgmt.inst.delconfig")' data-bind='attr: {id: "confinstance_delete_"+configInstanceRecord.configId}, click:configInstanceRecord.deleteConfig'>
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</section>
+</script>

@@ -22,7 +22,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
-        self.selectedReportMenuItem = ko.observable("Select Report");
+        self.selectedReportMenuItem = ko.observable("Main Dashboard");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
 		
         self.worksheetName = 'logo';
@@ -32,7 +32,6 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 		self.exportId=ko.observableArray([]);
 		self.aNumber=ko.observableArray([]);
 		self.dateOfEvent = ko.observable();
-		
 		
 		self.msgs=ko.observableArray([]);
 		self.inputText = ko.observable("");
@@ -45,7 +44,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 
         self.loadDashboardData = function(latestClient) {
             self.isFullScreenAvailable(true);
-            $(".se-pre-con").show(true);
+            $('#preloader').show(true);
             $.ajax({
                 'url': xoappcontext + '/dashboard',
                 'type': 'POST',
@@ -57,7 +56,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                     if (responsedata) {
                         self.buildDashboardData(responsedata, true);
                     }
-                    $(".se-pre-con").fadeOut("slow");
+                    $('#preloader').fadeOut("slow");
 
                 },
                 'error': function(jqXHR, textStatus, errorThrown) {
@@ -65,7 +64,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                         message: textStatus,
                         messageType: 'alert'
                     }, "general");
-                    $(".se-pre-con").fadeOut("slow");
+                    $('#preloader').fadeOut("slow");
                 }
             });
         };
@@ -133,9 +132,6 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                 	});*/
             }
             self.dashboardData(dashboardItems);
-
-            $(document).foundation('reflow');
-            $(document).foundation();
         };
 
         self.buildMenus = function(responsedata) {
@@ -148,16 +144,17 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                 if (totalItems > 0) {
                     var menuIndex = 0;
                     var actualMenus = responsedata.menuDtos[0].subMenus;
-                    actualMenus.unshift(self.selectReport);
+//                    actualMenus.unshift(self.selectReport);
                     totalItems = actualMenus.length;
                     for (; menuIndex < totalItems; menuIndex++) {
                         var menuItem = self.buildMenuItem(actualMenus[menuIndex]);
-                        if(menuIndex == 0) {
+                        menus.push(menuItem);
+/*                        if(menuIndex == 0) {
                         	reportsMenu = menuItem;
                         	menus.push(menuItem);
                         } else {
                         	reportsMenu.subMenuItems.push(menuItem);
-                        }
+                        }*/
                     }
                 }
             }
@@ -271,7 +268,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         		for(var i = 0; i < worksheetArray.length; i++) {
         			if(worksheetArray[i].getName() == self.worksheetName) {
         				self.workSheet = worksheetArray[i]; 
-        				self.workSheet.applyFilterAsync(self.filterField, client_logo_Id, 'REPLACE');
+//        				self.workSheet.applyFilterAsync(self.filterField, client_logo_Id, 'REPLACE');
         			}
         		}
         	}
@@ -326,7 +323,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
-            self.selectedReportMenuItem("Select Report");
+            self.selectedReportMenuItem("Main Dashboard");
         };
 
         self.loadClients = function() {
@@ -363,8 +360,6 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         self.showReportMenus = function() {
             self.isTopBarVisibile(!self.isTopBarVisibile());
             self.changeViewSize();
-            $(document).foundation();
-            $(document).foundation('reflow');
         };
 
         self.exportPdf = function() {
