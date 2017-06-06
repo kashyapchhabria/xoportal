@@ -34,7 +34,7 @@
 </head>
 <body style="width: 100% !important; background-color: white !important;" id="xoportalbody">
 	<div data-bind="template: { name: 'commentButton'}" id="commentDiv" class="ui right sidebar" style="background-color:#757575;"></div>
-	<div class="pusher">
+	<div class="pusher" style="background-color: white">
 		<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
 		@if(session.get("email") != null) {
 		<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;" onclick="showmenu()">

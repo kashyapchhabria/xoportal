@@ -121,15 +121,12 @@ function setGlobalMessage(messageObj,ui) {
 		$('#alert-box-container').removeClass('success warning info alert');
 		if(messageObj) {
 			$('#alert-box-container').addClass(messageObj.messageType)
-//			$('#alert-box-container').show();
 			$('#alert-box-container').css('visibility', 'visible');
 			$('#alert-message').text(messageObj.message);
 	
 			clearTimeout(msgtId);
 			msgtId = setTimeout(function(){
 				$('#alert-box-container').css('visibility', 'hidden');
-//				$("#alert-box-container").hide().slideDown();
-//				$("#alert-box-container").hide();			
 			}, 2000);			
 		}
 	} else {

@@ -4,12 +4,7 @@
 .with-margin{
 	margin-top: 3.75% !important;
 }
-html:-webkit-full-screen-ancestor {
-	background-color: #fff;
-}
-html:-moz-full-screen-ancestor {
-	background-color: #fff;
-}
+html { background-color: white; }
 #preloader{
 	position: fixed; 
 	left: 0; 
