@@ -137,7 +137,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 	}
 
 	public Result renderResetPasswordPage(String authToken) {
-		return ok(com.xo.web.views.html.reset_password.render(RESET_PASSWORD_FORM, authToken));
+		return ok(Html.apply(this.render("reset_password.html",RESET_PASSWORD_FORM, authToken)));
 	}
 
 	public Result resetPassword(String authToken)
@@ -145,7 +145,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 		Result result = null;
 		final Form<ResetPasswordForm> filledForm = RESET_PASSWORD_FORM.bindFromRequest();
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
-			result = ok(com.xo.web.views.html.reset_password.render(filledForm, authToken));
+			result = ok(Html.apply(this.render("reset_password.html",filledForm, authToken)));
 		} else {	// Everything was filled & Success
 			ResetPasswordForm resetForm = filledForm.get();
 			String newPassword = resetForm.getNewPassword();
@@ -175,7 +175,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 	}
 
 	public Result forgotPasswordPage() {
-		return ok(com.xo.web.views.html.forgot_password.render(FORGOT_PASSWORD_FORM));
+		return ok(Html.apply(this.render("forgot_password.html",FORGOT_PASSWORD_FORM)));
 	}
 
 	public Result forgotPassword()
@@ -183,11 +183,11 @@ public class UserController extends BaseController<User, Integer> implements Use
 		Result result = null;
 		final Form<UserIdentity> filledForm = FORGOT_PASSWORD_FORM.bindFromRequest();
 		if (filledForm.hasErrors()) {	// User did not fill everything properly
-			result = ok(com.xo.web.views.html.forgot_password.render(filledForm));
+			result = ok(Html.apply(this.render("forgot_password.html",filledForm)));
 		} else {	// Everything was filled & Success
 			UserIdentity resetForm = filledForm.get();
 			this.sendVerifyEmailMailForPassReset(resetForm.getUser());
-			result = ok(com.xo.web.views.html.forgot_password_result.render(Messages.get(MSG_FORGOT_PASS_MAIL_SENT_SUCCESS)));
+			result = ok(Html.apply(this.render("forgot_password_result.html",Messages.get(MSG_FORGOT_PASS_MAIL_SENT_SUCCESS))));
 		}
 		return result;
 	}
@@ -532,9 +532,9 @@ public class UserController extends BaseController<User, Integer> implements Use
 			User targetUser = tokenAction.getUser();
 			if(this.userLogic.verify(targetUser, tokenAction)) {
 				String authToken = session().get(XoUtil.AUTH_TOKEN_PASSWORD_RESET);
-				result = ok(com.xo.web.views.html.reset_password.render(RESET_PASSWORD_FORM, authToken));	
+				result = ok(Html.apply(this.render("reset_password.html",RESET_PASSWORD_FORM,authToken)));
 			} else {
-				result = ok(com.xo.web.views.html.not_valid_activation_link.render());
+				result = ok(Html.apply(this.render("not_valid_activation_link.html")));
 			}
 		} catch(Exception e) {
 			result = internalServerError("Error while validating the email.");

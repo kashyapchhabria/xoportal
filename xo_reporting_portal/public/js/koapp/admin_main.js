@@ -337,5 +337,5 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
     };
 
     initializePages();
-    $(".se-pre-con").fadeOut('slow');
+    $("#preloader").fadeOut('slow');
 });

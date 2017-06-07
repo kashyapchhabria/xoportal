@@ -92,14 +92,6 @@
 				<div class="ui simple right dropdown item">
 					<i class="large setting icon"></i>
 					<div class="left menu">
-						<a class="item" href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9">
-							&nbsp;&nbsp;<i class="fa fa-book"></i>
-							&nbsp;&nbsp;User Guide
-						</a>
-						<a class="item" onclick="composeSupport()">
-							&nbsp;&nbsp;<i class="fa fa-support"></i>
-							&nbsp;&nbsp;Support
-						</a>
 						<!-- ko if: router.currentPage().title()=="Dashboard" -->
 							<!-- ko if: menuData && menuData().length > 0 -->
 								<a class="item" id="rptdownload" data-bind="click:exportPdf">
@@ -130,6 +122,15 @@
 								&nbsp;&nbsp;Comments
 							</a>
 						<!-- /ko -->
+
+						<a class="item" href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9">
+							&nbsp;&nbsp;<i class="fa fa-book"></i>
+							&nbsp;&nbsp;User Guide
+						</a>
+						<a class="item" onclick="composeSupport()">
+							&nbsp;&nbsp;<i class="fa fa-support"></i>
+							&nbsp;&nbsp;Support
+						</a>
 						<a class="item" href="#changepassword">
 							&nbsp;&nbsp;<i class="fa fa-edit"></i>
 							&nbsp;&nbsp;Change Password
