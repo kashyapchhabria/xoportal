@@ -1,7 +1,7 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Reporting Portal Revamp"""
+name := """Xo Reporting Portal Diffusion Map Revamp"""
 
 version := "4.4"
 
