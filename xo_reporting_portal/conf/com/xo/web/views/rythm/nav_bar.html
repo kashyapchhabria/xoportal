@@ -104,12 +104,24 @@
 							<!-- ko if: menuData && menuData().length > 0 -->
 								<a class="item" id="rptdownload" data-bind="click:exportPdf">
 									&nbsp;&nbsp;<i class="fa fa-download"></i>
-									&nbsp;&nbsp;Export as CSV
+									&nbsp;&nbsp;Export as PDF
 								</a>
-							<a class="item" onclick="openCommentNav()">
-								&nbsp;&nbsp;<i class="fa fa-comments"></i>
-								&nbsp;&nbsp;Comments
-							</a>
+								<!-- ko ifnot : selectedReportMenuItem() == 'Exploratory Analysis' -->
+									<a class="item" onclick="alert('@Messages.get("base.report.csvexportalert")')" id="rptexportcsv">
+										&nbsp;&nbsp;<i class="fa fa-file-excel-o"></i>
+										&nbsp;&nbsp;@Messages.get("base.report.exportcsv")
+									</a>
+								<!-- /ko -->
+								<!-- ko if : selectedReportMenuItem() == 'Exploratory Analysis' -->
+									<a class="item" data-bind="click:exportSel"  id="rptexportcsv">
+										&nbsp;&nbsp;<i class="fa fa-file-excel-o"></i>
+										&nbsp;&nbsp;@Messages.get("base.report.exportsel")
+									</a>
+								<!-- /ko -->
+								<a class="item" onclick="openCommentNav()">
+									&nbsp;&nbsp;<i class="fa fa-comments"></i>
+									&nbsp;&nbsp;Comments
+								</a>
 							<!-- /ko -->
 						<!-- /ko -->
 						<!-- ko if: router.currentPage().title()=="Diffusion Map" -->
