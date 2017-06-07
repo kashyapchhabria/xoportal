@@ -435,7 +435,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 self.allConfigParams.push(tempConfigParamObj);
                 if(configtable) {
                 	configtable = $("#configurations").DataTable({
-                		responsive : true
+                		responsive : true,
+                		pagingType : "semantic"
                 	});
                 }
             }
