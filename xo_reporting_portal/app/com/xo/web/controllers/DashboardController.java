@@ -6,6 +6,7 @@ import java.util.Set;
 import play.Logger;
 import play.i18n.Messages;
 import play.mvc.Result;
+import play.twirl.api.Html;
 
 import com.google.common.collect.Lists;
 import com.xo.web.ext.tableau.mgr.DashboardItemEnum;
@@ -41,7 +42,7 @@ public class DashboardController extends BaseController<TableauSite, String> {
 
 	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")
 	public Result renderDashboard(){
-		return ok(com.xo.web.views.html.dashboard_projects.render());
+        return ok(Html.apply(this.render("dashboard_projects.html")));
 	}
 
 	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")

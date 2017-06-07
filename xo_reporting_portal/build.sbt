@@ -1,7 +1,7 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xoanon Reporting Portal"""
+name := """Xoanon Reporting Portal Telia Ncell Revamp"""
 
 version := "4.3.3"
 
