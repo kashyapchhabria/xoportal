@@ -69,7 +69,7 @@ function getLocationHash() {
  */
 function setLocationHash(str) {
 	window.location.hash = (str ? str : "");
-	window.location.hash = (str ? str : "home");
+	window.location.hash = (str ? str : "#");
 }
 
 function confirmOnPageExitOrRefresh(e) 
