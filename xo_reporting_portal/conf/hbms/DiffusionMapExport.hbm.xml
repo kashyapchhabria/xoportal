@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.diffusionmapexport.models.DiffusionMapExport"  table="diffusionmap_filters">
+    <id name="exportId" type="java.lang.Integer">
+            <column name="export_id" />
+            <generator class="identity" />
+    </id>
+    <property name="createdDate" type="timestamp">
+      <column length="100" name="created_date"/>
+    </property>
+    <many-to-one class="com.xo.web.models.system.User" fetch="select" name="user">
+      <column length="40" name="user_id" not-null="true"/>
+    </many-to-one>
+    <property name="xTile" type="string">
+      <column length="11" name="x_tile" />
+    </property>
+    <property name="yTile" type="string">
+      <column length="11" name="y_tile" />
+    </property>
+    <property name="deviceDate" type="string">
+      <column length="30" name="device_date" />
+    </property>
+    <property name="subsegmentLabel" type="string">
+      <column length="50" name="subsegment_label" />
+    </property>
+    <property name="region" type="string">
+      <column length="100" name="region" />
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status" />
+    </property>
+    <property name="locationType" type="string">
+      <column length="50" name="location_type" />
+    </property>
+    <property name="lifetimeBucket" type="string">
+      <column length="100" name="lifetime_bucket" />
+    </property>
+    <property name="spendSegment" type="string">
+      <column length="100" name="spend_bucket" />
+    </property>
+  </class>
+</hibernate-mapping>

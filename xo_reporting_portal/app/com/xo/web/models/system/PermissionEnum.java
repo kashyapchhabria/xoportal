@@ -146,6 +146,8 @@ public enum PermissionEnum {
 	DELETE_VIEW_GROUP,
 	DEACTIVATE_VIEW_GROUP,
 	ACTIVATE_VIEW_GROUP,
+	
+	CREATE_TARGET,
 
 
 	;
@@ -300,7 +302,13 @@ public enum PermissionEnum {
 	        	add(ACTIVATE_JOB);
 	        }};
 	 }
-
+	 
+	 public static final List<PermissionEnum> getCampaignFilterPermissions() {
+	        return new ArrayList<PermissionEnum>() {{
+	        	add(CREATE_TARGET);
+	        }};
+	 }
+	 
 	 public static final List<PermissionEnum> getClientJobConfigPermissions() {
 	        return new ArrayList<PermissionEnum>() {{
 	        	add(CREATE_CLIENT_JOB_CONFIG);

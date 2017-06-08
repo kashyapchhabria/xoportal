@@ -39,7 +39,18 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.isTitleVisible = ko.observable(false);
         self.worksheetCache = [];
-
+        
+        self.xTile = ko.observable("");
+		self.yTile = ko.observable("");
+		self.subsegmentLabel = ko.observable("");
+		self.deviceDate = ko.observable("");
+		self.region = ko.observable("");
+		self.vas_status = ko.observable("");
+		self.locationType = ko.observable("");
+		self.spendSegment = ko.observable("");
+		self.lifetimeBucket = ko.observable("");
+		
+		
         self.submitComment = function () {
         	var dashboardName='diffusionMap';
         	if(self.inputText() === '') {
@@ -297,6 +308,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                                 height: $('#diffusionViewPlace').height()
                             }
                           });*/
+                          viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
+                          viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, onFilterChange);
                           self.isTitleVisible(true);
                           self.changeDiffusionViewSize();
                         
@@ -305,7 +318,47 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 viz = new tableau.Viz(placeholderDiv, url, options);
             }
         };
-
+        
+        
+        var i=0;
+        function onFilterChange(Filter)
+        {
+        	var list;
+        	i=0;
+            //window.alert(Filter.getFieldName());
+        	return Filter.getFilterAsync().then(function(field) {
+            	{
+            		if(i==0) {
+	            		if(field.getFieldName()=="Subsegment Label")
+	            			self.subsegmentLabel("");
+	            		if(field.getFieldName()=="Region")
+	            			self.region("");
+	            		if(field.getFieldName()=="Location Type")
+	            			self.locationType("");
+	            		//alert(field.getAppliedValues());
+	            		values = field.getAppliedValues();
+	            		list="";
+        				for (j = 0; j < values.length; j++) {
+            				list += values[j].value + ",";
+						}
+        				list = list.slice(0,-1);
+        				if(field.getFieldName()=="Subsegment Label")
+	            			self.subsegmentLabel(list);
+	            		if(field.getFieldName()=="Region")
+	            			self.region(list);
+	            		if(field.getFieldName()=="Location Type")
+	            			self.locationType(list);
+            			i++;
+	            		//self.test(i);
+            		}
+            	}
+        	});
+        }
+    
+        self.test = function(i){
+        	alert(i);
+        }        
+        
 	self.buildCache = function() {
 		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
 		for(var j = 0; j < self.array().length; j++ ) {
@@ -358,6 +411,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             }
         };
 
+        
         self.clearAll = function() {
             self.imageUrl('');
             self.isFullScreenAvailable(false);
@@ -531,6 +585,130 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			}
 		}
 		
+		self.onMarksSelection = function(marksEvent) {
+			//if(marksEvent.getWorksheet().getName()=="Duration vs DistinctB number")
+				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+		}
+		
+		self.reportSelectedMarks = function(marks) {
+			self.xTile("7");
+			self.yTile("7");
+			//self.subsegmentLabel("EA");
+			self.deviceDate("2017-03");
+			//self.region("SOUTH SOUTH");
+			self.vas_status("entertainment_vas,backup_vas,betting_service_vas");
+			//self.locationType("SUBURBAN");
+			self.spendSegment("null");
+			self.lifetimeBucket("null");
+			
+			
+			
+			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                   var pair = pairs[pairIndex];
+                   if (pair.fieldName=="Devicedate")
+                	   self.deviceDate(pair.formattedValue);
+                   if (pair.fieldName=="Status")
+                	   alert(pair.formattedValue);
+                   if (pair.fieldName=="X Tile") {
+                	   self.xTile(pair.formattedValue);
+                	   self.spendSegment("null");
+                   }
+                   if (pair.fieldName=="Y Tile") {
+                	   self.yTile(pair.formattedValue);
+                	   self.lifetimeBucket("null");
+                   }
+                   if (pair.fieldName=="ATTR(Vas Type)")
+                	   alert(pair.formattedValue);
+                   if (pair.fieldName=="Spend_Bucket") {
+                	   self.spendSegment(pair.formattedValue);
+                	   self.xTile("null");
+                   }
+                   if (pair.fieldName=="Lifetime Bucket") {
+                	   self.lifetimeBucket(pair.formattedValue);
+                	   self.yTile("null");
+                   }
+//                   alert(pair.fieldName);
+//                   alert(pair.formattedValue);
+                }
+             }
+		}
+		
+		self.exportSel = function() {
+        	if(viz) {
+				exportedData={ 
+        				createdDate: new Date().getTime(),
+        				user: self.user(),
+        				deviceDate: self.deviceDate(),
+        				xTile: self.xTile(),
+        				yTile: self.yTile(),
+        				subsegmentLabel: self.subsegmentLabel(),
+        				region: self.region(),
+        				status: self.vas_status(),
+        				locationType: self.locationType(),
+        				spendSegment: self.spendSegment(),
+        				lifetimeBucket: self.lifetimeBucket()
+        		} ;
+        		data=JSON.stringify(exportedData);
+        		alert(data);
+        		$.ajax({
+        			'url': xoappcontext + '/exportdata',
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        							alert(responseData);        		
+        			},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+        		$.ajax({
+            		'url': xoappcontext + '/getMsisdns',
+            		'type': 'POST',
+            		'cache': false,
+            		'data':data,
+            		'contentType':"application/json; charset=utf-8",
+            		'success': function(serverResponse) {
+            			self.getCsvFile(serverResponse);
+            		},
+            		'error': function(jqXHR, textStatus, errorThrown) {
+            			$(".se-pre-con").fadeOut("slow");
+            			setGlobalMessage({
+            				message: textStatus,
+            				messageType: 'alert'
+            			}, "popup");
+            		}
+            	});
+        	}
+        }
+		
+		
+		self.getCsvFile = function (fileName) {
+			$.ajax({
+                'url': xoappcontext + '/getCsvFile/' + fileName,
+                'type': 'GET',
+                'cache': false,
+                'contentType':"application/json; charset=utf-8",
+                'success': function(serverResponse) {
+                	window.open( xoappcontext + '/getCsvFile/' + fileName + '?authToken='+ $('#authtokenvalue').attr('authtoken'));
+                	$(".se-pre-con").fadeOut("slow");
+                	console.log("File download Successful");
+                 },
+                'error': function(jqXHR, textStatus, errorThrown) {
+                	$(".se-pre-con").fadeOut("slow");
+                    setGlobalMessage({
+                        message: textStatus,
+                        messageType: 'alert'
+                    }, "popup");
+                }
+            });
+		}
+		
+		
+		
 		self.applyDiffusionFilters = function () {
 			/*sheet = viz.getWorkbook().getActiveSheet();
 			worksheetArray = sheet.getWorksheets();
@@ -593,7 +771,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             isTitleVisible:self.isTitleVisible,
             maxSel:self.maxSel,
             showSelect:self.showSelect,
-            commentHeading:self.commentHeading
+            commentHeading:self.commentHeading,
+            exportSel:self.exportSel
         };
     }
 	

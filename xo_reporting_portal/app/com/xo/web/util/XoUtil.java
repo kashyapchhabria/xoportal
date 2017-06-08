@@ -130,6 +130,10 @@ public class XoUtil implements XoAppConstant {
         String dateString = DATE_FORMAT.format(date);
         return dateString;
 	}
+	
+	public static final List<?> getConfigsAsList(String configKey) {
+		return Play.application().configuration().getList(configKey);
+	}
 
 	public static final Date convertToDate(String dateStr) {
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT_DD_MM_YYYY);

@@ -169,3 +169,7 @@ GET		 /filterlist												  @com.xo.web.controllers.DashboardController.getFi
 POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()
 GET		 /allComments												  @com.xo.web.ext.comment.controllers.CommentController.readAllComments()
 GET		 /sheetComments/:sheetName/:dashboardName					  @com.xo.web.ext.comment.controllers.CommentController.readSheetComments(sheetName: String, dashboardName: String)
+POST	 /exportdata                                                  @com.xo.web.ext.diffusionmapexport.controllers.DiffusionMapExportController.exportData()
+POST	 /getMsisdns												  @com.xo.web.ext.diffusionmapexport.controllers.DiffusionMapExportController.getMsisdns()
+POST	 /getMsisdnCount											  @com.xo.web.ext.diffusionmapexport.controllers.DiffusionMapExportController.getMsisdnCount()
+GET		 /getCsvFile/:fileName										  @com.xo.web.ext.diffusionmapexport.controllers.DiffusionMapExportController.getCsvFile(fileName: String)

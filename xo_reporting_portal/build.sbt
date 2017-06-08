@@ -64,7 +64,15 @@ libraryDependencies ++= Seq(
 	"log4j" % "log4j" % "1.2.14",
 	"org.slf4j" % "slf4j-api" % "1.5.11",
 	"org.slf4j" % "slf4j-log4j12" % "1.5.11",
-	"org.apache.zookeeper" % "zookeeper" % "3.4.6"
+	"org.apache.zookeeper" % "zookeeper" % "3.4.6",
+	//Elastic Search
+	"jp.co.bizreach" % "elasticsearch" % "2.3.5",
+	// https://mvnrepository.com/artifact/com.univocity/univocity-parsers
+	"com.univocity" % "univocity-parsers" % "2.3.0",
+	// https://mvnrepository.com/artifact/io.searchbox/jest
+	"io.searchbox" % "jest" % "2.0.4",
+	"commons-io" % "commons-io" % "2.5"
+	
 )
 
 doc in Compile <<= target.map(_ / "none")
