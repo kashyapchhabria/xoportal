@@ -72,13 +72,13 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       var usermgmt = new UserManagerModel();
       var rolemgmt = new RoleManagerModel();
       var permissionmgmt= new PermissionMgmtModel();
+	  var diffMap = new DiffusionManagerModel();
       var tableaumgmt = new TableauManagerModel();
       var configmgmt = new ConfigurationManagerModel();
       var clientjobmgmt = new JobManagerModel();
       var rowlevelmgmt = RowLevelPermissionModel();
       var reportmgmt = new ReportManagementModel();
       var reportgrpmgmt = new ReportGroupManagementModel();
-	  var diffMap = new DiffusionManagerModel();
 	  
       function cleanUp() {
     	  if(tableaumgmt) {
