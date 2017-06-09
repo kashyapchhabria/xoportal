@@ -5,11 +5,11 @@
 	<section id="diffusionReportsPageSection" style="background-color: white;" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
 		<center data-bind="visible:(!diffMap.errorText() || diffMap.errorText().length <= 0)" >
 			<div id="diffusionViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
-				<div data-bind="visible:diffMap.isTitleVisible()">	
+				<div data-bind="visible:diffMap.isTitleVisible()">
 					<div class="ui grid page" style="padding:1% !important;">
 						<div class="row">
 							<div class="one wide column">
-								<img class="ui tiny image" src="/xoportal/assets/images/@clientlogo">
+								<img class="ui tiny image" src='@routes.Assets.at("images/"+clientlogo)'>
 							</div>
 							<div class="fifteen wide column" align="left">
 								<a class="ui small button" style="background-color: #0ABAB5; color:white" id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a>
