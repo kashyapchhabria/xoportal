@@ -1,9 +1,9 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Reporting Portal Diffusion Map Revamp"""
+name := """Xo Diffusion Map Reporting Portal New"""
 
-version := "4.4"
+version := "4.5"
 
 organization := "com.xo.web"
 
@@ -89,6 +89,3 @@ resolvers += Resolver.url("Edulify Repository", url("http://edulify.github.io/mo
 
 // Additional java options
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-encoding", "UTF-8")
-
-
-

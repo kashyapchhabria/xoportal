@@ -113,4 +113,8 @@ public class XOBaseController extends Controller {
 	public String render(String templatePath, Object...arguments) {
 		return this.rtl.render(templatePath, arguments);
 	}
+
+	public final String getAssetUrl(String assetPath) {
+		return controllers.routes.Assets.at(assetPath).absoluteURL(request(), false);
+	}
 }

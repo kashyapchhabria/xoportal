@@ -26,6 +26,7 @@
 	<script type="application/javascript">
 	    setAppConext('@com.xo.web.util.XoUtil.getApplicationContext()');
 	    setAppUser('@session.get("email")');
+	    setAppClient('@com.xo.web.util.XoUtil.getApplicationEndUser()');
 	    $('#preloader').show(true);
 	</script>
 

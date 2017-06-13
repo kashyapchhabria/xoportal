@@ -7,6 +7,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
         BaseModel.call(this, ko, $);
         var viz = null;
+        self.clientLogoImageUrl = ko.observable(xoappcontext + '/assets/images/' + xoappclient + '_logo.png');
         self.imageUrl = ko.observable('');
         self.errorText = ko.observable('');
         self.isFullScreenEnabled = ko.observable(false);
@@ -570,7 +571,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             isTitleVisible:self.isTitleVisible,
             maxSel:self.maxSel,
             showSelect:self.showSelect,
-            dashboardCommentHeading:self.dashboardCommentHeading
+            dashboardCommentHeading:self.dashboardCommentHeading,
+            clientLogoImageUrl:self.clientLogoImageUrl
         };
     }
 	

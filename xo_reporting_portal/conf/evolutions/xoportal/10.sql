@@ -1,28 +1,12 @@
 # --- !Ups
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE `comment`(
- `message_id` int(11) NOT NULL AUTO_INCREMENT,
- `ts` timestamp NOT NULL,
- `user_id` int(11) NOT NULL,
- `message` text ,
- `sheet_name` varchar(30),
- `dashboard_name` varchar(30),
- PRIMARY KEY (`message_id`),
- CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;
-
-# --- !Downs
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-
-DROP TABLE IF EXISTS `comment`;
-
+UPDATE xo_config_instances SET config_json='{\"initialdelay\": 0, \"frequency\":1, \"enabled\": true,\"isScheduled\": 1}' 
+WHERE short_name='XoSession Killer';
+UPDATE xo_config_instances SET config_json='{\"initialdelay\": 0, \"frequency\":23, \"enabled\": true, 
+\"publichost\":\"https://tableau.xoanonanalytics.net\", \"internalhost\":\"http://10.11.50.58\", 
+\"username\":\"Etisalat\", \"password\":\"X0anon2o15\", \"sitename\":\"Etisalat_Production\", 
+\"contenturl\":\"Xo_etisalat\", \"clientip\":\"10.11.50.68\",\"isScheduled\": 1}' 
+WHERE short_name='Tableau Sync';
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS ;

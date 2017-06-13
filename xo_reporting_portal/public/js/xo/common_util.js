@@ -4,6 +4,7 @@
 
 var xoappcontext;
 var xoappusername;
+var xoappclient;
 function setAppConext(appCxt) {
 	xoappcontext = appCxt;
 	window.onunload = window.location.pathname != "/" ? confirmOnPageExitOrRefresh : null;
@@ -20,7 +21,9 @@ function setAppConext(appCxt) {
 function setAppUser(appUser){
 	xoappusername=appUser;
 }
-
+function setAppClient(appClient){
+	xoappclient=appClient;
+}
 String.prototype.supplant = function(o) {
 	return this.replace(/\{([^{}]*)\}/g, function(a, b) {
 		var r = o[b];
