@@ -63,7 +63,7 @@ public class UserController extends BaseController<User, Integer> implements Use
     private static final String XOSSO_URL_APP_LOGOUT = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_LOGOUT);
     private static final String XOSSO_URL_APP_TOKEN_VERIFY = XOSSO_URL_LINK + XoUtil.getConfig(XoAppConfigKeys.XOSSO_URL_VERIFY_TOKEN);
 	private static final String CALLBACK_URL = "?callbackurl=";
-	
+
 	private static final String APP_CONTEXT = XoUtil.getConfig(XoAppConfigKeys.APPLICATION_CONTEXT);
 	private static final String APP_TYPE = "&app=" + APP_CONTEXT.split("/")[1];
 	
@@ -403,7 +403,6 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
-			add(render("diffusionmap.html",(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)+"_logo.png")));
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
 				add(render("create_role.html"));
 				add(render("role_mgmt.html"));
@@ -429,6 +428,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getTableauPermissions())) {
 				add(render("dashboard_projects.html"));
+				add(render("diffusionmap.html"));
 			}
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getConfigTemplatePermissions())) {
                 add(render("configuration.html"));

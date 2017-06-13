@@ -1,4 +1,3 @@
-@args String clientlogo
 @include(temp)
 @include(nav_bar)
 <script id="diffusion_map" type="text/html">
@@ -9,7 +8,7 @@
 					<div class="ui grid page" style="padding:1% !important;">
 						<div class="row">
 							<div class="one wide column">
-								<img class="ui tiny image" src='@routes.Assets.at("images/"+clientlogo)'>
+								<img class="ui tiny image" data-bind='attr: {src: diffMap.clientLogoImageUrl}'></img>
 							</div>
 							<div class="fifteen wide column" align="left">
 								<a class="ui small button" style="background-color: #0ABAB5; color:white" id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a>
