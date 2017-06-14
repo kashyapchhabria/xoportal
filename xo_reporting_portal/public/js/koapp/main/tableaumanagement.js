@@ -311,6 +311,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
             self.selectedReportMenuItem("Main Dashboard");
+            self.dashboardCommentHeading("Main Dashboard");
         };
 
         self.loadClients = function() {
