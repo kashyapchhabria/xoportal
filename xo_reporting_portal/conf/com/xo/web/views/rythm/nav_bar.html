@@ -72,8 +72,14 @@
 				<i class="home icon"></i>
 			</a>
 			<div class="right menu">
-				<div class="item disp" data-bind="text: router.currentPage().title">
-				</div>
+				<!-- ko ifnot: menuData && menuData().length > 0 || router.currentPage().title()=="Diffusion Map" -->
+					<div class="item disp" data-bind="text: router.currentPage().title">
+					</div>
+				<!-- /ko -->
+				<!-- ko if: menuData && menuData().length > 0 || router.currentPage().title()=="Diffusion Map" -->
+					<div class="item disp" data-bind="text: selectedReportMenuItem">
+					</div>
+				<!-- /ko -->
 				<!-- ko if: router.currentPage().title()=="Dashboard" -->
 					@if(session.get(com.xo.web.util.XoAppConstant.HEADER_X_SUPER_CLIENT) != null) {
 						<select style="margin-top:4px;" class="ui selection dropdown" title='@Messages.get("user.selclient")' id="selSupSysClient" 
@@ -82,10 +88,10 @@
 					}
 				<!-- /ko -->
 				<!-- ko if: router.currentPage().title()=="Dashboard" || router.currentPage().title()=="Diffusion Map" -->
-					<a data-bind='click: fullScreenView' class="item">
+					<a data-bind='click: fullScreenView' class="item" title="View Fullscreen">
 						<i class="fa fa-arrows-alt"></i>
 					</a>
-					<a class="item" id="hide_nav_bar" onclick="hidemenu()">
+					<a class="item" id="hide_nav_bar" onclick="hidemenu()" title="Hide menu Bar">
 						<i class="compress icon"></i>
 					</a>
 				<!-- /ko -->

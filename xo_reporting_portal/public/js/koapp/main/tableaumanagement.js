@@ -22,7 +22,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
-        self.selectedReportMenuItem = ko.observable("Main Dashboard");
+        self.selectedReportMenuItem = ko.observable("Anomaly Analysis");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
 		
         self.worksheetName = 'logo';
@@ -70,7 +70,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         };
 
         self.loadPageData = function(data, event) {
-            $(".se-pre-con").show(true);
+            $("#preloader").show(true);
             if (data && event) {
             	self.selectedReportMenuItem(data.name);
             	self.getComments();
@@ -84,14 +84,14 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                         } else {
                             setGlobalMessage(responsedata, "general");
                         }
-                        $(".se-pre-con").fadeOut("slow");
+                        $("#preloader").fadeOut("slow");
                     },
                     'error': function(jqXHR, textStatus, errorThrown) {
                         setGlobalMessage({
                             message: textStatus,
                             messageType: 'alert'
                         }, "general");
-                        $(".se-pre-con").fadeOut("slow");
+                        $("#preloader").fadeOut("slow");
                     }
                 });
             }
@@ -323,7 +323,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
-            self.selectedReportMenuItem("Main Dashboard");
+            self.selectedReportMenuItem("Anomaly Analysis");
         };
 
         self.loadClients = function() {
