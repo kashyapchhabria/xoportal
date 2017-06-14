@@ -38,7 +38,7 @@
 	<div class="pusher" style="background-color: white">
 		<div id="preloader" style="background: rgba(84, 84, 84, 0.43) url(@routes.Assets.at("images/preloader_1.gif")) no-repeat center center;"></div>
 		@if(session.get("email") != null) {
-		<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;" onclick="showmenu()">
+		<div class="ui sticky" id="show_nav_bar" style="margin-top: 10px; display: inline-block; position: fixed;" onclick="showmenu()" title="Show Menu bar">
 			<div class="ui black big right attached fixed button">
 				<i class="expand icon"></i>
 			</div>
