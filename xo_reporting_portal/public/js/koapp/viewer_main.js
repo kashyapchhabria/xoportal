@@ -18,7 +18,10 @@ requirejs.config({
 	'datatables-responsive': {
 		   	 	exports: 'Responsive',
 		   	 	deps:['datatables', 'foundation']
-			}
+			},
+	'FileSaver':{
+ 			exports : 'FileSaver'
+ 	}
   },
   paths : {
     jquery : 'jquery/jquery.min',
@@ -29,13 +32,14 @@ requirejs.config({
     foundation: xoappcontext + '/vassets/lib/foundation/js/foundation.min',
     datatables:  xoappcontext + '/vassets/js/datatable/jquery.dataTables',
     DataTable:  xoappcontext + '/vassets/js/datatable/foundation.datatable',
-    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive'
+    Responsive:  xoappcontext + '/vassets/js/datatable/dataTables.responsive',
+    FileSaver: xoappcontext + '/vassets/js/koapp/FileSaver'
   }
 });
 
 define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'foundation', 
-         'datatables', 'DataTable', 'Responsive', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map'],
-         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, Responsive, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
+         'datatables', 'DataTable', 'Responsive', 'main/usermanagement',  'FileSaver', 'main/tableaumanagement', 'main/diffusion_map'],
+         function(ko, Router, kv, koSelector, foundation, datatables, DataTable, FileSaver, Responsive, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
 
     var initializePages = function(){
 

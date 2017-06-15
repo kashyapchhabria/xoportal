@@ -1,7 +1,7 @@
 /**
  * Configuration management
  */
-define([ 'knockout', 'jquery' ], function(ko, $) {
+define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 
 	function DiffusionManagerModel() {
 
@@ -87,6 +87,12 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         		});
         	}
         }
+        
+        self.exportPdf = function() {
+			if(viz) {
+				viz.showExportPDFDialog();
+			}
+		}
         
         self.openNav = function() {
         	document.getElementById("mySidenav").style.width = "400px";
@@ -335,6 +341,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	            			self.region("");
 	            		if(field.getFieldName()=="Location Type")
 	            			self.locationType("");
+	            		if(field.getFieldName()=="Devicedate")
+	            			self.deviceDate("");
 	            		//alert(field.getAppliedValues());
 	            		values = field.getAppliedValues();
 	            		list="";
@@ -348,17 +356,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	            			self.region(list);
 	            		if(field.getFieldName()=="Location Type")
 	            			self.locationType(list);
+	            		if(field.getFieldName()=="Devicedate")
+	            			self.deviceDate(list);
             			i++;
-	            		//self.test(i);
             		}
             	}
         	});
         }
     
-        self.test = function(i){
-        	alert(i);
-        }        
-        
+       
 	self.buildCache = function() {
 		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
 		for(var j = 0; j < self.array().length; j++ ) {
@@ -591,15 +597,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		}
 		
 		self.reportSelectedMarks = function(marks) {
-			self.xTile("7");
-			self.yTile("7");
-			//self.subsegmentLabel("EA");
-			self.deviceDate("2017-03");
-			//self.region("SOUTH SOUTH");
-			self.vas_status("entertainment_vas,backup_vas,betting_service_vas");
-			//self.locationType("SUBURBAN");
-			self.spendSegment("null");
-			self.lifetimeBucket("null");
+//			self.xTile("7");
+//			self.yTile("7");
+//			self.subsegmentLabel("EA");
+//			self.deviceDate("2017-03");
+//			self.region("SOUTH SOUTH");
+//			self.vas_status("entertainment_vas,backup_vas,betting_service_vas");
+//			self.locationType("SUBURBAN");
+//			self.spendSegment("null");
+//			self.lifetimeBucket("null");
 			
 			
 			
@@ -607,10 +613,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 var pairs = marks[markIndex].getPairs();
                 for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
                    var pair = pairs[pairIndex];
-                   if (pair.fieldName=="Devicedate")
+                   if (pair.fieldName=="ATTR(Devicedate)")
                 	   self.deviceDate(pair.formattedValue);
-                   if (pair.fieldName=="Status")
-                	   alert(pair.formattedValue);
+//                   if (pair.fieldName=="Status")
+//                	   alert(pair.formattedValue);
                    if (pair.fieldName=="X Tile") {
                 	   self.xTile(pair.formattedValue);
                 	   self.spendSegment("null");
@@ -620,7 +626,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 	   self.lifetimeBucket("null");
                    }
                    if (pair.fieldName=="ATTR(Vas Type)")
-                	   alert(pair.formattedValue);
+                	   self.vas_status(pair.formattedValue);
                    if (pair.fieldName=="Spend_Bucket") {
                 	   self.spendSegment(pair.formattedValue);
                 	   self.xTile("null");
@@ -630,7 +636,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 	   self.yTile("null");
                    }
 //                   alert(pair.fieldName);
-//                   alert(pair.formattedValue);
+//                  alert(pair.formattedValue);
                 }
              }
 		}
@@ -659,12 +665,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         			'data':data,
         			'contentType': "application/json; charset=utf-8",
         			'success' : function(responseData) {
-        							alert(responseData);        		
+        							//alert(responseData);        		
         			},
         			'error' : function(jqXHR, textStatus, errorThrown) {
         				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
         			}
         		});
+        		var d = new Date();
+        		var fileName = 'msisdn' + d.getDate() +'-'+ (1 + d.getMonth()) + '-' + d.getUTCFullYear() +'.csv';
         		$.ajax({
             		'url': xoappcontext + '/getMsisdns',
             		'type': 'POST',
@@ -672,7 +680,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             		'data':data,
             		'contentType':"application/json; charset=utf-8",
             		'success': function(serverResponse) {
-            			self.getCsvFile(serverResponse);
+            			//alert(fileName);
+            			var file = new File([serverResponse], fileName, {type: "text/csv;charset=utf-8"});
+                    	saveAs(file);
             		},
             		'error': function(jqXHR, textStatus, errorThrown) {
             			$(".se-pre-con").fadeOut("slow");
@@ -686,26 +696,29 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
 		
 		
-		self.getCsvFile = function (fileName) {
-			$.ajax({
-                'url': xoappcontext + '/getCsvFile/' + fileName,
-                'type': 'GET',
-                'cache': false,
-                'contentType':"application/json; charset=utf-8",
-                'success': function(serverResponse) {
-                	window.open( xoappcontext + '/getCsvFile/' + fileName + '?authToken='+ $('#authtokenvalue').attr('authtoken'));
-                	$(".se-pre-con").fadeOut("slow");
-                	console.log("File download Successful");
-                 },
-                'error': function(jqXHR, textStatus, errorThrown) {
-                	$(".se-pre-con").fadeOut("slow");
-                    setGlobalMessage({
-                        message: textStatus,
-                        messageType: 'alert'
-                    }, "popup");
-                }
-            });
-		}
+//		self.getCsvFile = function (fileName) {
+//			$.ajax({
+//                'url': xoappcontext + '/getCsvFile/' + fileName,
+//                'type': 'GET',
+//                'cache': false,
+//                'contentType':"application/json; charset=utf-8",
+//                'success': function(serverResponse) {
+//                	//console.log(serverResponse);
+//                	//window.open( xoappcontext + '/getCsvFile/' + fileName + '?authToken='+ $('#authtokenvalue').attr('authtoken'));
+//                	var file = new File([serverResponse], fileName, {type: "text/csv;charset=utf-8"});
+//                	saveAs(file);
+//                	$(".se-pre-con").fadeOut("slow");
+//                	console.log("File download Successful");
+//                 },
+//                'error': function(jqXHR, textStatus, errorThrown) {
+//                	$(".se-pre-con").fadeOut("slow");
+//                    setGlobalMessage({
+//                        message: textStatus,
+//                        messageType: 'alert'
+//                    }, "popup");
+//                }
+//            });
+//		}
 		
 		
 		
@@ -772,7 +785,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             maxSel:self.maxSel,
             showSelect:self.showSelect,
             commentHeading:self.commentHeading,
-            exportSel:self.exportSel
+            exportSel:self.exportSel,
+            exportPdf:self.exportPdf
         };
     }
 	

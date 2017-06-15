@@ -87,7 +87,11 @@ public class DiffusionMapExportController extends BaseController<DiffusionMapExp
 				writer = diffusionMapExportLogic.getMsisdns(filterDto, writer);
 				writer.flush();
 				writer.close();
-				return ok(campaignFile.getName());
+				//return ok(campaignFile.getName());
+				System.out.println(fileName);
+				response().setContentType("application/x-download");
+				response().setHeader(CONTENT_DISPOSITION,DOWNLOAD_FILE_CONTENT+ fileName);
+				return ok(Play.application().getFile(fileName));
 			} 
 		} catch (XODAOException e) {
 			e.printStackTrace();

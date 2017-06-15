@@ -214,7 +214,7 @@ public class DiffusionMapExportDaoImpl extends GenericDAOImpl<DiffusionMapExport
 			for (String fields : ES_ORDER) {
 				requestBuilder.addField(fields);
 			}
-			
+			//System.out.println(requestBuilder);
 			response = requestBuilder.execute().actionGet();
 			
 		} catch (Exception e) {

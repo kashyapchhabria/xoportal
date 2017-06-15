@@ -40,6 +40,9 @@ global.title=Xoanon Reporting Portal
 base.title=Xoanon Reporting Portal
 base.changepassword=Change Password
 base.logout=Logout
+base.report.comment=Feedback
+base.report.export=Export As PDF
+base.report.exportsel=Data Export
 
 # Login page
 login.title=Welcome to Xoanon Reporting Portal
