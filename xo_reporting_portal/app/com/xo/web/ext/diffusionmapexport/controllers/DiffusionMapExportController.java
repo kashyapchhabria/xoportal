@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.sun.jmx.snmp.Timestamp;
 
 
 public class DiffusionMapExportController extends BaseController<DiffusionMapExport, Integer> {

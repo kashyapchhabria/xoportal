@@ -1,6 +1,7 @@
 package com.xo.web.models.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.hibernate.Query;
@@ -54,10 +55,41 @@ public class RowLevelPermissionsDAOImpl<T, ID extends Serializable> extends Gene
 		}
 		Query query = session.createQuery(queryString.toString());
 		if(isExclusionAvailable) {
-			query.setParameterList(PARAM_INSTANCEIDS, excludedInstanceIds);
+			try {
+				query.setParameterList(PARAM_INSTANCEIDS, this.getValidInstanceIds(excludedInstanceIds, this.getMetadataUtil().get(resourceType).getIdType().getJavaClass()));
+			} catch (IllegalArgumentException | ClassNotFoundException e) {
+				throw new XODAOException("Error setting the exclusion list parameter.", e);
+			}
 		}
 		resourceInstances = query.list();
 		return resourceInstances;
+	}
+
+	private Collection<?> getValidInstanceIds(Collection<String> excludedInstanceIds, Class<?> expectedType) {
+		if(Integer.class == expectedType) {
+			return toInteger(excludedInstanceIds);
+		} else if(Long.class == expectedType) {
+			return toLong(excludedInstanceIds);
+		} else if(String.class == expectedType) {
+			return excludedInstanceIds;
+		}
+		return null;
+	}
+
+	private final Collection<Integer> toInteger(Collection<String> excludedInstanceIds) {
+		Collection<Integer> validIds = new ArrayList<Integer>();
+		for(String strId : excludedInstanceIds) {
+			validIds.add(Integer.parseInt(strId));
+		}
+		return validIds;
+	}
+
+	private final Collection<Long> toLong(Collection<String> excludedInstanceIds) {
+		Collection<Long> validIds = new ArrayList<Long>();
+		for(String strId : excludedInstanceIds) {
+			validIds.add(Long.parseLong(strId));
+		}
+		return validIds;
 	}
 
 	@Override

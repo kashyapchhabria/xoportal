@@ -1,28 +1,30 @@
 package com.xo.web.util;
 
-import play.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public final class XoAsyncTaskHandler {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(XoAsyncTaskHandler.class);
 	private static ExecutorService EXECUTORSERVICE = Executors.newCachedThreadPool();
 
 	public final static void init() {
 		closeAsynchHandler();
-		Logger.info("Initializing the asynchronous thread workers...");
+		LOGGER.info("Initializing the asynchronous thread workers...");
 		EXECUTORSERVICE = Executors.newCachedThreadPool();
-		Logger.info("Asynchronous thread workers initialized successfully.");
+		LOGGER.info("Asynchronous thread workers initialized successfully.");
 	}
 
 	public final static void closeAsynchHandler() {
-		Logger.info("Shutting down the asynch thread workers...");
+		LOGGER.info("Shutting down the asynch thread workers...");
 		if (EXECUTORSERVICE != null) {
 			EXECUTORSERVICE.shutdown();
 		}
 		EXECUTORSERVICE = null;
-		Logger.info("Asynch worker threads are closed successfully.");
+		LOGGER.info("Asynch worker threads are closed successfully.");
 	}
 
 	public final static void submitAsynchTask(XoAsynchTask asynchTask) {

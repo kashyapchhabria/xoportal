@@ -40,9 +40,13 @@ global.title=Xoanon Reporting Portal
 base.title=Xoanon Reporting Portal
 base.changepassword=Change Password
 base.logout=Logout
-base.report.comment=Feedback
 base.report.export=Export As PDF
-base.report.exportsel=Data Export
+base.report.exportcsv=Export As CSV
+base.report.comment=Feedback
+base.report.exportsel=Selected list
+base.report.csvexportalert=CSV files are generated are available in sftp folder.Please contact your administrator for credentials.
+base.userguide=User Guide
+base.support=Support
 
 # Login page
 login.title=Welcome to Xoanon Reporting Portal

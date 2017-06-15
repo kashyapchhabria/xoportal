@@ -33,18 +33,20 @@
 <div class="sticky fixed" data-options="sticky_on:[small,large]">
 <nav class="top-bar xoheader" role="navigation" data-topbar="">
 		<section class="top-bar-section" data-bind="if : menuData && menuData().length > 0">
-				<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
-			</section>
-			<section class="top-bar-section">
-				<ul class="left">
-					<li style="background:gray;" class="name">
-						<a class="button round" id="rptdownload" data-bind="click:exportPdf"><i class="fi-page-export-pdf">&nbsp;</i>@Messages("base.report.export")</a>
-					</li>
-					<li style="background:gray;" class="name" >
+
+			<ul class="left" data-bind="template: { name: 'menuTree', foreach: menuData}" ></ul>
+			<ul class="left show-for-large-up" data-bind="template: { name: 'commentButton'}"></ul>
+		</section>
+		<section class="top-bar-section" data-bind='if : menuData && menuData().length > 0'>
+			<ul class="left">
+				<li style="background:gray;" class="name">
+					<a class="button round" id="rptdownload" data-bind="click:exportPdf"><i class="fi-page-export-pdf">&nbsp;</i>@Messages("base.report.export")</a>
+				</li>
+				<li style="background:gray;" class="name" >
 						<a href="#" class="button round" data-bind="click:exportSel"  id="rptexportcsv" ><i class="fi-page-export-csv">&nbsp;</i>@Messages("base.report.exportsel")</a>
-					</li>
-				</ul>
-			</section>
+				</li>
+			</ul>
+		</section>
 		<ul class="title-area">
 			  
 			 @if(session().get("roleName") != null) {
@@ -71,27 +73,26 @@
 						<a data-bind='if: isFullScreenEnabled, click: closeFullScreen'><i class="fi-arrows-in">&nbsp;&nbsp;@Messages("tableau.report.exitfullscreen")</i></a>
 					</li>
 			 		@if(session().get(com.xo.web.util.XoAppConstant.HEADER_X_SUPER_CLIENT) != null) {
-			 	    <li>
+			 	    <li style="background:gray;">
 			 	    	<select style="margin:0 0 0;margin-top: 4px;" title='@Messages("user.selclient")' id="selSupSysClient" 
 				   			data-bind='options:allClients, optionsText: "name", value: selectedSupClient, optionsCaption:"@Messages("user.selclient")"'>
 				   		</select>
 			 	    </li>
 			 	    }
-					
-			 		<li class="outlink has-dropdown not-click" data-equalizer-watch>
+					<li class="outlink has-dropdown not-click" data-equalizer-watch>
 			 			<a href="#" style="padding:15"><i class="outlink fi-widget size-48"></i></a>
 			 			<ul class="dropdown">
-			 				<li data-bind='if: userGuide'><a href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9" target="_blank">User Guide</a></li>
-			 				<li><a id="changepassword"  class="outlink" href="#changepassword">@Messages("base.changepassword")</a></li>
-			 				<li><a onclick="composeSupport()">Support</a></li>
+			 				<li><a href="http://xoanon.helpdocsonline.com/o73n03uauu38vjg8l6rqrb7z0unyk6l9" target="_blank">@Messages("base.userguide")</a></li>
+			 				<li><a id="changepassword" class="outlink" href="#changepassword">@Messages("base.changepassword")</a></li>
+			 				<li><a onclick="composeSupport()">@Messages("base.support")</a></li>
  			 				<li><a class="outlink" id="xologout" href="@com.xo.web.controllers.routes.UserController.logout(session().get(com.xo.web.util.XoAppConstant.HEADER_AUTH_TOKEN))">@Messages("base.logout")</a></li>
 			 			</ul>
 			 		</li>
 			 	</ul>
 				 }
 			 </section>
-</nav>
-</div>
+		</nav>
+	</div>
 </div>
 }
 	<div id='xohtmlcontent' class="small-12 small-centered columns xo-content">

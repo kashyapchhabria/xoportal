@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 
 public final class JPAUtil {
 
-    private static final ThreadLocal<EntityManager> currentEntityManager= new ThreadLocal<EntityManager>();
+    private static final ThreadLocal<EntityManager> currentEntityManager = new ThreadLocal<EntityManager>();
     private static XODataSourcePlugin jpaPlugin = null;
     public static final String END_USER = XoUtil.getConfig(XoAppConfigKeys.XO_END_USER);
     public static final String END_USER_FAILOVER = END_USER + "_Failover";
@@ -40,7 +40,7 @@ public final class JPAUtil {
         	}
         }
 
-        bindForCurrentThread(entityManager);
+        currentEntityManager.set(entityManager);
 
         return entityManager;
     }
@@ -56,13 +56,6 @@ public final class JPAUtil {
         return em;
     }
 
-    /**
-     * Bind an EntityManager to the current thread.
-     */
-    public static final void bindForCurrentThread(EntityManager em) {
-        currentEntityManager.set(em);
-    }
-
     public static final void closeEM() {
     	Logger.debug("Closing entity manager...");
         EntityManager em = currentEntityManager.get();
@@ -70,7 +63,7 @@ public final class JPAUtil {
             em.close();
         }
         Logger.debug("Entity manager closed successfully.");
-        bindForCurrentThread(null);
+        currentEntityManager.set(null);
     }
 
     public static final void beginTransaction() {

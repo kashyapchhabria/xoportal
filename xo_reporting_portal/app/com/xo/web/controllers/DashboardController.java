@@ -1,11 +1,7 @@
 package com.xo.web.controllers;
 
 
-import java.util.ArrayList;
 import java.util.Set;
-
-import play.i18n.Messages;
-import play.mvc.Result;
 
 import com.google.common.collect.Lists;
 import com.xo.web.ext.tableau.mgr.DashboardItemEnum;
@@ -27,6 +23,10 @@ import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.DashboardDTO;
 import com.xo.web.viewdtos.ScreenDTO;
 
+import play.Logger;
+import play.i18n.Messages;
+import play.mvc.Result;
+
 public class DashboardController extends BaseController<TableauSite, String> {
 
 	private final TableauObjectLogic tableauObjectLogic = new TableauObjectLogic();
@@ -39,12 +39,12 @@ public class DashboardController extends BaseController<TableauSite, String> {
 		super(new TableauSiteLogic());
 	}
 
-	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW}, meta = "Tableau CORS")
+	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")
 	public Result renderDashboard(){
 		return ok(com.xo.web.views.html.dashboard_projects.render());
 	}
 
-	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW}, meta = "Tableau CORS")
+	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")
 	public Result loadDashboardGroupData(){
 		ScreenDTO screenDTO = new ScreenDTO();
 		try {
@@ -57,7 +57,9 @@ public class DashboardController extends BaseController<TableauSite, String> {
 			}
 			tableauObjectLogic.loadDashboardGroupData(screenDTO, xoClient);
 		} catch(Exception e) {
+			Logger.error("Error while fetching the dashboard data.", e);
 			screenDTO.errorText = Messages.get("tableau.report.noreports");
+			
 		}
 		return ok(screenDTO.toJson());
 	}
@@ -88,7 +90,7 @@ public class DashboardController extends BaseController<TableauSite, String> {
 		
 	}
 
-	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK, PermissionEnum.READ_TABLEAU_VIEW}, meta = "Tableau CORS")
+	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK, PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")
 	public Result loadProjectDashboardData(String projectId) {
 		ScreenDTO screenDTO = new ScreenDTO();
 		screenDTO.breadCrumbDtos = tableauObjectLogic.buildBreadCrumbsGroup(DashboardItemEnum.PROJECT, tableauProjectLogic.find(projectId), null, null);
@@ -97,7 +99,7 @@ public class DashboardController extends BaseController<TableauSite, String> {
 		return ok(screenDTO.toJson());
 	}
 
-	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW}, meta = "Tableau CORS")
+	@Authroize(permissions = {PermissionEnum.READ_TABLEAU_PROJECT,PermissionEnum.READ_TABLEAU_WORKBOOK,PermissionEnum.READ_TABLEAU_VIEW, PermissionEnum.READ_VIEW_GROUP}, meta = "Tableau CORS")
 	public Result loadViewData(String workbookId, String viewId) {
 		ScreenDTO screenDTO = new ScreenDTO();
 		try {
@@ -131,6 +133,7 @@ public class DashboardController extends BaseController<TableauSite, String> {
 			}
 			screenDTO.breadCrumbDtos = Lists.reverse(screenDTO.breadCrumbDtos);
 		} catch(Exception e) {
+			Logger.error("Error while fetching the view data.", e);
 			screenDTO.errorText = Messages.get("tableau.report.reportloaderr");
 		}
 		return ok(screenDTO.toJson());

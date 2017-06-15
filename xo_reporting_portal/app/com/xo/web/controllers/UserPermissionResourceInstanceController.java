@@ -1,18 +1,17 @@
 package com.xo.web.controllers;
 
-import play.Logger;
-import play.i18n.Messages;
-import play.libs.Json;
-import play.mvc.Result;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.core.XOException;
 import com.xo.web.mgr.UserPermissionResourceInstanceLogic;
-import com.xo.web.models.system.RolePermissionResourceInstanceId;
 import com.xo.web.models.system.UserPermissionResourceInstance;
 import com.xo.web.models.system.UserPermissionResourceInstanceId;
 import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.RowLevelPermissionDto;
+
+import play.Logger;
+import play.i18n.Messages;
+import play.libs.Json;
+import play.mvc.Result;
 
 @SuppressWarnings("finally")
 public class UserPermissionResourceInstanceController extends

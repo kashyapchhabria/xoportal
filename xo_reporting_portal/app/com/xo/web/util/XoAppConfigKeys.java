@@ -28,5 +28,6 @@ public interface XoAppConfigKeys extends TableauConstants {
 	static final String ES_TYPE = "campaign.es.type";
 	static final String ES_CLUSTER_NAME = "campaign.es.clusterName";
 	static final String ES_ORDER = "campaign.es.csvorder";
+	static final String EMAIL_LIST = "email.list";
 
 }

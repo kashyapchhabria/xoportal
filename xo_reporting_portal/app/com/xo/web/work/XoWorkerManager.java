@@ -2,21 +2,22 @@ package com.xo.web.work;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-
-import play.Logger;
-import akka.actor.Cancellable;
+import java.util.concurrent.ScheduledFuture;
 
 import com.xo.web.mgr.XoClientJobConfigLogic;
+import com.xo.web.util.XoAsyncScheduler;
 import com.xo.web.util.XoAsyncTaskHandler;
 import com.xo.web.util.XoUtil;
 import com.xo.web.viewdtos.XoClientJobConfigDto;
-import com.xo.web.work.scheduler.XoScheduler;
+
+import play.Logger;
 
 public final class XoWorkerManager {
 
 	private static final XoWorkerManager xoWorkerManager = new XoWorkerManager();
 	private XoClientJobConfigLogic xoClientJobConfigLogic;
-	private final ConcurrentHashMap<XoClientJobConfigDto, Cancellable> scheduledTasks = new ConcurrentHashMap<XoClientJobConfigDto, Cancellable>();
+	private final ConcurrentHashMap<XoClientJobConfigDto, ScheduledFuture<?> > schedulerTasks = new ConcurrentHashMap<XoClientJobConfigDto, ScheduledFuture<?> >();
+
 
 	public static XoWorkerManager getXoTaskManager() {
 		return xoWorkerManager;
@@ -67,24 +68,29 @@ public final class XoWorkerManager {
 
 	public final void scheduleWork(XoWorker xoWorker) {
 		if(xoWorker != null) {
-			if(xoWorker instanceof XoScheduler) {
-
-				// Get the configuration for this worker.
-				XoClientJobConfigDto xoClientJobConfigDto = xoWorker.getXoClientJobConfigDto();
-				// Cancel existing scheduled jobs.
-				cancelScheduledWork(xoClientJobConfigDto);
-				// Schedule the work again.
-				XoScheduler xoScheduler = (XoScheduler) xoWorker;
-				Cancellable cancellable = xoScheduler.scheduleMe();
-				this.scheduledTasks.put(xoClientJobConfigDto, cancellable);
+			if(xoWorker.isScheduled==true)
+				{
+					// Get the configuration for this worker.
+					XoClientJobConfigDto xoClientJobConfigDto = xoWorker.getXoClientJobConfigDto();
+					// Cancel existing scheduled jobs.
+					cancelScheduledWork(xoClientJobConfigDto);
+					// Schedule the work again.
+					final ScheduledFuture<?> taskHandler = XoAsyncScheduler.scheduler.scheduleAtFixedRate(
+							xoWorker, xoWorker.initialDelay, xoWorker.frequency, xoWorker.frequencyTimeInit);
+					this.schedulerTasks.put(xoClientJobConfigDto, taskHandler);
+				}						
+			else{
+				XoAsyncTaskHandler.submitAsynchTask(xoWorker.getXoAsynchTask());		
 			}
 		}
-	}
+		}
+	
 
 	public final void cancelScheduledWork(XoClientJobConfigDto xoClientJobConfigDto) {
-		Cancellable cancellable = scheduledTasks.remove(xoClientJobConfigDto);
-		if(cancellable != null && !cancellable.isCancelled()) {
-			cancellable.cancel();
+		ScheduledFuture<?> taskHandler=this.schedulerTasks.get(xoClientJobConfigDto);
+		if(taskHandler != null)
+		{ 
+			taskHandler.cancel(false);
 		}
 	}
 

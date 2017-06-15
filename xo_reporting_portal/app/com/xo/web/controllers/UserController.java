@@ -403,7 +403,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}
 			session(USER_EMAIL, emailAddress);
-			add(com.xo.web.views.html.diffusionmap.render());
+			add(com.xo.web.views.html.diffusionmap.render(XoUtil.getConfig(XoAppConfigKeys.XO_END_USER)));
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getRoleMgmtPermissions())) {
 				add(com.xo.web.views.html.create_role.render());
 				add(com.xo.web.views.html.role_mgmt.render());

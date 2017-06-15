@@ -2,6 +2,7 @@ package com.xo.web.ext.comment.mgr;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,10 @@ import com.xo.web.mgr.BaseLogic;
 import com.xo.web.models.dao.UserDAO;
 import com.xo.web.models.dao.UserDAOImpl;
 import com.xo.web.models.system.User;
+import com.xo.web.util.XoAppConfigKeys;
+import com.xo.web.util.XoMailSender;
 import com.xo.web.util.XoUtil;
+import com.xo.web.viewdtos.MailDto;
 
 public class CommentLogic extends BaseLogic<Comment, Integer> {
 	
@@ -74,6 +78,18 @@ public class CommentLogic extends BaseLogic<Comment, Integer> {
 			}
 		}
 		return commentDtos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void sendEmailToDev(Comment comment) {
+		if(!comment.getUser().getEmail().contains("@xo.com")) {
+			List<String> emailList = (List<String>) XoUtil.getConfigsAsList(XoAppConfigKeys.EMAIL_LIST);
+			String[] emails = emailList.toArray(new String[0]);
+			String emailBody = "Comment From: "+comment.getUser().getEmail()+"<br>Comment: "+comment.getMessage();
+			String emailSubject = "New Comment Recieved";
+			MailDto mailDto = new MailDto(emailBody,emailSubject,emails);
+			new XoMailSender(mailDto);
+		}
 	}
 
 }

@@ -67,7 +67,19 @@ public class XoUtil implements XoAppConstant {
 	public static final String getConfig(String configKey) {
 		return Play.application().configuration().getString(configKey);
 	}
+	
+	public static final List<?> getConfigsAsList(String configKey) {
+		return Play.application().configuration().getList(configKey);
+	}
 
+	public static final boolean getBoolConfig(String configKey) {
+		return Play.application().configuration().getBoolean(configKey);
+	}
+	
+	public static final int getIntConfig(String configKey) {
+		return Play.application().configuration().getInt(configKey);
+	}
+	
 	public static final boolean hasData(Object[] dataHolder) {
 		return dataHolder != null && dataHolder.length > 0;
 	}
@@ -129,10 +141,6 @@ public class XoUtil implements XoAppConstant {
 		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(dateFormat);
         String dateString = DATE_FORMAT.format(date);
         return dateString;
-	}
-	
-	public static final List<?> getConfigsAsList(String configKey) {
-		return Play.application().configuration().getList(configKey);
 	}
 
 	public static final Date convertToDate(String dateStr) {

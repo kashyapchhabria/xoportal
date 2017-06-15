@@ -79,7 +79,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         						user:responseData.resultobject['user']
         				};
         				self.msgs.push(tempObj);
-        				self.inputText("")
+        				self.inputText("");
         			},
         			'error' : function(jqXHR, textStatus, errorThrown) {
         				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
@@ -95,7 +95,11 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 		}
         
         self.openNav = function() {
-        	document.getElementById("mySidenav").style.width = "400px";
+        	if( $("#mySidenav").width() === 0 ) {
+        		document.getElementById("mySidenav").style.width = "400px";
+        	} else {
+        		document.getElementById("mySidenav").style.width = "0px";
+        	}
         }
         
         self.closeNav = function() {
@@ -117,7 +121,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
 				}
 			});
         }
-        3
+        
         self.formatComments = function(allComments) {
         	var noOfComments = allComments.length;
 			allComments.sort(function(a, b) {
@@ -448,7 +452,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         
         self.changeActiveSheet = function (sheetName) {
         	var defaultColor = "#E7E7E7";
-        	var activeColor = "#6A9A00";
+        	var activeColor = "#07426B";
         	var actTextColor = "white";
         	var defTextColor = "black";
         	self.cancelSelected();

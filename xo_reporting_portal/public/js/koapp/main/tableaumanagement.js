@@ -22,8 +22,11 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.allClients = ko.observableArray([]);
         self.selectedSupClient = ko.observable();
         self.isTopBarVisibile = ko.observable(true);
-        self.selectedReportMenuItem = ko.observable("Select Report");
+        self.selectedReportMenuItem = ko.observable("Main Dashboard");
         self.selectReport = {"name" : self.selectedReportMenuItem, "displayOrder":-1, "pageUrl": "", "subMenus" : []};
+        self.dashboardCommentHeading = ko.observable('Main Dashboard');
+        self.commentText = ko.observable('');
+        self.dashboardMsgs=ko.observableArray([]);
 
         self.selectedSupClient.subscribe(function(latestClient) {
             self.loadDashboardData(latestClient);
@@ -218,6 +221,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             if (responseData && responseData.imageUrl && responseData.imageUrl.length > 0) {
                 if (viz) {
                     viz.dispose();
+                    self.workSheet = undefined;
                 }
                 var placeholderDiv = document.getElementById("tableauViewPlace");
                 var url = responseData.imageUrl;
@@ -227,6 +231,7 @@ define(['knockout', 'jquery'], function(ko, $) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
+                    	//self.setFilterValues();
                         workbook = viz.getWorkbook();
                         activeSheet = workbook.getActiveSheet();
                         /*activeSheet.changeSizeAsync({
@@ -245,9 +250,20 @@ define(['knockout', 'jquery'], function(ko, $) {
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
-                //viz = new tableauSoftware.Viz(placeholderDiv, url, options);
             }
         };
+
+        self.setFilterValues = function() {
+        	if(self.workSheet == undefined) {
+        		var worksheetArray = viz.getWorkbook().getActiveSheet().getWorksheets();
+        		for(var i = 0; i < worksheetArray.length; i++) {
+        			if(worksheetArray[i].getName() == self.worksheetName) {
+        				self.workSheet = worksheetArray[i]; 
+        				self.workSheet.applyFilterAsync(self.filterField, client_logo_Id, 'REPLACE');
+        			}
+        		}
+        	}
+        }
 
         self.changeViewSize = function() {
 
@@ -290,6 +306,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         };
 
         self.clearAll = function() {
+        	self.workSheet = undefined;
             self.menuData.removeAll();
             self.dashboardData.removeAll();
             self.imageUrl('');
@@ -297,6 +314,7 @@ define(['knockout', 'jquery'], function(ko, $) {
             self.isFullScreenAvailable(false);
             self.closeFullScreen();
             self.isFullScreenAvailable(false);
+            self.selectedReportMenuItem("Select Report");
         };
 
         self.loadClients = function() {
@@ -337,6 +355,98 @@ define(['knockout', 'jquery'], function(ko, $) {
             $(document).foundation('reflow');
         };
 
+		self.exportPdf = function() {
+        	if(viz) {
+        		viz.showExportPDFDialog(); 
+        	}
+        };
+
+        self.openCommentNav = function() {
+        	if( $("#commentDiv").width() === 0 ) {
+        		document.getElementById("commentDiv").style.width = "400px";
+        	} else {
+        		document.getElementById("commentDiv").style.width = "0px";
+        	}
+        }
+        
+        self.closeCommentNav = function() {
+        	document.getElementById("commentDiv").style.width = "0px";
+        }
+        
+        self.submitDashboardComment = function() {
+        	var dashboardName='MainDashboard';
+        	if(self.commentText() === '') {
+        		alert("Enter a comment and then click Comment button")
+        	} else {
+        		//sheet = viz.getWorkbook().getActiveSheet();
+        		//alert(sheet.getName());
+        		chatContent={ 
+        				message: self.commentText(),        		
+        				ts: new Date().getTime(),
+        				user:self.user(),
+        				sheetName: self.selectedReportMenuItem(),
+        				dashboardName: dashboardName
+        		} ;
+        		data=JSON.stringify(chatContent);
+        		$.ajax({
+        			'url': xoappcontext + '/comment',
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        				var tempObj = {
+        						message: responseData.resultobject['message'],        		
+        						ts: responseData.resultobject['ts'],
+        						user:responseData.resultobject['user']
+        				};
+        				self.dashboardMsgs.push(tempObj);
+        				self.commentText("")
+        			},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+        	}
+        }
+        
+        self.getDashboardComments = function() {
+        	var dashboardName='/MainDashboard';
+        	$.ajax({
+				'url': xoappcontext + '/sheetComments/'+self.selectedReportMenuItem()+dashboardName,
+				'type': 'GET',
+				'cache':false,
+				'contentType': "application/json; charset=utf-8",
+				'success' : function(responseData) {
+					self.formatDashboardComments(responseData);
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+				}
+			});
+        }
+        
+        self.formatDashboardComments = function(allComments) {
+        	var noOfComments = allComments.length;
+			allComments.sort(function(a, b) {
+				return b.messageId - a.messageId;
+			});
+			self.dashboardMsgs.removeAll();
+        	for ( var i= noOfComments -1; i>=0; i--) {
+        		var tempObj = {
+        				message: allComments[i]['message'],        		
+                        ts: allComments[i]['ts'],
+                        user:allComments[i]['user']
+        			};
+        		self.dashboardMsgs.push(tempObj);
+        	}
+        }
+        
+        self.selectedReportMenuItem.subscribe(function(newVal) {
+        	self.getDashboardComments();
+        	self.dashboardCommentHeading(newVal);
+        });
+
         return {
             clearAll: self.clearAll,
             loadDashboardData: self.loadDashboardData,
@@ -355,7 +465,16 @@ define(['knockout', 'jquery'], function(ko, $) {
             selectedSupClient: self.selectedSupClient,
             loadClients: self.loadClients,
             isTopBarVisibile: self.isTopBarVisibile,
-            showReportMenus: self.showReportMenus
+            showReportMenus: self.showReportMenus,
+            openCommentNav:self.openCommentNav,
+            closeCommentNav:self.closeCommentNav,
+            dashboardCommentHeading:self.dashboardCommentHeading,
+            commentText:self.commentText,
+            submitDashboardComment:self.submitDashboardComment,
+            dashboardMsgs:self.dashboardMsgs,
+            getDashboardComments:self.getDashboardComments,
+            exportPdf : self.exportPdf,
+            selectedReportMenuItem:self.selectedReportMenuItem
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);

@@ -2,7 +2,6 @@ package com.xo.web.ext.tableau.mgr;
 
 
 import java.lang.reflect.Method;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +9,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.sql.RowSet;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.core.XODAOException;
@@ -26,12 +27,13 @@ import com.xo.web.ext.tableau.models.dao.TableauProjectDao;
 import com.xo.web.ext.tableau.models.dao.TableauProjectDaoImpl;
 import com.xo.web.ext.tableau.models.dao.TableauSiteDao;
 import com.xo.web.ext.tableau.models.dao.TableauSiteDaoImpl;
+import com.xo.web.ext.tableau.models.dao.TableauViewDao;
+import com.xo.web.ext.tableau.models.dao.TableauViewDaoImpl;
 import com.xo.web.ext.tableau.models.dao.ViewGroupDao;
 import com.xo.web.ext.tableau.models.dao.ViewGroupDaoImpl;
 import com.xo.web.mgr.XoClientJobConfigLogic;
 import com.xo.web.mgr.XoConfigInstanceLogic;
 import com.xo.web.models.system.XoClient;
-import com.xo.web.models.system.XoClientJobConfig;
 import com.xo.web.models.util.DisplayOrderComparator;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoMailContentProvider;
@@ -65,13 +67,13 @@ public class TableauObjectLogic {
 	private static final String RECONFIGURE_REPORTS_EMAIL_TEMPLATE = "com.xo.web.views.html.email.configure_reports"; 
 
 	private final TableauProjectDao tableauProjectDao = new TableauProjectDaoImpl();
+	private final TableauViewDao tableauViewDao = new TableauViewDaoImpl();
 	private final TableauSiteDao tableauSiteDao = new TableauSiteDaoImpl();
 	private final ViewGroupDao viewGroupDao = new ViewGroupDaoImpl();
 	private final XoConfigInstanceLogic XOCONFIG_INSTANCE_LOGIC = new XoConfigInstanceLogic();
 	private final XoMailContentProvider xoMailContentProvider = new XoMailContentProvider();
 	
 	private final XoClientJobConfigLogic clientJobConfigLogic = new XoClientJobConfigLogic();
-	private XoClientJobConfig clientJobConfig = null;
 	
 	private final TableauConnector tableauConnector;
 	
@@ -127,6 +129,7 @@ public class TableauObjectLogic {
 		return configJson;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public List<BreadCrumbDTO> buildBreadCrumbsGroup(DashboardItemEnum dashboardItemEnum,
 													 TableauProject tableauProject,
 													 ViewGroup viewGroup,
@@ -135,12 +138,19 @@ public class TableauObjectLogic {
 		TableauView viewItem = null;
 		if(XoUtil.isNotNull(viewGroup)) {
 			Set<TableauView> tableauViews = viewGroup.getTableauViews();
-			for(TableauView tabView : tableauViews) {
-				if(tabView.isActive()){
-					if (tabView.isDashboard()) {
-						viewItem = tabView;
-						break;
+			if(XoUtil.hasData(tableauViews)){
+				List<TableauView> tviews = new ArrayList<>(tableauViews);
+				Collections.sort((tviews), new DisplayOrderComparator());
+				for(TableauView tabView : tviews) {
+					if(tabView.isActive()){
+						if (tabView.isDashboard()) {
+							viewItem = tabView;
+							break;
+						}
 					}
+				}
+				if(viewItem == null) {
+					viewItem = tviews.get(0);
 				}
 			}
 		}
@@ -170,6 +180,7 @@ public class TableauObjectLogic {
 		return breadCrumbDTOs;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public DashboardDTO buildDashboardDto(DashboardItemEnum dashboardItemEnum,
 										  TableauProject tableauProject,
 										  TableauWorkbook tableauWorkbook,
@@ -195,6 +206,7 @@ public class TableauObjectLogic {
 		return dashboardDTO;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	public MenuDTO buildMenu(DashboardItemEnum dashboarditem,TableauProject tableauProject,
 							 TableauWorkbook tableauWorkbook,TableauView tableauView, String applicationContext){
 		MenuDTO menuDTO = new MenuDTO();
@@ -224,18 +236,26 @@ public class TableauObjectLogic {
 
 
 
+	@SuppressWarnings("incomplete-switch")
 	public MenuDTO buildGroupMenu(DashboardItemEnum dashboarditem,TableauProject tableauProject,
 								  ViewGroup viewGroup, TableauView tableauView, String applicationContext){
 		MenuDTO menuDTO = new MenuDTO();
 		TableauView viewItem = null;
 		if(XoUtil.isNotNull(viewGroup)) {
 			Set<TableauView> tableauViews = viewGroup.getTableauViews();
-			for(TableauView tableauView1 : tableauViews) {
-				if(tableauView1.isActive()) {
-					if (tableauView1.isDashboard()) {
-						viewItem = tableauView1;
-						break;
+			if(XoUtil.hasData(tableauViews)){
+				List<TableauView> tviews = new ArrayList<>(tableauViews);
+				Collections.sort((tviews), new DisplayOrderComparator());
+				for(TableauView tableauView1 : tviews) {
+					if(tableauView1.isActive()) {
+						if (tableauView1.isDashboard()) {
+							viewItem = tableauView1;
+							break;
+						}
 					}
+				}
+				if(viewItem == null) {
+					viewItem = tviews.get(0);
 				}
 			}
 		}
@@ -354,6 +374,7 @@ public class TableauObjectLogic {
 	public void loadDashboardGroupData(final ScreenDTO screenDto, XoClient xoClient) throws XODAOException, XOException {
 		String applicationContext = XoUtil.getApplicationContext();
 		final String tableauConfigJson = this.loadTableauConfig(xoClient);
+		Collection<ViewGroup> viewGroups = this.viewGroupDao.findAll();
 		if(tableauConfigJson != null) {
 			this.setTableauConfigs(tableauConfigJson);
 			TableauSite tableauSite = this.tableauSiteDao.findByNameAndContentUrl(this.siteName, this.siteContentUrl);
@@ -368,7 +389,6 @@ public class TableauObjectLogic {
 			}
 			if (XoUtil.hasData(tableauProjects)) {
 				for(TableauProject tableauProject : tableauProjects){
-					Collection<ViewGroup> viewGroups = this.viewGroupDao.findAll();
 					for (ViewGroup tableauViewGroup : viewGroups) {
 						if(tableauViewGroup.isActive()){
 							Set<TableauView> tableauViews = tableauViewGroup.getTableauViews();
@@ -398,9 +418,17 @@ public class TableauObjectLogic {
 			}
 		}
 
-		if(!XoUtil.hasData(screenDto.contentDtos)){
+		if(!XoUtil.hasData(screenDto.contentDtos) && !XoUtil.hasData(screenDto.menuDtos)) {
 			screenDto.placeHolderImageUrl = "vassets/images/Market_Map_Segments.jpg";
 			screenDto.breadCrumbDtos = this.buildBreadCrumbsGroup(DashboardItemEnum.DASHBOARD, null, null, null);
+		} else {	// Make the first menu as dashboard item.
+			MenuDTO firstMenuDto = screenDto.menuDtos.get(0).subMenus.get(0);
+			String viewId = firstMenuDto.pageUrl.substring(firstMenuDto.pageUrl.lastIndexOf("/")+1);
+			TableauView tableauView = this.tableauViewDao.find(viewId);
+			DashboardDTO dashboardDTO = this.buildDashboardDto(DashboardItemEnum.VIEW,	null, tableauView.getTableauWorkbook(), tableauView, applicationContext);
+			screenDto.contentDtos.add(dashboardDTO);
+			screenDto.imageUrl = dashboardDTO.imageUrl;
+			screenDto.isMainDashboard = true;
 		}
 	}
 	
@@ -414,54 +442,31 @@ public class TableauObjectLogic {
 			screenDto.placeHolderImageUrl = "vassets/images/Market_Map_Segments.jpg";
 		}
 	}
-	
+
 	public String getFilterList() {
-		ResultSet filterList = this.tableauProjectDao.getFilterList();
+		RowSet filterList = this.tableauProjectDao.getFilterList();
 		String filters = "";
 		try {
-			while(filterList.next()) {
-				filters += filterList.getString("status");
-				if(!filterList.isLast()) {
-					filters+=",";
+			if(filterList != null) {
+				while(filterList.next()) {
+					filters += filterList.getString("status");
+					if(!filterList.isLast()) {
+						filters+=",";
+					}
 				}
 			}
 			return filters;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	private DashboardDTO buildDiffusionDto(String tableauProject, String tableauWorkbook, String tableauView, String applicationContext) {
 		DashboardDTO dashboardDTO = new DashboardDTO();
-		
 		dashboardDTO.name = tableauView;
-		dashboardDTO.imageUrl = buildDiffusionLinkUrl(tableauWorkbook, tableauView);
-		
+		dashboardDTO.imageUrl = buildTableauLinkUrl(tableauWorkbook, tableauView);
 		return dashboardDTO;
-	}
-
-	private String buildDiffusionLinkUrl(String tableauWorkbook, String tableauView) {
-		String urlWorkbookName = tableauWorkbook.replaceAll(" ", "");
-		String urlViewName = tableauView.replaceAll(" ", "");
-		StringBuilder tableauImageurl = new StringBuilder();
-		tableauImageurl.append(this.tableauPublicHost);
-		tableauImageurl.append(TableauRESTConnector.URL_QUERY_TRUSTED_IP_TICKET);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(tableauConnector.getTicket(this.tableauInternalHost, /*this.userDomain + "\\" + */this.tableauUserName, this.clientIP, "Xo_Prod"));
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(TABLEAU_MULTI_SITE);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append("Xo_Prod");
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append("views");
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(urlWorkbookName);
-		tableauImageurl.append(SYMPOL_FORWARD_SLASH);
-		tableauImageurl.append(urlViewName);
-		tableauImageurl.append(TABLEAU_REPORT_URL_PARAMS);
-		return tableauImageurl.toString();
 	}
 
 	public Set<MenuDTO> buildGroupMenus() {
@@ -506,12 +511,13 @@ public class TableauObjectLogic {
 										List<TableauView> orderedViewGroups = new ArrayList<TableauView>(tableauViews);
 										Collections.sort((orderedViewGroups), new DisplayOrderComparator());
 
-										for(TableauView tableauView : orderedViewGroups) {
-											if(tableauView.isActive()){
-												if(!tableauView.getName().toLowerCase().startsWith(MAIN_DASHBOARD_NAME)){
-
-													MenuDTO tableauViewMenuDto = this.buildGroupMenu(DashboardItemEnum.VIEW, tableauProject, tableauViewGroup, tableauView, applicationContext);
-													tableauWorkbookMenuDto.subMenus.add(tableauViewMenuDto);
+										if(orderedViewGroups.size() > 1) {
+											for(TableauView tableauView : orderedViewGroups) {
+												if(tableauView.isActive()){
+													if(!tableauView.getName().toLowerCase().startsWith(MAIN_DASHBOARD_NAME)){
+														MenuDTO tableauViewMenuDto = this.buildGroupMenu(DashboardItemEnum.VIEW, tableauProject, tableauViewGroup, tableauView, applicationContext);
+														tableauWorkbookMenuDto.subMenus.add(tableauViewMenuDto);
+													}
 												}
 											}
 										}
