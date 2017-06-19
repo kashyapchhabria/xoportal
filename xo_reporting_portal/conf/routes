@@ -166,7 +166,7 @@ GET      /tableauview/checkdashboard/:viewGroupId                     @com.xo.we
 
 
 # Export Data
-POST	 /exportdata                                                  @com.xo.web.ext.teliaexport.controllers.TeliaExportController.exportData()
+POST	 /exportdata                                                  @com.xo.web.ext.annotatecomments.controllers.AnnotateCommentsController.exportData()
 
 # comment
 POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()

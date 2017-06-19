@@ -2,15 +2,18 @@
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS `report_filters`;
-CREATE TABLE `report_filters`(
-`export_id` int(11) NOT NULL AUTO_INCREMENT,
-`created_date` timestamp NOT NULL,
-`date_of_event` varchar(30),
-`user_id` int(11) NOT NULL,
-`no_of_users` int(11) NOT NULL,
-PRIMARY KEY (`export_id`),
-CONSTRAINT `fk_export_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+DROP TABLE IF EXISTS `annotate_comments`;
+CREATE TABLE `annotate_comments`(
+ `annotate_id` int(11) NOT NULL AUTO_INCREMENT, 
+`report_name` VARCHAR(50) NOT NULL,
+ `field_name_1` VARCHAR(50) NOT NULL,
+ `field_name_2` VARCHAR(50) NOT NULL,
+ `workbook_name` VARCHAR(50) NOT NULL,
+ `status` CHAR(1) NOT NULL,
+ `comment` TEXT,
+ `user_id` int(11) NOT NULL,
+PRIMARY KEY (`ID`),
+CONSTRAINT `fk_annotate_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

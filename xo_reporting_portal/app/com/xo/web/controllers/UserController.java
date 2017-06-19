@@ -399,6 +399,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 				session(XoAppConstant.HEADER_X_SUPER_CLIENT, Boolean.TRUE.toString());
 				session(ROLE_NAME, RoleEnum.Admin.name());
 				add(render("useradmin_controls.html"));
+				add(render("annotate_report.html"));
 			} else {
 				session(ROLE_NAME, RoleEnum.Viewer.name());
 			}

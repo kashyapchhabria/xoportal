@@ -1,0 +1,19 @@
+@include(temp)
+@include(nav_bar)
+<script id="menuTree" type="text/html">
+	<!-- ko if: subMenuItems().length > 0 -->
+		<div class="ui dropdown item">
+			<a data-bind='text:name,click:loadPageData' style="color:black !important;"></a>
+			<i class="fa fa-angle-double-right"></i>
+			<div class="menu" data-bind="template: { name: 'menuTree', foreach: subMenuItems}">		
+			</div>
+		</div>
+	<!-- /ko -->
+	<!-- ko if: subMenuItems().length == 0 -->
+		<a data-bind='text:name, click:loadPageData' class="item">
+		</a>
+	<!-- /ko -->
+</script>
+<script id="anotate_comment" type="text/html">
+	<div id="vizContainer"  ></div>
+</script>

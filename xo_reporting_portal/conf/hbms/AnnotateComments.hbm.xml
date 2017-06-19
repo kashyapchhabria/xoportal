@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class  name="com.xo.web.ext.annotatecomments.models.AnnotateComments"  table="annotate_comments">
+    <id name="annotateId" type="java.lang.Integer">
+            <column name="annotate_id" />
+            <generator class="identity" />
+    </id>
+    <property name="reportName" type="timestamp">
+      <column length="50" name="report_name"/>
+    </property>
+    <many-to-one class="com.xo.web.models.system.User" fetch="select" name="user">
+      <column length="40" name="user_id" not-null="true"/>
+    </many-to-one>
+    <property name="fieldName1" type="string">
+      <column length="50" name="field_name_1" />
+    </property>
+    <property name="fieldName2" type="string">
+      <column length="50" name="field_name_2" />
+    </property>
+    <property name="workbookName" type="string">
+      <column length="50" name="workbook_name" />
+    </property>
+    <property name="status" type="string">
+      <column length="1" name="status" />
+    </property>
+    <property name="comment" type="text">
+      <column name="comment" />
+    </property>
+  </class>
+</hibernate-mapping>

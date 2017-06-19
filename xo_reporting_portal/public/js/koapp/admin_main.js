@@ -36,10 +36,10 @@ requirejs.config({
 define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
         'datatables', 'DataTable', 'FileSaver','main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
-        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management'],
+        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management', 'main/annotatecomment'],
    function(ko, Router, kv, semantic, datatables, DataTable, FileSaver,UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
-         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel) {
+         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel, AnotateCommentModel) {
 
     var initializePages = function(){
 
@@ -61,6 +61,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
         userpermissionmanagement :{ match: /^userpermissionmanagement$/, page: userpermissionmanagementPage},
         rolePermissionmanagement: { match: /^rolePermissionmanagement$/, page: rolePermissionmanagementPage},
         tabdashboard: { match: /^tabdashboard$/, page: tabdashboardPage},
+        anotatecomment: { match: /^anotatecomment$/, page: anotatecommentPage},
         systemsettings: { match: /^systemsettings$/, page: systemSettingsPage},
         configuration: {match: /^configuration$/, page: configPage},
         configtemplate: {match: /^configtemplate$/, page: configtemplatePage},
@@ -77,6 +78,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       var rolemgmt = new RoleManagerModel();
       var permissionmgmt= new PermissionMgmtModel();
       var tableaumgmt = new TableauManagerModel();
+      var anotate = new AnotateCommentModel();
       var configmgmt = new ConfigurationManagerModel();
       var clientjobmgmt = new JobManagerModel();
       var rowlevelmgmt = RowLevelPermissionModel();
@@ -198,6 +200,13 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
         	tableaumgmt.loadClients();
         	tableaumgmt.loadDashboardData();
         	return new Router.Page('Dashboard','tab_dashboard', {tableaumgmt: tableaumgmt});
+        });
+      }
+      
+      function anotatecommentPage() {
+        return showPageLoader(function() {
+        	anotate.initViz();
+        	return new Router.Page('Anotate','anotate_comment', {anotate: anotate});
         });
       }
 
