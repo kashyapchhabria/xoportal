@@ -36,7 +36,6 @@ public class AnnotateCommentsLogic extends BaseLogic<AnnotateComments, Integer> 
 
 	public AnnotateComments save(AnnotateCommentsDto AnnotateCommentsDto) throws ParseException {
 		AnnotateComments annotateComments = null;
-		Date datetime=null;	
 		if(AnnotateCommentsDto != null) {
 			User user = userDAO.findByEmail(AnnotateCommentsDto.user);
 			annotateComments = new AnnotateComments(AnnotateCommentsDto.annotateId,user,AnnotateCommentsDto.reportName,AnnotateCommentsDto.fieldName1,AnnotateCommentsDto.fieldName2,AnnotateCommentsDto.workbookName,AnnotateCommentsDto.status,AnnotateCommentsDto.comment);

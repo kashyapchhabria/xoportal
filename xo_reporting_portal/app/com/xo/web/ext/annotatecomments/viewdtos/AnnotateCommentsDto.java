@@ -1,7 +1,5 @@
 package com.xo.web.ext.annotatecomments.viewdtos;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
 
 import com.xo.web.ext.annotatecomments.models.AnnotateComments;
 import com.xo.web.models.system.User;

@@ -39,7 +39,7 @@ public class AnnotateCommentsController extends BaseController<AnnotateComments,
 		try {
 			AnnotateCommentsDto AnnotateCommentsDto = Json.fromJson(json, AnnotateCommentsDto.class);
 			AnnotateComments AnnotateComments =this.annotateCommentsLogic.save(AnnotateCommentsDto);
-			AnnotateCommentsDto AnnotateCommentsDtoContent=new AnnotateCommentsDto(AnnotateComments.getAnnotateId(),AnnotateComments.getUser().getFirstName(), AnnotateComments.getReportName(),AnnotateComments.getFieldName1(),AnnotateComments.getFieldName2(),AnnotateComments.getWorkbookName(),AnnotateComments.getStatus(),AnnotateComments.getComment() );
+			AnnotateCommentsDto AnnotateCommentsDtoContent=new AnnotateCommentsDto(AnnotateComments.getAnnotateId(),AnnotateComments.getUser().getFirstName(), AnnotateComments.getReportName(),AnnotateComments.getFieldName1(),AnnotateComments.getFieldName2(),AnnotateComments.getWorkbookName(),AnnotateComments.getStatus(),AnnotateComments.getComment());
 			jsonResponse = generateSuccessResponse(Messages.get(MSG_SAVED_SUCCESSFULLY),AnnotateCommentsDtoContent);
 		}catch(Exception e) {
 			Logger.error("Error while udpating the User details.", e);

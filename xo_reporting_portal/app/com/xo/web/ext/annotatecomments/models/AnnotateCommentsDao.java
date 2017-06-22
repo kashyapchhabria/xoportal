@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.xo.web.core.XODAOException;
 import com.xo.web.models.dao.GenericDAO;
+import com.xo.web.models.system.TokenType;
 
 public interface AnnotateCommentsDao extends GenericDAO<AnnotateComments, Integer> {
-
+	
+	void updateLastModifiedComment(String fieldName1);
 }

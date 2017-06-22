@@ -6,7 +6,7 @@
             <column name="annotate_id" />
             <generator class="identity" />
     </id>
-    <property name="reportName" type="timestamp">
+    <property name="reportName" type="string">
       <column length="50" name="report_name"/>
     </property>
     <many-to-one class="com.xo.web.models.system.User" fetch="select" name="user">
@@ -28,4 +28,9 @@
       <column name="comment" />
     </property>
   </class>
+  <query name="com.xo.web.ext.annotatecomments.models.AnnotateComments.updateLastModifiedComment">
+    	<![CDATA[
+    		UPDATE com.xo.web.ext.annotatecomments.models.AnnotateComments annotateComments SET annotateComments.comment = :comment WHERE annotateComments.fieldName1 = :fieldName1
+    	]]>
+    </query>
 </hibernate-mapping>

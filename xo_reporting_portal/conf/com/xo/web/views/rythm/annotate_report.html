@@ -1,19 +1,23 @@
-@include(temp)
-@include(nav_bar)
-<script id="menuTree" type="text/html">
-	<!-- ko if: subMenuItems().length > 0 -->
-		<div class="ui dropdown item">
-			<a data-bind='text:name,click:loadPageData' style="color:black !important;"></a>
-			<i class="fa fa-angle-double-right"></i>
-			<div class="menu" data-bind="template: { name: 'menuTree', foreach: subMenuItems}">		
+<script id="anotate_comment" type="text/html">
+	<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<div id="vizContainer"   ></div>
+		<div id="myModal" class="ui small modal">
+		<i class="close icon"></i>
+		<div class="ui grid page"> 
+			<div class="column">
+				<span class="ui form">
+					<div class="field">
+						<b>Enter Comment: </b><br>
+						<input type="text" name="comment" id="report_comment"><br>
+					</div>
+					<div class="field">
+						<center>
+							<button id="submit_comment" class="ui primary button" data-bind="click: anotate.reportComment" type="submit">Submit</button>
+						</center>
+					</div>
+				</span>
 			</div>
 		</div>
-	<!-- /ko -->
-	<!-- ko if: subMenuItems().length == 0 -->
-		<a data-bind='text:name, click:loadPageData' class="item">
-		</a>
-	<!-- /ko -->
-</script>
-<script id="anotate_comment" type="text/html">
-	<div id="vizContainer"  ></div>
+	</div>
+	</div>	
 </script>

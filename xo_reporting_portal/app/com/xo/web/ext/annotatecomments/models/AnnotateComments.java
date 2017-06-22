@@ -1,6 +1,5 @@
 package com.xo.web.ext.annotatecomments.models;
 
-import java.util.Date;
 
 import com.xo.web.models.system.AbstractEntity;
 import com.xo.web.models.system.User;
@@ -24,7 +23,7 @@ public class AnnotateComments extends AbstractEntity {
  		this.user=user;
  		this.reportName=reportName;
  		this.fieldName1=fieldName1;
- 		this.fieldName1=fieldName2;
+ 		this.fieldName2=fieldName2;
  		this.workbookName=workbookName;
  		this.status=status;
  		this.comment=comment;
