@@ -8,5 +8,4 @@ import com.xo.web.models.system.TokenType;
 
 public interface AnnotateCommentsDao extends GenericDAO<AnnotateComments, Integer> {
 	
-	void updateLastModifiedComment(String fieldName1);
 }

@@ -47,7 +47,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                    //alert(pair.fieldName);
                    if(pair.fieldName.localeCompare("ATTR(forcomment)")==0) {
                    		self.fieldName1(pair.formattedValue);
-                   		alert(self.fieldName1());
+                   		//alert(self.fieldName1());
         		   }
                }
             }
