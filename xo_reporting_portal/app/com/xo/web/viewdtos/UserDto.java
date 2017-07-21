@@ -4,6 +4,8 @@ import com.xo.web.models.system.User;
 import com.xo.web.models.system.XoClient;
 import com.xo.web.util.XoUtil;
 
+import java.util.Set;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @SuppressWarnings("serial")
@@ -23,6 +25,8 @@ public class UserDto extends BaseDto<UserDto> {
 	public Integer clientId;
 	public String clientName;
 	public String clientSecret;
+	public Set<String> roleId;
+	public String roleName;
 
 	public UserDto(){
 	}
@@ -50,6 +54,7 @@ public class UserDto extends BaseDto<UserDto> {
 				this.clientName = xoClient.getName();
 				this.clientSecret = xoClient.getSecret();
 			}
+			this.roleId=user.getRolesID();
 			this.encryptedPassword = user.getPassword();
 		}
 	}

@@ -11,8 +11,10 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 		self.errors = ko.validation.group(this, { deep: true, observable: false });
 		self.availableUsers = ko.observableArray([]);
 		self.availableClients = ko.observableArray([]);
+		self.availableRoles = ko.observableArray([]);
 		self.userId = ko.observable(false);
 		self.selectedClient = ko.observable({}).extend({required: {'message':"Please select the client"}});
+		self.selectedRole = ko.observable({}).extend({required: {'message':"Please select the role"}});
 		self.firstName = ko.observable().extend({ required: {'message':"Please enter a first name"}});
 		self.lastName = ko.observable();
 		self.email= ko.observable().extend({ required: {'message':"Please enter a email id"}});
@@ -21,6 +23,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 
 		self.loadUsers = function() {
 			self.loadClients();
+			self.loadRole();
 			$.ajax({
 				'url':  xoappcontext + '/users',
 				'type':'GET',
@@ -100,6 +103,10 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 		};
 
 		self.saveSurveyor = function() {
+			var selectedRole = $("#selUsrRole").dropdown("get value");
+			var role= selectedRole[selectedRole.length-1];
+			self.selectedRole(role);
+			
 			// check if valid
             if(self.errors().length > 0) {
                 self.errors.showAllMessages();
@@ -113,7 +120,8 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 						firstName:self.firstName(), 
 						secondName:self.lastName(), 
 						email:self.email(), 
-						clientId:self.selectedClient().clientId
+						clientId:self.selectedClient().clientId,
+						roleId:role
 					};
 			if(userDto.userId == false) {
 				userDto.userId = null;
@@ -157,7 +165,8 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 							self.email(responsedata.email);
 							self.selectedClient(self.availableClients.find("clientId", 
 											{'clientId' : responsedata.clientId, 'name': responsedata.clientName}));
-							setLocationHash('createsurveyor');
+							setLocationHash('editsurveyor');
+							self.selectedRole(responsedata.roleId);
 						} else {
 							setGlobalMessage(responsedata,"general");
 						}
@@ -175,7 +184,14 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 			self.lastName('');
 			self.email('');
 			self.selectedClient({});
-			setLocationHash('createsurveyor');
+			self.selectedRole({});
+			if(self.availableRoles().length===0){
+				alert("Create Role before adding user");
+				setLocationHash('createrole');
+			}
+			else{
+				setLocationHash('createsurveyor');
+			}
 		};
 
 		self.bulkUploadUsers = function(data, event) {
@@ -307,8 +323,46 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 				self.availableClients.push(tempObj);
 			}
 		};
-
+		
+		self.loadRole = function() {
+			$.ajax({
+				'url':  xoappcontext + '/roles',
+				'type':'GET',
+				'cache':false,
+				'success' : function(serverData) {
+					self.buildRoleDropDown(serverData);
+		    		  if(self.availableRoles().length===0){
+		    			  alert("Create Role before adding user");
+		    			  setLocationHash('createrole');
+		    		  }
+			    	  $("#selUsrRole").dropdown();
+			    	  $("#selUsrRole").dropdown("set selected", self.selectedRole());
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+				}
+			});
+		};
+		self.buildRoleDropDown = function(roleDetails){
+			var i = 0;
+			var totalRole = roleDetails.length;
+			self.availableRoles.removeAll();
+			for(;i < totalRole; i++){
+				var roleobj = roleDetails[i];
+				var tempObj = {
+						'roleId':roleobj.roleId,
+						'name':roleobj.name
+				};
+				self.availableRoles.push(tempObj);
+			}
+		};
+		
+		self.dropdownAfterHandle=function(){
+			  self.loadRole();
+		}
+		
 		return {
+			dropdownAfterHandle:self.dropdownAfterHandle,
 			availableUsers:self.availableUsers,
 			loadUsers:self.loadUsers,
 			currentPage: self.currentPage,
@@ -325,7 +379,10 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 			uploadUsers:self.uploadUsers,
 			availableClients:self.availableClients,
 			selectedClient:self.selectedClient,
-			loadClients:self.loadClients
+			loadClients:self.loadClients,
+			loadRoles:self.loadRole,
+			availableRoles:self.availableRoles,			
+			selectedRole:self.selectedRole
 		};
 	}
 	UserManagerModel.prototype = new BaseModel(ko, $);

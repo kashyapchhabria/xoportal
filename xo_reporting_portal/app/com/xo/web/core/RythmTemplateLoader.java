@@ -222,13 +222,42 @@ public class RythmTemplateLoader {
         } catch (IOException e) {
         	Logger.error("Error while initiating the tempalte loader.", e);
         }
-        
+
         Map<String, Object> rythmConfigs = new HashMap<>();
-        rythmConfigs.put(ENGINE_MODE, this.config.getString(ENGINE_MODE));
+        //rythmConfigs.put(ENGINE_MODE, this.appMode ? "prod" : "dev");
+        rythmConfigs.put(PRECOMPILE_MODE_ENABLED, this.config.getBoolean(PRECOMPILE_MODE_ENABLED, true));
+        rythmConfigs.put(LOAD_PRECOMPILED_ENABLED, this.config.getBoolean(LOAD_PRECOMPILED_ENABLED, true));
+        rythmConfigs.put("rythm.default.cache_ttl", Integer.MAX_VALUE);
+        rythmConfigs.put("rythm.cache.enable", this.appMode);
+        //rythmConfigs.put("cache.prod_only.enabled", this.appMode);
+        rythmConfigs.put(PRECOMPILED_DIR, getTempDir(config.getString(XoAppConfigKeys.APPLICATION_CONTEXT)).getAbsolutePath());
         rythmConfigs.put(TEMPLATE_DIR, this.templateFolderUri.getPath());
         rythmEngine = new RythmEngine(rythmConfigs);
     }
 
+    private final static File getTempDir(String directoryName) {
+    	  File baseDir = new File(System.getProperty("java.io.tmpdir"));
+
+    	  if(directoryName.startsWith("/")) {
+    		  directoryName = directoryName.substring(1);
+    	  }
+    	  File tempDir = new File(baseDir, directoryName);
+    	  if(!tempDir.exists()) {
+    		  if (tempDir.mkdir()) {
+    			  return tempDir;
+    		  }
+    	  } else {
+    		  try {
+    			  File[] directoryFiles = tempDir.listFiles();
+    			  for(File dirFile : directoryFiles) {
+    				  dirFile.delete();
+    			  }
+    		  } finally{
+    		  }
+    	  }
+    	  return tempDir;
+	}
+    
     public static final RythmTemplateLoader create(Configuration config) {
         if(rythmTemplateLoader == null) {
             return new RythmTemplateLoader(config);

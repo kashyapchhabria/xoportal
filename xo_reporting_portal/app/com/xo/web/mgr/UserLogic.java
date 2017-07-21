@@ -50,6 +50,7 @@ public class UserLogic extends BaseLogic<User, Integer>{
 	private final RoleDAO roleDAO;
 	private final UserRoleDAO userRoleDAO;
 	private final XoClientDAO xoClientDAO;
+	private final UserRoleLogic userRoleLogic;
 
 	public UserLogic() {
 		super(new UserDAOImpl());
@@ -58,6 +59,7 @@ public class UserLogic extends BaseLogic<User, Integer>{
 		this.roleDAO = new RoleDAOImpl();
 		this.userRoleDAO = new UserRoleDAOImpl();
 		this.xoClientDAO = new XoClientDAOImpl();
+		this.userRoleLogic = new UserRoleLogic();
 	}
 
 	public final String getHashedPassword(String clearString) {
@@ -135,22 +137,30 @@ public class UserLogic extends BaseLogic<User, Integer>{
 		User user = null;
 		if(userDto != null) {
 			user = userDto.asEntityObject();
-			XoClient xoClient = null;
-			if(userDto.clientId != null) {
-				xoClient = this.xoClientDAO.find(userDto.clientId);
-			} else if(userDto.clientName != null) {
-				xoClient = this.xoClientDAO.findByNameAndActive(userDto.clientName, true);
-			}
+			XoClient xoClient = this.xoClientDAO.find(userDto.clientId);
 			if(xoClient != null) {
 				user.setXoClient(xoClient);
 			}
 			user.setActive(true);
 			user.setPassword(this.createEncryptedString(userDto.firstName+userDto.email));
-			Role adminRole = this.roleDAO.findByName(RoleEnum.Viewer.name());
+			Collection<Role> allRoles = this.roleDAO.findAll();
 			user = super.save(user);
-			UserRole userRole = new UserRole(adminRole, user);
-			user.getUserRoles().add(userRole);
-			userRoleDAO.save(userRole);
+			Object[] roles=allRoles.toArray();
+			if(userDto.roleId!=null){
+				for(String role:userDto.roleId){
+					String newRole = roles[Integer.parseInt(role)-1].toString();
+					Role adminRole = this.roleDAO.findByName(newRole);
+					UserRole userRole = new UserRole(adminRole, user);
+					user.getUserRoles().add(userRole);
+					userRoleDAO.save(userRole);
+				}
+			}
+			else{
+				Role adminRole = this.roleDAO.findByName(RoleEnum.Viewer.name());
+				UserRole userRole = new UserRole(adminRole, user);
+				user.getUserRoles().add(userRole);
+				userRoleDAO.save(userRole);
+			}
 		}
 		return user;
 	}
@@ -192,6 +202,7 @@ public class UserLogic extends BaseLogic<User, Integer>{
 	public void update(UserDto userDto) throws XODAOException {
 		if(userDto != null) {
 			User user = this.find(userDto.userId);
+			Set<UserRole> newUserRoles = new HashSet<UserRole>();
 			if(user != null) {
 				if(userDto.clientId != null) {
 					XoClient xoClient = this.xoClientDAO.find(userDto.clientId);
@@ -201,10 +212,24 @@ public class UserLogic extends BaseLogic<User, Integer>{
 				} else {
 					return ;
 				}
+				if(userDto.roleId!=null){
+					Set<String> newRoles = userDto.roleId;
+					Set<UserRole> currentRoles = user.getUserRoles();
+					for(UserRole currentRole : currentRoles ){
+						this.userRoleLogic.remove(currentRole);
+					}
+					for(String newRole : newRoles) {
+						Role role = this.roleDAO.find(Integer.parseInt(newRole));
+						UserRole userRole = new UserRole(role,user);
+						this.userRoleLogic.save(userRole);
+						newUserRoles.add(userRole);
+					}
+				}
+				user.setUserRoles(newUserRoles);
 				user.setFirstName(userDto.firstName);
 				user.setSecondName(userDto.secondName);
 				user.setEmail(userDto.email);
-				
+				user.setLastModifiedDate(new Date());
 				super.update(user);
 			}
 		}

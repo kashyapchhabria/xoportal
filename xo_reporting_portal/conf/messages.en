@@ -81,6 +81,8 @@ admin.land.report.settings=Reports Management
 admin.land.report.group.settings=Reports Group Management
 
 # Create User page
+user.role=Role
+user.selrole=Select Role
 user.create=Create User
 user.edit=Edit User
 user.update=Update

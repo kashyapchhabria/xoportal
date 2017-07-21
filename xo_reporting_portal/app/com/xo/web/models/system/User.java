@@ -247,4 +247,15 @@ public class User extends AbstractEntity {
 		this.xoClient = xoClient;
 	}
 
+	public Set<String> getRolesID() {
+		Set<String> tempRoleID = new HashSet<String>();
+		List<? extends Role> roles = getRoles();
+		if(XoUtil.hasData(roles)) {
+			for(Role usersRole : roles) {
+				tempRoleID.add(usersRole.getRoleId().toString());
+			}
+		}
+		return tempRoleID;
+	}
+
 }

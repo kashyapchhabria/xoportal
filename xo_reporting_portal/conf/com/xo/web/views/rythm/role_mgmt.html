@@ -33,10 +33,10 @@
 								<i class="fa fa-edit"></i>
 							</a>
 							<a class="action_link" title='@Messages.get("role.mgmt.dactrole")'  data-bind='attr: {id: "role_active_"+roleRecord.roleId}, click:roleRecord.toggleStatus, if: roleRecord.active'>
-								<i class="fa fa-lock"></i>
+								<i class="fa fa-unlock"></i>
 							</a>
 							<a class="action_link" title='@Messages.get("role.mgmt.actrole")' data-bind='attr: {id: "role_active_"+roleRecord.roleId}, click:roleRecord.toggleStatus,ifnot: roleRecord.active'>
-								<i class="fa fa-unlock"></i>										
+								<i class="fa fa-lock"></i>										
 							</a>
 							<a class="action_link" title='@Messages.get("role.mgmt.delrole")' data-bind='attr: {id: "role_delete_"+roleRecord.roleId}, click:roleRecord.deleteRoleCheck'>
 								<i class="fa fa-trash"></i>
