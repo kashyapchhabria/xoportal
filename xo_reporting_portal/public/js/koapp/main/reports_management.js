@@ -134,6 +134,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		};
 
 		self.saveReports = function(data, event) {
+			if(typeof data.selectedGroup()==="undefined"){		
+				alert(group_select);		
+				return;		
+			}
+			
 			// Create a formdata object and add the files
 			if(data.displayOrder > 0){
 			var reportDto = {
@@ -179,7 +184,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             }
             else
             {
-            window.alert("Please enter integer in display order");
+            window.alert(display_order_err);
             }
 
 		};
@@ -206,7 +211,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         		self.checkDashboardData = function(responsedata) {
                 			self.errorText(responsedata.errorText);
                 			if(self.errorText().length>0){
-                			self.errorText("Please configure all the reports");
+                			self.errorText(config_reprt_err);
                 			setGlobalMessage({
                                                         			message : self.errorText(),
                                                         			messageType : 'alert'
@@ -228,7 +233,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                            'success' : function(responsedata) {
                            if(responsedata && responsedata.message == 'true'){
                            		data.dashboard(false);
-                           		window.alert("Dashboard has been already assigned to " + data.groupName );
+                           		$("#"+event.target.id).prop('checked', false);
+                           		window.alert(already_assign_err + " " + data.groupName );
                            }
                            else{
                            self.toggleReportDashboardStatus(data, event);

@@ -13,11 +13,11 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 		self.availableClients = ko.observableArray([]);
 		self.availableRoles = ko.observableArray([]);
 		self.userId = ko.observable(false);
-		self.selectedClient = ko.observable({}).extend({required: {'message':"Please select the client"}});
-		self.selectedRole = ko.observable({}).extend({required: {'message':"Please select the role"}});
-		self.firstName = ko.observable().extend({ required: {'message':"Please enter a first name"}});
+		self.selectedClient = ko.observable({}).extend({required: {'message':select_client}});
+		self.selectedRole = ko.observable({}).extend({required: {'message':select_role}});
+		self.firstName = ko.observable().extend({ required: {'message':first_name}});
 		self.lastName = ko.observable();
-		self.email= ko.observable().extend({ required: {'message':"Please enter a email id"}});
+		self.email= ko.observable().extend({ required: {'message':email_id}});
 		self.currentUser = ko.observable({});
 		var usertbl = null;
 
@@ -186,7 +186,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 			self.selectedClient({});
 			self.selectedRole({});
 			if(self.availableRoles().length===0){
-				alert("Create Role before adding user");
+				alert(create_role_warn);
 				setLocationHash('createrole');
 			}
 			else{
@@ -204,7 +204,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 			files = $('#user_entries').prop("files");
 
 			if(files && files.length == 0) {
-				alert("Please select at least one user entries file.");
+				alert(user_file_err);
 				return;
 			}
 			
@@ -332,7 +332,7 @@ define(['knockout', 'jquery', 'knockout.validation'], function(ko, $, validation
 				'success' : function(serverData) {
 					self.buildRoleDropDown(serverData);
 		    		  if(self.availableRoles().length===0){
-		    			  alert("Create Role before adding user");
+		    			  alert(create_role_warn);
 		    			  setLocationHash('createrole');
 		    		  }
 			    	  $("#selUsrRole").dropdown();

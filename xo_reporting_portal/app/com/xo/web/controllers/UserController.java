@@ -452,6 +452,7 @@ public class UserController extends BaseController<User, Integer> implements Use
             }
         	add(render("changepassword.html",CHANGE_PASSWORD_FORM));
 			add(render("comment.html"));
+			add(render("messages.html"));
 		}};
 	}
 

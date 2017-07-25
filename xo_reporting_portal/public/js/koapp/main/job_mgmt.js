@@ -160,7 +160,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					}
 				});
 			} else{
-				alert("Please select all the three inputs");
+				alert(input_err);
 			}
 		};
 

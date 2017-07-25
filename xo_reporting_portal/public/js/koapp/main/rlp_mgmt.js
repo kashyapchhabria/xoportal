@@ -168,7 +168,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				self.loadUnAssignedInstances();
 				loadPopup('myModal');
 			} else {
-				alert('Please select the entity type and ' + self.selectedGroup() + ' in filters.');				
+				alert(entity_type + ' ' + self.selectedGroup() + ' in filters.');				
 			}
 		 };
 

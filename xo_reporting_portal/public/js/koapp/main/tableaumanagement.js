@@ -359,7 +359,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.submitDashboardComment = function() {
         	var dashboardName='MainDashboard';
         	if(self.commentText() === '') {
-        		alert("Enter a comment and then click Comment button")
+        		alert(cmnt_warn)
         	} else {
         		//sheet = viz.getWorkbook().getActiveSheet();
         		//alert(sheet.getName());

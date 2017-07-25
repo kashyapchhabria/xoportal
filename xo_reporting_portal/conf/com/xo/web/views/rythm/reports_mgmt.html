@@ -68,9 +68,9 @@
 								<i class="fa fa-lock"></i>
 							</a>
 							<a class="action_link" data-bind="if:reportsRecord.viewGroupId() , click:reportsRecord.checkDashboard" title='@Messages.get("reports.mgmt.dashboard")'>
-								<div class=" ui slider checkbox">
-								    <input class="" type="checkbox" data-bind="checked:reportsRecord.dashboard()"/>
-									<label></label>
+								<div class="ui slider checkbox">
+									    <input class="" data-bind="attr:{'id':$index()+'_check_'+reportsRecord.viewGroupId()},checked:reportsRecord.dashboard()" type="checkbox" />
+										<label></label>
 								</div>
 							</a>
 						</td>

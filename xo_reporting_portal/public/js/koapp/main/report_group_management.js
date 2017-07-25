@@ -146,7 +146,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.showDeleteConfirmation = function(resultData, viewGroupId, rowPosition) {
 
 			if (resultData != 0) {
-				if (confirm("This group is assigned to reports(s) !! Are You Sure u want to delete ?") == true) {
+				if (confirm(report_conf_del) == true) {
 					self.deleteGroup(viewGroupId, rowPosition);
 				}
 			} else {

@@ -121,9 +121,9 @@ $(document).ready(function() {
 var msgtId;
 function setGlobalMessage(messageObj,ui) {
 	if(ui=="general") {
-		$('#alert-box-container').removeClass('success warning info alert');
+		$('#alert-box-container').find(".ui.message").removeClass('success warning info alert');
 		if(messageObj) {
-			$('#alert-box-container').addClass(messageObj.messageType)
+			$('#alert-box-container').find(".ui.message").addClass(messageObj.messageType);
 			$('#alert-box-container').css('visibility', 'visible');
 			$('#alert-message').text(messageObj.message);
 	
@@ -133,16 +133,15 @@ function setGlobalMessage(messageObj,ui) {
 			}, 2000);			
 		}
 	} else {
-		$('#popup-box-container').removeClass('success warning info alert');
+		$('#popup-box-container').find(".ui.message").removeClass('success warning info alert');
 		if(messageObj) {
-			$('#popup-box-container').addClass(messageObj.messageType)
+			$('#popup-box-container').find(".ui.message").addClass(messageObj.messageType)
 			$('#popup-box-container').css('visibility', 'visible');
 			$('#popup-message').text(messageObj.message);
-
 			clearTimeout(msgtId);
 			msgtId = setTimeout(function(){
 				$('#popup-box-container').css('visibility', 'hidden');
-			}, 2000);		
+			}, 2000);
 		}
 	}
 	return messageObj;

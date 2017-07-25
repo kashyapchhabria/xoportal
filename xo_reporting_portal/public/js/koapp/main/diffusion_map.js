@@ -23,11 +23,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.msgs=ko.observableArray([]);
 		self.inputText = ko.observable("");
 		self.user=ko.observable(xoappusername);
-		self.activeSheet = ko.observable('Diffusion Map');
-		self.maxSel = ko.observable("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
+		self.activeSheet = ko.observable(diff_map);
+		self.maxSel = ko.observable(sel_vas);
 		self.showSelect= ko.observable(true);
-		self.dashboardCommentHeading = ko.observable('Diffusion Map');
-		self.prevSelected = ko.observable('Diffusion Map');
+		self.dashboardCommentHeading = ko.observable(diff_map);
+		self.prevSelected = ko.observable(diff_map);
         
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -43,7 +43,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.submitComment = function () {
         	var dashboardName='diffusionMap';
         	if(self.inputText() === '') {
-        		alert("Enter a comment and then click Comment button")
+        		alert(cmnt_warn);
         	} else {
         		//sheet = viz.getWorkbook().getActiveSheet();
         		//alert(sheet.getName());
@@ -364,9 +364,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             self.visibility(false);
             self.selectedSupClient();
             
-            self.dashboardCommentHeading('Diffusion Map');
-            self.activeSheet('Diffusion Map');
-			self.maxSel("Select VAS (max 6) &nbsp;&nbsp; &#x25BC;");
+            self.dashboardCommentHeading(diff_map);
+            self.activeSheet(diff_map);
+			self.maxSel(sel_vas);
 			self.showSelect(true);
         };
 
@@ -383,8 +383,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	self.activeSheet(sheetName);
         	if(sheetName === "Diffusion Map") {
         		self.showSelect(true);
-        		self.dashboardCommentHeading('Diffusion Map');
-        		self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
+        		self.dashboardCommentHeading(diff_map);
+        		self.maxSel(sel_vas);
         		self.retrieveFilters(self.selectedDiffFilters,6);
         		$("#diffMap").css("background-color", activeColor);
         		$("#diffMap").css("color", actTextColor);
@@ -392,7 +392,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			else if(sheetName === "Spend Segment") {
 				self.showSelect(true);
 				self.dashboardCommentHeading('Spend Segment');
-				self.maxSel("Select VAS (max 6) &nbsp&nbsp &#x25BC;");
+				self.maxSel(sel_vas);
 				self.retrieveFilters(self.selectedSpendFilters,6);
 				$("#spndSeg").css("background-color", activeColor);
 				$("#spndSeg").css("color", actTextColor);
@@ -407,13 +407,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			else {
 				self.showSelect(true);
 				self.dashboardCommentHeading('Trendsensor');
-				self.maxSel("Select VAS (max 1) &nbsp&nbsp &#x25BC;");
+				self.maxSel(sel_vas);
 				self.retrieveFilters(self.selectedTrendFilters,1);
 				$("#trndSen").css("background-color", activeColor);
 				$("#trndSen").css("color", actTextColor);
 			}
-			if (self.prevSelected() === 'Diffusion Map') {
-				if (sheetName !== 'Diffusion Map') {
+			if (self.prevSelected() === diff_map) {
+				if (sheetName !== diff_map) {
 					$("#diffMap").css("background-color", defaultColor);
 					$("#diffMap").css("color", defTextColor);
 				}
@@ -493,7 +493,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					worksheetArray[i].applyFilterAsync("Status", self.selectedTrendFilters()[0], 'REPLACE');							
 				}
 			else
-				alert("Select only 1 Option");
+				alert(sel_opt);
 		}
 		
 		self.applySpendSegmentFilters = function() {

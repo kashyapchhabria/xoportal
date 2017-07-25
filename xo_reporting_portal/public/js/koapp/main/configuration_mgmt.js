@@ -254,7 +254,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.isConfigExistAlready = function(newConfigName) {
 			if(self.isNewConfigInstance() || self.isNewConfigTemplate()) {
 				if(newConfigName && newConfigName.trim().length == 0) {
-					alert("Please provide configuration name.");
+					alert(config_name_err);
 					return;
 				} else {
 					var url = xoappcontext;
@@ -311,7 +311,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			var configjsonclose = '}';
 			var tempKey = null;
 			if(self.shortName() && self.shortName().trim().length == 0) {
-				alert("Please provide configuration name.");
+				alert(config_name_err);
 				return;
 			}
 			for (; i < self.allConfigParams().length; i++) {
@@ -326,7 +326,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 							+ "\"" + tempConfigRowObj['configvalue']() + "\"";
 					commaflag = true;
 				} else {
-					alert("Key should not be empty.");
+					alert(key_miss_err);
 					return;
 				}
 			}
@@ -420,7 +420,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		};
 
 		self.editShortname = function(data,event){
-        	var promptvalue = window.prompt("please enter the configuration name");
+        	var promptvalue = window.prompt(config_name_err);
         	if(promptvalue && promptvalue.trim().length > 0) {
         		self.isConfigExistAlready(promptvalue);
         	}

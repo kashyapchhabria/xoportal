@@ -45,7 +45,7 @@ define(['knockout', 'jquery'], function(ko, $) {
 			}
 		};
 		self.roleId = ko.observable(false);
-		self.name = ko.observable().extend({ required: "Please enter a Rolename" }),
+		self.name = ko.observable().extend({ required: rolename_err }),
 		self.description = ko.observable();
 
 		self.newRole = function(data, event) {
@@ -147,7 +147,7 @@ define(['knockout', 'jquery'], function(ko, $) {
         self.showDeleteConfirmation = function(resultData, roleId, rowPosition) {
 
             if(resultData != 0){
-                if(confirm("This Role is assigned to user(s) !! Are You Sure u want to delete ?") == true){
+                if(confirm(role_delete_cnfrm) == true){
                     self.deleteRole(roleId, rowPosition);
                 }
             } else {
