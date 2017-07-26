@@ -1,6 +1,4 @@
 @include(temp)
-@args play.mvc.Http.Request request = play.mvc.Http.Context.current().request(), play.mvc.Http.Response response = play.mvc.Http.Context.current().response(),Session session  = play.mvc.Http.Context.current().session()
-
 	<div class="ui fixed menu" id="top_nav_bar">
 		<div class="ui container"> 
 			@if(session.get(com.xo.web.util.XoAppConstant.HEADER_X_SUPER_CLIENT) != null) {

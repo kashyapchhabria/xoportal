@@ -11,3 +11,8 @@
 	play.data.*
 	play.mvc.Controller
 }
+@{
+    play.mvc.Http.Request request = play.mvc.Http.Context.current().request();
+    play.mvc.Http.Response response = play.mvc.Http.Context.current().response();
+    Session session  = play.mvc.Http.Context.current().session();
+}

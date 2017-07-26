@@ -6,8 +6,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +32,7 @@ public class RythmTemplateLoader {
      * Inject a bytecode helper implementation into Rythm in memory compilation system to allow user application specified way to locate class bytecode.
      * Default value: null
      */
-	private static final String BYCODE_HELPER_IMPL = "rythm.engine.class_loader.byte_code_helper.impl";
+    private static final String BYCODE_HELPER_IMPL = "rythm.engine.class_loader.byte_code_helper.impl";
 
     /**
      * Set the parent class loader to the Rythm template class loader(org.rythmengine.internal.compiler.TemplateClassLoader). 
@@ -204,23 +202,23 @@ public class RythmTemplateLoader {
         try {
             
             if(this.appMode) {
-            	prodTemplateDir = "conf/" + this.templateDir;
-            	File templateFileLocation = new File(prodTemplateDir);
-            	this.templateFolderUri = templateFileLocation.toURI();
+                prodTemplateDir = "conf/" + this.templateDir;
+                File templateFileLocation = new File(prodTemplateDir);
+                this.templateFolderUri = templateFileLocation.toURI();
             } else {
-            	prodTemplateDir = this.templateDir;
-            	this.templateFolderUri = play.api.Play.current().classloader().getResource(prodTemplateDir).toURI();
+                prodTemplateDir = this.templateDir;
+                this.templateFolderUri = play.api.Play.current().classloader().getResource(prodTemplateDir).toURI();
             }
             Logger.info("Template Path : " + this.templateFolderUri.getRawPath());
             Map<String, String> env = new HashMap<>();
             if(this.templateFolderUri.getRawPath().startsWith("jar")) {
-            	env.put("create", "true");
-            	FileSystem zipfs = FileSystems.newFileSystem(this.templateFolderUri, env);
+                env.put("create", "true");
+                FileSystem zipfs = FileSystems.newFileSystem(this.templateFolderUri, env);
             }
         } catch (URISyntaxException e) {
-        	Logger.error("Error while initiating the tempalte loader.", e);
+            Logger.error("Error while initiating the tempalte loader.", e);
         } catch (IOException e) {
-        	Logger.error("Error while initiating the tempalte loader.", e);
+            Logger.error("Error while initiating the tempalte loader.", e);
         }
 
         Map<String, Object> rythmConfigs = new HashMap<>();
@@ -236,42 +234,37 @@ public class RythmTemplateLoader {
     }
 
     private final static File getTempDir(String directoryName) {
-    	  File baseDir = new File(System.getProperty("java.io.tmpdir"));
+          File baseDir = new File(System.getProperty("java.io.tmpdir"));
 
-    	  if(directoryName.startsWith("/")) {
-    		  directoryName = directoryName.substring(1);
-    	  }
-    	  File tempDir = new File(baseDir, directoryName);
-    	  if(!tempDir.exists()) {
-    		  if (tempDir.mkdir()) {
-    			  return tempDir;
-    		  }
-    	  } else {
-    		  try {
-    			  File[] directoryFiles = tempDir.listFiles();
-    			  for(File dirFile : directoryFiles) {
-    				  dirFile.delete();
-    			  }
-    		  } finally{
-    		  }
-    	  }
-    	  return tempDir;
-	}
-    
+          if(directoryName.startsWith("/")) {
+              directoryName = directoryName.substring(1);
+          }
+          File tempDir = new File(baseDir, directoryName);
+          if(!tempDir.exists()) {
+              if (tempDir.mkdir()) {
+                  return tempDir;
+              }
+          } else {
+              try {
+                  File[] directoryFiles = tempDir.listFiles();
+                  for(File dirFile : directoryFiles) {
+                      dirFile.delete();
+                  }
+              } finally{
+              }
+          }
+          return tempDir;
+    }
+
     public static final RythmTemplateLoader create(Configuration config) {
         if(rythmTemplateLoader == null) {
-            return new RythmTemplateLoader(config);
-        } else {
-            return RythmTemplateLoader.rythmTemplateLoader;
+            rythmTemplateLoader = new RythmTemplateLoader(config); 
         }
+        return RythmTemplateLoader.rythmTemplateLoader;
     }
 
     public static final RythmTemplateLoader getTemplateLoader() {
-    	if(rythmTemplateLoader == null) {
-            return new RythmTemplateLoader(play.Play.application().configuration());
-        } else {
-            return RythmTemplateLoader.rythmTemplateLoader;
-        }
+        return create(play.Play.application().configuration());
     }
  
     public RythmEngine getTemplateEngine() {
@@ -280,20 +273,20 @@ public class RythmTemplateLoader {
 
     public String render(String templateName, Object... templateArgs) {
         try {
-        	URI uri = null;
-        	String templatePath = this.prodTemplateDir + templateName;
-        	if(this.appMode) {
-        		uri = new File(templatePath).toURI();
-        	} else {
-        		uri = play.api.Play.current().classloader().getResource(templatePath).toURI();	
-        	}
+            URI uri = null;
+            String templatePath = this.prodTemplateDir + templateName;
+            if(this.appMode) {
+                uri = new File(templatePath).toURI();
+            } else {
+                uri = play.api.Play.current().classloader().getResource(templatePath).toURI();    
+            }
             System.out.println("Template Path : " + uri);
             //String content = new String(Files.readAllBytes(Paths.get(uri)));
             return this.rythmEngine.render(templateName, templateArgs);
         } catch (URISyntaxException e) {
-        	Logger.error("Error while loading the tempalte : " + templateName, e);
+            Logger.error("Error while loading the tempalte : " + templateName, e);
         } /*catch (IOException e) {
-        	Logger.error("Error while loading the tempalte : " + templateName, e);
+            Logger.error("Error while loading the tempalte : " + templateName, e);
         }*/
         return "Error";
     }

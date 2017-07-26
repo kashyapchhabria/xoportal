@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
 name := """Xo Diffusion Map Reporting Portal New"""
 
-version := "4.5"
+version := "4.5.1"
 
 organization := "com.xo.web"
 

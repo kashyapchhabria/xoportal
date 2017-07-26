@@ -37,7 +37,7 @@
 					<div class="ui required field">
 					   <label>@Messages.get("user.role")</label>
 					   <select class="ui fluid dropdown" multiple="" id="selUsrRole" 
-					   		data-bind='template: {afterRender: usermanagement.dropdownAfterHandle}'>
+					   		data-bind='value:usermanagement.selectedRole, template: {afterRender: usermanagement.dropdownAfterHandle}'>
 							<option value="">@Messages.get("user.selrole")</option>
 							<!-- ko foreach:usermanagement.availableRoles -->
 								<option data-bind="attr:{value:$data.roleId},text:$data.name"></option>
