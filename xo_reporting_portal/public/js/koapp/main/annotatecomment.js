@@ -73,21 +73,23 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         				comment: self.comment()
         		} ;
         		data=JSON.stringify(reportComment);
-        		//alert(data);
+        		alert(data);
+        		var user=1;
         		$.ajax({
-        			'url': xoappcontext + '/exportdata',
+        			'url': xoappcontext + '/exportdata/'+self.fieldName1()+'/'+self.comment()+'/'+user,
         			'type': 'POST',
         			'cache':false,
         			'data':data,
         			'contentType': "application/json; charset=utf-8",
         			'success' : function(responseData) {
         							console.log(responseData);        		
-        			},
+        						},
         			'error' : function(jqXHR, textStatus, errorThrown) {
         				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
         			}
         		});
         		$('#myModal').modal('hide');
+        		viz.refreshDataAsync();
         }
         
     	return{

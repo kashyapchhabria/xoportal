@@ -166,7 +166,8 @@ GET      /tableauview/checkdashboard/:viewGroupId                     @com.xo.we
 
 
 # Export Data
-POST	 /exportdata                                                  @com.xo.web.ext.annotatecomments.controllers.AnnotateCommentsController.exportData()
+POST	 /exportdata/:fieldName1/:comment/:user                       @com.xo.web.ext.annotatecomments.controllers.AnnotateCommentsController.updateComments(fieldName1: String, comment: String, user: String )
+GET 	 /getComment/:fieldName1                                      @com.xo.web.ext.annotatecomments.controllers.AnnotateCommentsController.getFieldComment(fieldName1: String)
 
 # comment
 POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()

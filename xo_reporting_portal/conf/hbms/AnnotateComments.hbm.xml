@@ -28,9 +28,15 @@
       <column name="comment" />
     </property>
   </class>
-  <query name="com.xo.web.ext.annotatecomments.models.AnnotateComments.updateLastModifiedComment">
+  <query name="com.xo.web.ext.annotatecomments.models.AnnotateComments.updateComment">
     	<![CDATA[
     		UPDATE com.xo.web.ext.annotatecomments.models.AnnotateComments annotateComments SET annotateComments.comment = :comment WHERE annotateComments.fieldName1 = :fieldName1
     	]]>
     </query>
+    <query name="com.xo.web.ext.annotatecomments.models.AnnotateComments.getFieldComment">
+    	<![CDATA[
+    		SELECT annotateComments FROM com.xo.web.ext.annotatecomments.models.AnnotateComments annotateComments WHERE annotateComments.fieldName1= :fieldName1
+    	]]>
+    </query>
+    
 </hibernate-mapping>

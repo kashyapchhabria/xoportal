@@ -205,8 +205,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       
       function anotatecommentPage() {
         return showPageLoader(function() {
-        	anotate.initViz();
-        	return new Router.Page('Anotate','anotate_comment', {anotate: anotate});
+        	return new Router.Page('Anotate','anotate_comment', {tableaumgmt: tableaumgmt});
         });
       }
 

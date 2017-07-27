@@ -67,4 +67,24 @@
 			</span>
 		</center>
 	</section>
+	<div class="ui grid page" data-bind="template: {afterRender: $root.display_msgbox.afterRendererdHandler}">
+		<div id="myModal" class="ui small modal">
+		<i class="close icon"></i>
+		<div class="ui grid page"> 
+			<div class="column">
+				<span class="ui form">
+					<div class="field">
+						<b>Enter Comment: </b><br>
+						<input type="text" name="comment" id="report_comment"><br>
+					</div>
+					<div class="field">
+						<center>
+							<button id="submit_comment" class="ui primary button" data-bind="click: tableaumgmt.reportComment" type="submit">Submit</button>
+						</center>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+	</div>	
 </script>

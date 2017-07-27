@@ -14,9 +14,12 @@ import com.xo.web.ext.annotatecomments.models.AnnotateComments;
 import com.xo.web.ext.annotatecomments.models.AnnotateCommentsDao;
 import com.xo.web.ext.annotatecomments.models.AnnotateCommentsDaoImpl;
 import com.xo.web.ext.annotatecomments.viewdtos.AnnotateCommentsDto;
+import com.xo.web.ext.comment.models.Comment;
+import com.xo.web.ext.comment.viewdtos.CommentDto;
 import com.xo.web.mgr.BaseLogic;
 import com.xo.web.models.dao.UserDAO;
 import com.xo.web.models.dao.UserDAOImpl;
+import com.xo.web.models.system.TokenType;
 import com.xo.web.models.system.User;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoMailSender;
@@ -44,6 +47,16 @@ public class AnnotateCommentsLogic extends BaseLogic<AnnotateComments, Integer> 
 		return annotateComments;
 	}
 	
-	
+	public void updateComment(String fieldName1, String comment,String user) {
+		this.AnnotateCommentsDAO.updateComment(fieldName1,comment,user);
+	}
 
+	public String getFieldComment(String fieldName1) {
+		List<AnnotateComments> comment = this.AnnotateCommentsDAO.getFieldComment(fieldName1);
+//		System.out.println(comment);
+		return comment.get(0).getComment();
+	}
+	
+	
+	
 }

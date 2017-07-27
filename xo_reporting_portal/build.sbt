@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
 name := """Xoanon Reporting Portal Telia Ncell Revamp"""
 
-version := "4.3.3"
+version := "4.4.3"
 
 organization := "com.xo.web"
 

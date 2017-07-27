@@ -237,6 +237,7 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                     hideTabs: true,
                     hideToolbar: true,
                     onFirstInteractive: function() {
+                    	viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
                     	self.getComments();
                     	self.setFilterValues();
                         workbook = viz.getWorkbook();
@@ -254,8 +255,8 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
                             }
                           });*/
                         self.changeViewSize();
-                        if(self.selectedReportMenuItem() == "Exploratory Analysis")
-                    		viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
+//                        if(self.selectedReportMenuItem() == "Exploratory Analysis")
+//                    		viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
@@ -368,24 +369,24 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         	}
         }
 		
-		self.onMarksSelection = function(marksEvent) {
-			if(marksEvent.getWorksheet().getName()=="Duration vs DistinctB number")
-				return marksEvent.getMarksAsync().then(reportSelectedMarks);
-		}
-		
-		self.reportSelectedMarks = function(marks) {
-			self.aNumber([]);
-			self.dateOfEvent("");
-			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
-                var pairs = marks[markIndex].getPairs();
-                for (var pairIndex = 0; pairIndex < 1; pairIndex++) {
-                   var pair = pairs[pairIndex];
-                   self.aNumber.push(pair.formattedValue);
-                   pair = pairs[3];
-                   self.dateOfEvent(pair.formattedValue);
-                }
-             }
-		}
+//		self.onMarksSelection = function(marksEvent) {
+//			if(marksEvent.getWorksheet().getName()=="Duration vs DistinctB number")
+//				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+//		}
+//		
+//		self.reportSelectedMarks = function(marks) {
+//			self.aNumber([]);
+//			self.dateOfEvent("");
+//			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+//                var pairs = marks[markIndex].getPairs();
+//                for (var pairIndex = 0; pairIndex < 1; pairIndex++) {
+//                   var pair = pairs[pairIndex];
+//                   self.aNumber.push(pair.formattedValue);
+//                   pair = pairs[3];
+//                   self.dateOfEvent(pair.formattedValue);
+//                }
+//             }
+//		}
 		
 		self.exportSel = function() {
         	if(viz) {
@@ -514,7 +515,93 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
         }
 
 
-
+		var i=0;
+        function onMarksSelection(marksEvent) {
+        	i=1;
+        	self.workbookName(viz.getWorkbook().getName());
+        	if(marksEvent.getWorksheet().getName()=="Total Customers v1") {
+        		self.reportName("Total Customers v1");
+        		return marksEvent.getMarksAsync().then(reportSelectedMarks);
+        	}	
+        }
+        
+        function reportSelectedMarks(marks) {
+        	if(i==1 && marks.length>0) {
+        	for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+        		for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                   var pair = pairs[pairIndex];
+                   //alert(pair.fieldName);
+                   if(pair.fieldName.localeCompare("ATTR(forcomment)")==0) {
+                   		self.fieldName1(pair.formattedValue);
+                   		//alert(self.fieldName1());
+        		   }
+               }
+            }
+        	$.ajax({
+    			'url': xoappcontext + '/getComment/'+self.fieldName1(),
+    			'type': 'GET',
+    			'cache':false,
+    			'contentType': "application/json; charset=utf-8",
+    			'success' : function(responseData) {
+    							document.getElementById("report_comment").value=responseData;        		
+    						},
+    			'error' : function(jqXHR, textStatus, errorThrown) {
+    				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+    			}
+    		});
+        	self.load();
+        	i++;
+        	}
+        }
+        
+        
+        self.load = function() {
+        	loadPopup("myModal");
+        }
+        
+        self.reportComment = function() {
+        	self.comment(document.getElementById("report_comment").value);
+        	reportComment={ 
+        				user: self.user(),
+        				reportName: self.reportName(),
+        				fieldName1: self.fieldName1(),
+        				fieldName2: self.fieldName2(),
+        				workbookName: self.workbookName(),
+        				status: "1",
+        				comment: self.comment()
+        		} ;
+        		data=JSON.stringify(reportComment);
+        		//alert(data);
+//        		$.ajax({
+//        			'url': xoappcontext + '/getComment/'+self.fieldName1(),
+//        			'type': 'GET',
+//        			'cache':false,
+//        			'contentType': "application/json; charset=utf-8",
+//        			'success' : function(responseData) {
+//        							console.log(responseData);        		
+//        						},
+//        			'error' : function(jqXHR, textStatus, errorThrown) {
+//        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+//        			}
+//        		});
+        		var user=1;
+        		$.ajax({
+        			'url': xoappcontext + '/exportdata/'+self.fieldName1()+'/'+self.comment()+'/'+user,
+        			'type': 'POST',
+        			'cache':false,
+        			'data':data,
+        			'contentType': "application/json; charset=utf-8",
+        			'success' : function(responseData) {
+        							console.log(responseData);        		
+        						},
+        			'error' : function(jqXHR, textStatus, errorThrown) {
+        				setGlobalMessage({message:textStatus, messageType:'alert'},"general");
+        			}
+        		});
+        		$('#myModal').modal('hide');
+        		viz.refreshDataAsync();
+        }
 
 
 
@@ -546,7 +633,9 @@ define(['knockout', 'jquery','FileSaver'], function(ko, $,fileSaver) {
             getComments:self.getComments,
             msgs:self.msgs,
             openNav:self.openNav,
-            closeNav:self.closeNav
+            closeNav:self.closeNav,
+            menuData: self.menuData,
+    		reportComment: self.reportComment
         };
     }
     TableauManagerModel.prototype = new BaseModel(ko, $);

@@ -50,5 +50,28 @@ public class AnnotateCommentsController extends BaseController<AnnotateComments,
 		}
 	}
 	
+	  public Result updateComments(String fieldName1, String comment, String user) {
+			JsonNode jsonResponse = null;
+			try {
+				annotateCommentsLogic.updateComment(fieldName1, comment, user); 
+				jsonResponse = generateSuccessResponse("messagesavesuccessfully");
+			} catch (Exception e) {
+				jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_ROOM));
+				throw new XOException(e);
+			} finally{
+				return ok(jsonResponse);
+			}
+	  }
 	  
+	  public Result getFieldComment(String fieldName1) {
+			JsonNode jsonResponse = null;
+			try {
+				jsonResponse = Json.toJson(this.annotateCommentsLogic.getFieldComment(fieldName1));    
+			} catch (Exception e) {
+				jsonResponse = generateErrorResponse(Messages.get(ERR_UNABLE_TO_LOAD_ROOM));
+				throw new XOException(e);
+			} finally{
+				return ok(jsonResponse);
+			}
+		}
 }
