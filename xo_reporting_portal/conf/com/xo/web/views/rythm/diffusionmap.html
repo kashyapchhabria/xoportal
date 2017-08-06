@@ -14,6 +14,7 @@
 								<a class="ui small button" style="color:black;" id="spndSeg" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a>
 								<a class="ui small button" style="color:black;" id="trndSen" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a>
 								<a class="ui small button" style="color:black;" id="reports" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a>
+								<a class="ui small button" style="color:black;" id="filters" data-bind="click:diffMap.loadFilterPopup">Export Filters</a>
 							</div>
 						</div>
 						<div class="row" data-bind="visible:diffMap.isTitleVisible()">
@@ -48,5 +49,20 @@
 	  			</div>
 	  		</div>
 	  	</center>
+		<div id="list_filters" class="ui small modal">
+			<i class="close icon"></i>
+			<div class="header">Selected Filters</div>
+			<div class="content">
+				<p data-bind="text:'Top Segment : '+diffMap.selTop()"></p>
+				<p data-bind="text:'Sub Segment : '+diffMap.selSubSgmt()"></p>
+				<p data-bind="text:'Regions : '+diffMap.selRegion()"></p>
+				<p data-bind="text:'Lifetime : '+diffMap.selLifetime()"></p>
+				<p data-bind="text:'Data ARPU : '+diffMap.selDataArpu()"></p>
+				<p data-bind="text:'VAS Plan : '+diffMap.selVasPlan()"></p>
+			</div>
+			<div class="actions">
+				<div data-bind="click:diffMap.exportFilters" class="ui green button">Export</div>
+			</div>
+		</div>
 	</section>
 </script>

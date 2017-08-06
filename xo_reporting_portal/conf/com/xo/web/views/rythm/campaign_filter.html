@@ -1,0 +1,85 @@
+@include(temp)
+<script id="campaign-filter" type="text/html">
+<div class="ui stackable grid page">
+	<div class="row">
+		<div class="ten wide column">
+			<div class="ui form">
+				<div class="">
+					<h5 class="ui header">
+						Enter Campaign Name and Description
+					</h5>
+				</div> 
+				<div class="">
+					<input data-bind="value:campaign.campaignName" placeholder="Enter Campaign Name" type="text" id="campName" />
+				</div>
+				<br><br>
+				<div class="">
+					<textarea data-bind="value:campaign.campaignDescription" rows="4" placeholder="Enter Campaign Description" id="campDesc"></textarea>
+				</div>
+			</div>				
+		</div>
+		<div class="six wide column">
+			<div class="ui grid">
+				<div class="row">
+					<h5 class="ui header">
+						Target Group Overview
+					</h5>
+				</div>
+				<div class="row">
+					<div class="ten wide column">
+						<label class="ui white large label">No. of Customers:</label>
+					</div>
+					<div class="four wide column">
+						<label class="ui grey large label" data-bind="text:campaign.campaignCount"></label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="ten wide column">
+						<label class="ui white large label">Percent of Stock:</label>
+					</div>
+					<div class="four wide column">
+						<label class="ui grey large label" data-bind="text:campaign.campaignPercent"></label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="four wide column">
+			<div class="ui raised segment">
+				<h4 class="ui header">Selected Filters</h4>
+				<p data-bind="text:'Top Segment : '+campaign.selTop()"></p>
+				<p data-bind="text:'Sub Segment : '+campaign.selSubSgmt()"></p>
+				<p data-bind="text:'Regions : '+campaign.selRegion()"></p>
+				<p data-bind="text:'Lifetime : '+campaign.selLifetime()"></p>
+				<p data-bind="text:'Data ARPU : '+campaign.selDataArpu()"></p>
+				<p data-bind="text:'VAS Plan : '+campaign.selVasPlan()"></p>
+			</div>
+		</div>
+		<div class="four wide column">
+			<div class="ui raised segment">
+				<h4 class="ui header" data-bind="text:'Segment Keywords - '+campaign.selTop()" >Segment Keywords</h4>
+				<p data-bind="text:campaign.selSgmtKeywords()"></p>
+			</div>
+		</div>
+		<div class="seven wide column">
+			<div class="ui raised segment">
+				<h4 class="ui header">A/B Slider</h4>
+				<div class="inline field">
+					<input type="range"  min="0" max="100" step="1" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
+				</div>
+				<div class="ui right labeled input" style="margin-left: 25px;width: 20%;">
+					<label for="abpercent" class="ui label">A/B Split</label>
+					<input type="text" placeholder="A/B Split %" id="abpercent" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
+					<div class="ui basic label">%</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="right floated left aligned four wide column">
+			<a align="center" class="ui green fluid button" style="width:75%;" data-bind="click:campaign.getMsisdns">Export</a>
+		</div>
+	</div>
+</div>
+</script>

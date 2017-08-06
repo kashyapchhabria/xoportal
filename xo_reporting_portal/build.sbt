@@ -1,9 +1,9 @@
 import com.typesafe.sbt.SbtAspectj._
 import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
-name := """Xo Diffusion Map Reporting Portal New"""
+name := """Xo Diffusion Map Export Tool"""
 
-version := "4.5.1"
+version := "4.7.0"
 
 organization := "com.xo.web"
 
@@ -64,7 +64,11 @@ libraryDependencies ++= Seq(
 	"org.slf4j" % "slf4j-log4j12" % "1.5.11",
 	"org.apache.zookeeper" % "zookeeper" % "3.4.6",
 	// https://mvnrepository.com/artifact/org.rythmengine/rythm-engine
-    "org.rythmengine" % "rythm-engine" % "1.0.1"
+    "org.rythmengine" % "rythm-engine" % "1.0.1",
+    //Elastic Search
+	"jp.co.bizreach" % "elasticsearch" % "2.3.5",
+	// https://mvnrepository.com/artifact/com.univocity/univocity-parsers
+	"com.univocity" % "univocity-parsers" % "2.3.0"
 )
 
 doc in Compile <<= target.map(_ / "none")

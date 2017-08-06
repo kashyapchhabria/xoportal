@@ -28,6 +28,12 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.showSelect= ko.observable(true);
 		self.dashboardCommentHeading = ko.observable(diff_map);
 		self.prevSelected = ko.observable(diff_map);
+		self.selTop = ko.observable("A2");
+        self.selRegion = ko.observableArray(["North_1","North_2"]);
+        self.selSubSgmt = ko.observableArray(["ED"]);
+        self.selLifetime = ko.observable("0-3 Months");
+        self.selDataArpu = ko.observable("HH");
+        self.selVasPlan = ko.observable("No Plans");
         
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -305,6 +311,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 viz = new tableau.Viz(placeholderDiv, url, options);
             }
         };
+        
+        self.loadFilterPopup = function() {
+			loadPopup("list_filters");
+		 };
+		 
+        self.exportFilters = function() {
+        	$('.ui.modals').modal('show');
+        	setLocationHash("newcampaign");
+        };
 
         self.changeDiffusionViewSize = function() {
 
@@ -572,7 +587,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             maxSel:self.maxSel,
             showSelect:self.showSelect,
             dashboardCommentHeading:self.dashboardCommentHeading,
-            clientLogoImageUrl:self.clientLogoImageUrl
+            clientLogoImageUrl:self.clientLogoImageUrl,
+            exportFilters:self.exportFilters,
+            loadFilterPopup:self.loadFilterPopup,
+            selTop:self.selTop,
+            selRegion:self.selRegion,
+        	selSubSgmt:self.selSubSgmt,
+        	selLifetime:self.selLifetime,
+        	selDataArpu:self.selDataArpu,
+        	selVasPlan:self.selVasPlan
         };
     }
 	

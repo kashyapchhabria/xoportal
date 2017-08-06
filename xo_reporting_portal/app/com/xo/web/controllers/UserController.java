@@ -429,6 +429,7 @@ public class UserController extends BaseController<User, Integer> implements Use
 			if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getTableauPermissions())) {
 				add(render("dashboard_projects.html"));
 				add(render("diffusionmap.html"));
+				add(render("campaign_filter.html"));
 			}
             if(isSuperUser || permissionEnums.containsAll(PermissionEnum.getConfigTemplatePermissions())) {
                 add(render("configuration.html"));

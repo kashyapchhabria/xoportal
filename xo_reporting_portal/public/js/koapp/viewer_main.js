@@ -30,8 +30,8 @@ requirejs.config({
 });
 
 define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', 'semantic', 
-         'datatables', 'DataTable', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map'],
-         function(ko, Router, kv, koSelector, semantic, datatables, DataTable, UserManagerModel, TableauManagerModel, DiffusionManagerModel) {
+         'datatables', 'DataTable', 'main/usermanagement', 'main/tableaumanagement', 'main/diffusion_map', 'main/campaign_filter'],
+         function(ko, Router, kv, koSelector, semantic, datatables, DataTable, UserManagerModel, TableauManagerModel, DiffusionManagerModel, CampaignFilterModel) {
 
     var initializePages = function(){
 
@@ -42,7 +42,8 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
         home:   { match: /^$/,                    page: diffusionmapPage},
         changepassword: { match: /^changepassword/,        page: changepasswordPage},
         diffusionmap: { match: /^diffusionmap$/, page: diffusionmapPage},
-        tabdashboard: { match: /^tabdashboard$/, page: tabdashboardPage}
+        tabdashboard: { match: /^tabdashboard$/, page: tabdashboardPage},
+        campgaignfilter: {match: /^newcampaign/, page: campgaignfilterPage}
       };
 
       var usermgmt = new UserManagerModel();
@@ -71,6 +72,20 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
         	diffMap.getComments();
         	return new Router.Page('Diffusion Map','diffusion_map',{diffMap:diffMap});
         });
+      }
+      
+      function campgaignfilterPage() {
+    	  return showPageLoader(function() {
+    		  cleanUp();
+    		  campFilter.selTop(diffMap.selTop());
+    		  campFilter.selSubSgmt(diffMap.selSubSgmt());
+    		  campFilter.selRegion(diffMap.selRegion());
+    		  campFilter.selLifetime(diffMap.selLifetime());
+    		  campFilter.selDataArpu(diffMap.selDataArpu());
+    		  campFilter.selVasPlan(diffMap.selVasPlan());
+    		  campFilter.getMsisdnCount();
+    		  return new Router.Page('Campaign Filter', 'campaign-filter', {campaign:campFilter});
+    	  });
       }
 
       function randomFilter(path) {   

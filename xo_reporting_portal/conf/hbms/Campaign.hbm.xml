@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 22-Oct-2014 01:24:44 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.xo.web.ext.campaign.models.Campaign" table="campaign_targets" >
+        <id name="targetId" type="java.lang.Integer">
+            <column name="target_id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="250" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="250" not-null="true" />
+        </property>
+        <property name="filterJson" type="string">
+            <column name="filters_json" sql-type="mediumtext" not-null="true" />
+        </property>
+        <property name="createdDate" type="timestamp">
+            <column name="created_dt" not-null="true" />
+        </property>
+        <property name="lastModifiedDate" type="timestamp">
+            <column name="last_modified_dt" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

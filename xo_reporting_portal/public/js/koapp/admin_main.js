@@ -31,10 +31,10 @@ requirejs.config({
 define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
         'datatables', 'DataTable', 'main/usermanagement', 'main/rolemanagement',
         'main/permissionmgmt', 'main/user_role_management','main/userpermissionmgmt', 'main/role_permission_mgmt', 
-        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management', 'main/diffusion_map'],
+        'main/tableaumanagement', 'main/configuration_mgmt', 'main/job_mgmt', 'main/rlp_mgmt', 'main/reports_management', 'main/report_group_management', 'main/diffusion_map', 'main/campaign_filter'],
    function(ko, Router, kv, semantic, datatables, DataTable, UserManagerModel, 
          RoleManagerModel, PermissionMgmtModel, UserRoleManagerModel, UserPermissionManagerModel, RolePermissionManagerModel, 
-         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel,DiffusionManagerModel) {
+         TableauManagerModel, ConfigurationManagerModel, JobManagerModel, RowLevelPermissionModel, ReportManagementModel, ReportGroupManagementModel, DiffusionManagerModel, CampaignFilterModel) {
 
     var initializePages = function(){
 
@@ -43,6 +43,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       // More specific matches should come first.
       var urlMapping = {        
         home:   { match: /^$/,                    page: adminPage},
+        campgaignfilter: { match: /^newcampaign/, page: campgaignfilterPage},
         diffusionmap: { match: /^diffusionmap$/, page: diffusionmapPage},
         changepassword: { match: /^changepassword/,        page: changepasswordPage},
         createsurveyor: { match: /^createsurveyor$/, page:createsurveyorPage},
@@ -79,6 +80,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       var rowlevelmgmt = RowLevelPermissionModel();
       var reportmgmt = new ReportManagementModel();
       var reportgrpmgmt = new ReportGroupManagementModel();
+      var campFilter = new CampaignFilterModel();
 	  
       function cleanUp() {
     	  if(tableaumgmt) {
@@ -208,6 +210,20 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
         	self.userGuide(false);
         	return new Router.Page('Diffusion Map','diffusion_map',{diffMap:diffMap});
         });
+      }
+      
+      function campgaignfilterPage() {
+    	  return showPageLoader(function() {
+    		  cleanUp();
+    		  campFilter.getTotalCount();
+    		  campFilter.selTop(diffMap.selTop());
+    		  campFilter.selSubSgmt(diffMap.selSubSgmt());
+    		  campFilter.selRegion(diffMap.selRegion());
+    		  campFilter.selLifetime(diffMap.selLifetime());
+    		  campFilter.selDataArpu(diffMap.selDataArpu());
+    		  campFilter.selVasPlan(diffMap.selVasPlan());
+    		  return new Router.Page('Campaign Filter', 'campaign-filter', {campaign:campFilter});
+    	  });
       }
 
       function systemSettingsPage() {

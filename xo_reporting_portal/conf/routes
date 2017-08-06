@@ -169,3 +169,9 @@ GET		 /filterlist												  @com.xo.web.controllers.DashboardController.getFi
 POST	 /comment													  @com.xo.web.ext.comment.controllers.CommentController.postMessage()
 GET		 /allComments												  @com.xo.web.ext.comment.controllers.CommentController.readAllComments()
 GET		 /sheetComments/:sheetName/:dashboardName					  @com.xo.web.ext.comment.controllers.CommentController.readSheetComments(sheetName: String, dashboardName: String)
+
+# Campaign Related routes
+POST	 /savecampaign												  @com.xo.web.ext.campaign.controller.CampaignController.saveCampaign()
+POST	 /getMsisdnCount											  @com.xo.web.ext.campaign.controller.CampaignController.getMsisdnCount()
+GET		 /getCsvFile/:fileName										  @com.xo.web.ext.campaign.controller.CampaignController.getCsvFile(fileName: String)
+GET		 /getTotalCount												  @com.xo.web.ext.campaign.controller.CampaignController.getTotalCount()
