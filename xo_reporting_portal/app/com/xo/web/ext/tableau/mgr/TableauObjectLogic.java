@@ -435,7 +435,7 @@ public class TableauObjectLogic {
 	public void loadDiffusionData(final ScreenDTO screenDto, XoClient xoClient) {
 		String applicationContext = XoUtil.getApplicationContext();
 		DashboardDTO dashboardDTO =null;
-		dashboardDTO = buildDiffusionDto("Production Test","Diffusion_map","DiffusionMap", applicationContext);
+		dashboardDTO = buildDiffusionDto("Production Test","Digital Services -VAS Diffusion Map_1","Digital Services", applicationContext);
 		screenDto.contentDtos.add(dashboardDTO);
 		screenDto.imageUrl = dashboardDTO.imageUrl;
 		if(!XoUtil.hasData(screenDto.contentDtos)){

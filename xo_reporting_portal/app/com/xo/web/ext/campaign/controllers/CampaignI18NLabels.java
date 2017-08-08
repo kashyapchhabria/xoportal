@@ -1,4 +1,4 @@
-package com.xo.web.ext.campaign.controller;
+package com.xo.web.ext.campaign.controllers;
 
 public interface CampaignI18NLabels {
 

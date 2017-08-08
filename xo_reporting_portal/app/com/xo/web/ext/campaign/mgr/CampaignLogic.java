@@ -106,7 +106,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 			campaign = campaignDto.asEntityObject();
 			campaign.setCreatedDate(new Date());
 			campaign.setLastModifiedDate(new Date());
-			campaign = this.campaignDao.merge(campaign);
+			campaign = this.campaignDao.save(campaign);
 		}
 		return campaign;
 	}

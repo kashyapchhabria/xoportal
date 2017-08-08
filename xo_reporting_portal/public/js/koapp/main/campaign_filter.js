@@ -21,6 +21,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.selSgmtKeywords = ko.observable();
 		self.campaignPercent = ko.observable();
 		self.rangeValue = ko.observable(50);
+		self.abSplitValue = ko.observable();
 		self.sgmtKeywords = ko.observable({
 			A1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
 			A2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
@@ -33,8 +34,31 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			Y4 : ""
 		});
 		
+		self.formatNumberData = function(number) {
+			if( number > 1000 ) {
+				if( number > 1000000) {
+					var tempCount = number / 1000000;
+					return Number((tempCount).toFixed(2)) + " Mn";
+				} else {
+					var tempCount = number / 1000;
+					return Number((tempCount).toFixed(2)) + " K";
+				}
+			} else if (self.isDemo()){
+				return number + " K";
+			} else {
+				return number;
+			}
+		};
+		
 		self.selTop.subscribe(function(newVal) {
 			self.selSgmtKeywords(self.sgmtKeywords()[newVal]);
+		});
+		
+		self.rangeValue.subscribe(function(newVal){
+			var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
+			var aSplit = self.formatNumberData(abSplit);
+			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit);
+			self.abSplitValue("A - " + aSplit +"<br /> B - " + bSplit)
 		});
 		
 		self.prepJsonData = function() {
@@ -82,19 +106,20 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'success' : function(serverResponse) {
 					var campCount = parseInt(serverResponse.message);
                 	self.campaignCountNoFormat(campCount);
-                	if (campCount > 1000) {
-                		if (campCount > 1000000) {
-                			var tempCount = campCount / 1000000;
-                			self.campaignCount(Number((tempCount).toFixed(2)) + " Mn");
-                		} else {
-                			var tempCount = campCount / 1000;
-                			self.campaignCount(Number((tempCount).toFixed(2)) + " K");
-                		}
-                	} else if (self.isDemo()){
-                		self.campaignCount(campCount + " K");
-                	} else {
-                		self.campaignCount(campCount);
-                	}
+                	self.campaignCount(self.formatNumberData(campCount));
+//                	if (campCount > 1000) {
+//                		if (campCount > 1000000) {
+//                			var tempCount = campCount / 1000000;
+//                			self.campaignCount(Number((tempCount).toFixed(2)) + " Mn");
+//                		} else {
+//                			var tempCount = campCount / 1000;
+//                			self.campaignCount(Number((tempCount).toFixed(2)) + " K");
+//                		}
+//                	} else if (self.isDemo()){
+//                		self.campaignCount(campCount + " K");
+//                	} else {
+//                		self.campaignCount(campCount);
+//                	}
                 	var percent = Number((((campCount / self.campaignTotalCount()) * 100)).toFixed(2)); 
                 	self.campaignPercent(percent);
                 	$("#preloader").fadeOut("slow");
@@ -108,6 +133,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				}
 			});
 		};
+		
 
 		self.getTotalCount = function() {
 			$("#preloader").show(true);
@@ -199,7 +225,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			getTotalCount:self.getTotalCount,
 			getMsisdns:self.getMsisdns,
 			campaignPercent:self.campaignPercent,
-			rangeValue:self.rangeValue
+			rangeValue:self.rangeValue,
+			abSplitValue:self.abSplitValue
 		};
 	}
 
