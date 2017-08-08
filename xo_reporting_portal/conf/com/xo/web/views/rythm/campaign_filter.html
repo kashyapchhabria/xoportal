@@ -45,6 +45,19 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="seven wide column">
+			<div class="ui raised segment">
+				<h4 class="ui header">A/B Slider</h4>
+				<div class="inline field">
+					<input type="range"  min="0" max="100" step="1" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
+				</div>
+				<div class="ui right labeled input" style="margin-left: 25px;width: 20%;">
+					<label for="abpercent" class="ui label">A/B Split %</label>
+					<input type="text" placeholder="A/B Split %" id="abpercent" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
+					<div class="ui basic label" data-bind="html:campaign.abSplitValue()"></div>
+				</div>
+			</div>
+		</div>
 		<div class="four wide column">
 			<div class="ui raised segment">
 				<h4 class="ui header">Selected Filters</h4>
@@ -60,19 +73,6 @@
 			<div class="ui raised segment">
 				<h4 class="ui header" data-bind="text:'Segment Keywords - '+campaign.selTop()" >Segment Keywords</h4>
 				<p data-bind="text:campaign.selSgmtKeywords()"></p>
-			</div>
-		</div>
-		<div class="seven wide column">
-			<div class="ui raised segment">
-				<h4 class="ui header">A/B Slider</h4>
-				<div class="inline field">
-					<input type="range"  min="0" max="100" step="1" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
-				</div>
-				<div class="ui right labeled input" style="margin-left: 25px;width: 20%;">
-					<label for="abpercent" class="ui label">A/B Split</label>
-					<input type="text" placeholder="A/B Split %" id="abpercent" data-bind="value: campaign.rangeValue(), event: { input: function(){ campaign.rangeValue($element.value); }}" />
-					<div class="ui basic label">%</div>
-				</div>
 			</div>
 		</div>
 	</div>
