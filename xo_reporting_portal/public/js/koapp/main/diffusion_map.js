@@ -29,11 +29,14 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.dashboardCommentHeading = ko.observable(diff_map);
 		self.prevSelected = ko.observable(diff_map);
 		self.selTop = ko.observable("A2");
-        self.selRegion = ko.observableArray(["North_1","North_2"]);
-        self.selSubSgmt = ko.observableArray(["ED"]);
+		
         self.selLifetime = ko.observable("0-3 Months");
         self.selDataArpu = ko.observable("HH");
         self.selVasPlan = ko.observable("No Plans");
+        self.selDeviceDate = ko.observable("2017-03");
+        self.selLocation = ko.observableArray(["All"]);
+        self.selRegion = ko.observableArray(["All"]);
+        self.selSubSgmt = ko.observableArray(["ED"]);
         
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -305,12 +308,100 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                           });*/
                           self.isTitleVisible(true);
                           self.changeDiffusionViewSize();
-                        
+                        viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
+                        viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, onFilterChange);
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
             }
         };
+        
+        var i=0;
+        function onFilterChange(Filter)
+        {
+//        	var list;
+        	i=0;
+//          window.alert(Filter.getFieldName());
+        	return Filter.getFilterAsync().then(function(field) {
+            	{
+//            		alert(i);
+            		if(i==0) {
+            			alert(field.getFieldName());
+	            		if(field.getFieldName()=="Subsegment Label")
+	            			self.selSubSgmt([]);
+	            		if(field.getFieldName()=="Region")
+	            			self.selRegion([]);
+	            		if(field.getFieldName()=="Location Type")
+	            			self.selLocation([]);
+	            		if(field.getFieldName()=="Devicedate")
+	            			self.selDeviceDate("");
+	            		//alert(field.getAppliedValues());
+	            		values = field.getAppliedValues();
+//	            		list="";
+//        				for (j = 0; j < values.length; j++) {
+//            				list += values[j].value + ",";
+//						}
+	            		if(field.getFieldName()=="Region") {
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selRegion.push(values[j].value);
+	            			}
+	            		}
+	            		if(field.getFieldName()=="Location Type") {
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selLocation.push(values[j].value);
+	            			}
+	            		}
+	            		alert(self.selLocation());
+	            		if(field.getFieldName()=="Devicedate"){
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selDeviceDate(values[j].value);
+	            			}
+	            		}
+	            		if(field.getFieldName()=="Subsegment Label"){
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selSubSgmt.push(values[j].value);
+	            			}
+	            		}
+            			i++;
+            		}
+            	}
+        	});
+        }
+        
+        
+        self.onMarksSelection = function(marksEvent) {
+			//if(marksEvent.getWorksheet().getName()=="Duration vs DistinctB number")
+				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+		}
+		
+		
+		self.reportSelectedMarks = function(marks) {
+			
+			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                   var pair = pairs[pairIndex];
+                   if (pair.fieldName=="ATTR(Devicedate)")
+                	   self.selDeviceDate(pair.formattedValue);
+//                   if (pair.fieldName=="Status")
+//                	   alert(pair.formattedValue);
+                   if (pair.fieldName=="ATTR(Vas Type)")
+                	   self.selVasPlan(pair.formattedValue);
+                   if (pair.fieldName=="Spend_Bucket") {
+                	   self.selDataArpu(pair.formattedValue);
+                   }
+                   if (pair.fieldName=="Lifetime Bucket") {
+                	   self.selLifetime(pair.formattedValue);
+                   }
+                  alert(pair.fieldName);
+                  alert(pair.formattedValue);
+                }
+             }
+		}
+        
+        
+        
+        
         
         self.loadFilterPopup = function() {
 			loadPopup("list_filters");
@@ -595,7 +686,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	selSubSgmt:self.selSubSgmt,
         	selLifetime:self.selLifetime,
         	selDataArpu:self.selDataArpu,
-        	selVasPlan:self.selVasPlan
+        	selVasPlan:self.selVasPlan,
+        	selDeviceDate:self.selDeviceDate,
+        	selLocation:self.selLocation
         };
     }
 	
