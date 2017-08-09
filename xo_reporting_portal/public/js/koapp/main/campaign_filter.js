@@ -9,7 +9,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		var self = this;
 		self.selTop = ko.observable("");
 		self.selRegion = ko.observableArray();
-		self.selSubSgmt = ko.observableArray();
+		self.selDate = ko.observableArray();
 		self.selLifetime = ko.observable();
 		self.selDataArpu = ko.observable();
 		self.selVasPlan = ko.observable();
@@ -68,7 +68,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			data['description'] = self.campaignDescription();
 			data['filterJson'] = {};
 			data['filterJson']['topSegment'] = self.selTop();
-			data['filterJson']['subSegment'] = self.selSubSgmt();
+			data['filterJson']['selDate'] = self.selDate();
 			data['filterJson']['homeLocation'] = self.selRegion();
 			data['filterJson']['lifetime'] = self.selLifetime();
 			data['filterJson']['dataArpu'] = self.selDataArpu();
@@ -213,7 +213,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		return {
 			selTop : self.selTop,
 			selRegion : self.selRegion,
-			selSubSgmt : self.selSubSgmt,
+			selDate : self.selDate,
 			selLifetime : self.selLifetime,
 			selDataArpu : self.selDataArpu,
 			selVasPlan : self.selVasPlan,

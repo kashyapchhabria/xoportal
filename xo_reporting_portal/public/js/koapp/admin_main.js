@@ -217,7 +217,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
     		  cleanUp();
     		  campFilter.getTotalCount();
     		  campFilter.selTop(diffMap.selTop());
-    		  campFilter.selSubSgmt(diffMap.selSubSgmt());
+    		  campFilter.selDate(diffMap.selDate());
     		  campFilter.selRegion(diffMap.selRegion());
     		  campFilter.selLifetime(diffMap.selLifetime());
     		  campFilter.selDataArpu(diffMap.selDataArpu());
