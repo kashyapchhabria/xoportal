@@ -28,12 +28,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.showSelect= ko.observable(true);
 		self.dashboardCommentHeading = ko.observable(diff_map);
 		self.prevSelected = ko.observable(diff_map);
-		self.selTop = ko.observable("A2");
-        self.selRegion = ko.observableArray(["North_1","North_2"]);
-        self.selSubSgmt = ko.observableArray(["ED"]);
-        self.selLifetime = ko.observable("0-3 Months");
-        self.selDataArpu = ko.observable("HH");
-        self.selVasPlan = ko.observable("No Plans");
+		
+		self.selTop = ko.observableArray(["*"]);
+        self.selLifetime = ko.observableArray(["*"]);
+        self.selDataArpu = ko.observableArray(["*"]);
+        self.selVasPlan = ko.observableArray(["*"]);
+        self.selDate = ko.observable("2017-03");
+        self.selRegion = ko.observableArray(["*"]);
         
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -305,12 +306,102 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                           });*/
                           self.isTitleVisible(true);
                           self.changeDiffusionViewSize();
-                        
+                        viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION,onMarksSelection);
+                        viz.addEventListener(tableau.TableauEventName.FILTER_CHANGE, onFilterChange);
                     }
                 };
                 viz = new tableau.Viz(placeholderDiv, url, options);
             }
         };
+        
+        var i=0;
+        function onFilterChange(Filter)
+        {
+//        	var list;
+        	i=0;
+          window.alert(Filter.getFieldName());
+        	return Filter.getFilterAsync().then(function(field) {
+            	{
+            		window.alert(field.getFieldName());
+            		if(i==0) {
+            			alert(field.getFieldName());
+	            		if(field.getFieldName()=="Region")
+	            			self.selRegion([]);
+	            		if(field.getFieldName()=="Devicedate")
+	            			self.selDate("");
+	            		if(field.getFieldName()=="Lifetime")
+	            			self.selLifetime([]);
+	            		//alert(field.getAppliedValues());
+	            		values = field.getAppliedValues();
+//	            		list="";
+//        				for (j = 0; j < values.length; j++) {
+//            				list += values[j].value + ",";
+//						}
+	            		if(field.getFieldName()=="Region") {
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selRegion.push(values[j].value);
+	            			}
+	            		}
+	            		if(field.getFieldName()=="Devicedate"){
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selDate(values[j].value);
+	            			}
+	            		}
+	            		if(field.getFieldName()=="Lifetime"){
+	            			for (j = 0; j < values.length; j++) {
+	            				self.selLifetime.push(values[j].value);
+	            			}
+	            		}
+	            		alert(self.selLifetime());
+            			i++;
+            		}
+            	}
+        	});
+        }
+        
+        
+        self.onMarksSelection = function(marksEvent) {
+//        	alert(marksEvent.getWorksheet().getName());
+			if(marksEvent.getWorksheet().getName()=="Segment" || marksEvent.getWorksheet().getName()== "Vas Plan")
+				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+		}
+		
+		
+		self.reportSelectedMarks = function(marks) {
+			if(marks.length > 0) {
+				self.selTop([]);
+				self.selVasPlan([]);
+				self.selLifetime([]);
+				self.selDataArpu([]);
+				self.selRegion([]);
+			}
+			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
+                var pairs = marks[markIndex].getPairs();
+                for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+                   var pair = pairs[pairIndex];
+                   if (pair.fieldName=="ATTR(Segment)")
+                	   self.selTop.push(pair.formattedValue);
+                   if (pair.fieldName=="ATTR(Region)")
+                	   self.selRegion.push(pair.formattedValue);
+                   if (pair.fieldName=="ATTR(Date Week)")
+                	   self.selDate(pair.formattedValue);
+                   if (pair.fieldName=="Vas Plan")
+                	   self.selVasPlan.push(pair.formattedValue);
+                   if (pair.fieldName=="ATTR(Lifetime)") {
+                	   self.selLifetime.push(pair.formattedValue);
+                   }
+                   if (pair.fieldName=="ATTR(Arpu Data)") {
+                	   self.selDataArpu.push(pair.formattedValue);
+                   }
+//                  alert(pair.fieldName);
+//                  alert(pair.formattedValue);
+                }
+             }
+		}
+        
+        
+        
+        
         
         self.loadFilterPopup = function() {
 			loadPopup("list_filters");
@@ -594,7 +685,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	selSubSgmt:self.selSubSgmt,
         	selLifetime:self.selLifetime,
         	selDataArpu:self.selDataArpu,
-        	selVasPlan:self.selVasPlan
+        	selVasPlan:self.selVasPlan,
+        	selDate:self.selDate,
+        	selLocation:self.selLocation
         };
     }
 	
