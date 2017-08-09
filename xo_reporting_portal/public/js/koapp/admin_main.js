@@ -215,6 +215,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       function campgaignfilterPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
+    		  $('.ui.modals').modal('hide');
     		  campFilter.getTotalCount();
     		  campFilter.selTop(diffMap.selTop());
     		  campFilter.selSubSgmt(diffMap.selSubSgmt());

@@ -77,13 +77,14 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       function campgaignfilterPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
+    		  $('.ui.modals').modal('hide');
+    		  campFilter.getTotalCount();
     		  campFilter.selTop(diffMap.selTop());
     		  campFilter.selSubSgmt(diffMap.selSubSgmt());
     		  campFilter.selRegion(diffMap.selRegion());
     		  campFilter.selLifetime(diffMap.selLifetime());
     		  campFilter.selDataArpu(diffMap.selDataArpu());
     		  campFilter.selVasPlan(diffMap.selVasPlan());
-    		  campFilter.getMsisdnCount();
     		  return new Router.Page('Campaign Filter', 'campaign-filter', {campaign:campFilter});
     	  });
       }
