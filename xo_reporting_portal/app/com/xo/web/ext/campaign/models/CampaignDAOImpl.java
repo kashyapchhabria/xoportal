@@ -36,28 +36,44 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 	}
 
 	@Override
-	public List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception {
-		String topSgmtQuery = prepQuery("segment.segment_name", topSegment);
+	public List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception {
+		String topSgmtQuery = prepQuery("segment", topSegment);
 		String lifetimeQuery = prepQuery("lifetime", lifetime);
-		String dataArpuQuery = prepQuery("data arpu", dataArpu);
-		String vasPlanQuery = prepQuery("vas plan", vasPlan);
-		List<String> allHits = esSql.fetchAllHits(ES_HOST," "+ES_ORDER.get(0)+","+ES_ORDER.get(1)+","+ES_ORDER.get(2)+" from easycampaign where date_week='" + dateWeek + "' and " + topSgmtQuery + " and " + lifetimeQuery + " and " + dataArpuQuery + " and " + vasPlanQuery, 1000, 600000);
+		String dataArpuQuery = prepQuery("dataArpu", dataArpu);
+		String vasPlanQuery = prepQuery("vasPlan", vasPlan);
+		String regionsQuery = prepQuery("region", regions);
+		List<String> allHits = esSql.fetchAllHits(
+				ES_HOST, " from " + ES_INDEX + 
+				"where date_week='" + dateWeek + 
+				"' and " + topSgmtQuery + 
+				" and " + lifetimeQuery + 
+				" and " + dataArpuQuery + 
+				" and " + vasPlanQuery +
+				" and " + regionsQuery, 1000, 600000);
 		return allHits;
 	}
 
 	@Override
 	public Long getTotalHits() throws Exception {
-		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX + " where not segment.subsegment_name=\"unallocated\"");
+		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX );
 		return Integer.toUnsignedLong(totalHits);
 	}
 
 	@Override
-	public Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception {
-		String topSgmtQuery = prepQuery("segment.segment_name", topSegment);
+	public Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception {
+		String topSgmtQuery = prepQuery("segment", topSegment);
 		String lifetimeQuery = prepQuery("lifetime", lifetime);
-		String dataArpuQuery = prepQuery("data arpu", dataArpu);
-		String vasPlanQuery = prepQuery("vas plan", vasPlan);
-		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX + " where date_week='" + dateWeek + "' and " + topSgmtQuery + " and " + lifetimeQuery + " and " + dataArpuQuery + " and " + vasPlanQuery);
+		String dataArpuQuery = prepQuery("dataArpu", dataArpu);
+		String vasPlanQuery = prepQuery("vasPlan", vasPlan);
+		String regionsQuery = prepQuery("region", regions);
+		int totalHits = esSql.getTotalHits( 
+				ES_HOST, " from " + ES_INDEX + 
+				" where date_week='" + dateWeek + 
+				"' and " + topSgmtQuery + 
+				" and " + lifetimeQuery + 
+				" and " + dataArpuQuery + 
+				" and " + vasPlanQuery + 
+				" and " + regionsQuery);
 		return Integer.toUnsignedLong(totalHits);
 	}
 	

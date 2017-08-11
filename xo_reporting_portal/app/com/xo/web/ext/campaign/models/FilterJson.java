@@ -16,6 +16,7 @@ public class FilterJson {
 	public String[] lifetime;
 	public String[] dataArpu;
 	public String[] vasPlan;
+	public String[] regions;
 	public String noExported;
 	public String totalBase;
 	
@@ -23,7 +24,7 @@ public class FilterJson {
 		
 	}
 	
-	public FilterJson(String[] topSegment, String dateWeek, String[] lifetime, String[] dataArpu, String[] vasPlan, String noExported, String totalBase) {
+	public FilterJson(String[] topSegment, String dateWeek, String[] regions, String[] lifetime, String[] dataArpu, String[] vasPlan, String noExported, String totalBase) {
 		this.topSegment = topSegment;
 		this.dateWeek = dateWeek;
 		this.lifetime = lifetime;
@@ -31,6 +32,7 @@ public class FilterJson {
 		this.vasPlan = vasPlan;
 		this.noExported = noExported;
 		this.totalBase = totalBase;
+		this.regions = regions;
 	}
 	
 	public void setTopSegment(String[] topSegment) {
@@ -52,6 +54,10 @@ public class FilterJson {
 	
 	public void setVasPlan(String[] vasPlan) {
 		this.vasPlan = vasPlan;
+	}
+	
+	public void setRegions(String[] regions) {
+		this.regions = regions;
 	}
 	
 	public void setNoExported(String noExported) {
@@ -88,6 +94,10 @@ public class FilterJson {
 	
 	public String getTotalBase() {
 		return this.totalBase ;
+	}
+	
+	public String[] getRegions() {
+		return this.regions;
 	}
 	
 	@Override

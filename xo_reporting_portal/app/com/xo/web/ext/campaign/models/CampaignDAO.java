@@ -10,10 +10,10 @@ import com.xo.web.models.dao.GenericDAO;
 
 public interface CampaignDAO extends GenericDAO<Campaign, Integer> {
 
-	List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception;
+	List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception;
 
 	Long getTotalHits() throws Exception;
 
-	Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception;
+	Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception;
 	
 }
