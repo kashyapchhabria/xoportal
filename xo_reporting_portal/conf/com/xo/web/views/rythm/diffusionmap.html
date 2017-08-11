@@ -37,9 +37,9 @@
 			<i class="close icon"></i>
 			<div class="header">Selected Filters</div>
 			<div class="content">
-				<p data-bind="visible:diffMap.selTopFlag()!=1   ,text:'Top Segment : '+diffMap.selTop()"></p>
-				<p data-bind="visible:diffMap.selRegionFlag()!=1   ,text:'Regions : '+diffMap.selRegion()"></p>
-				<p data-bind="visible:diffMap.selLifetimeFlag()!=1   ,text:'Lifetime : '+diffMap.selLifetime()"></p>
+				<p data-bind="visible:diffMap.selTopFlag()!=1 ,text:'Top Segment : '+diffMap.selTop()"></p>
+				<p data-bind="visible:diffMap.selRegionFlag()!=1  && diffMap.isNoValuesSelected()!=1  ,text:'Regions : '+diffMap.selRegion()"></p>
+				<p data-bind="visible:diffMap.selLifetimeFlag()!=1  && diffMap.isNoValuesSelected()!=1   ,text:'Lifetime : '+diffMap.selLifetime()"></p>
 				<p data-bind="visible:diffMap.selDataArpuFlag()!=1   ,text:'Data ARPU : '+diffMap.selDataArpu()"></p>
 				<p data-bind="visible:diffMap.selVasPlanFlag()!=1   ,text:'VAS Plan : '+diffMap.selVasPlan()"></p>
 				<p data-bind="visible:diffMap.selDateFlag()!=1   ,text:'Date Week : '+diffMap.selDate()"></p>
