@@ -33,8 +33,18 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.selLifetime = ko.observableArray(["*"]);
         self.selDataArpu = ko.observableArray(["*"]);
         self.selVasPlan = ko.observableArray(["*"]);
-        self.selDate = ko.observable("2017-03");
+        self.selDate = ko.observable("*");
         self.selRegion = ko.observableArray(["*"]);
+        self.count = ko.observable();
+        
+        self.selLifetimeFlag = ko.observable(1);
+        self.selRegionFlag = ko.observable(1);
+        self.isNoValuesSelected = ko.observable(1);
+        self.selTopFlag = ko.observable(1);
+        self.selDataArpuFlag = ko.observable(1);
+        self.selVasPlanFlag = ko.observable(1);
+        self.selDateFlag = ko.observable(1);
+        
         
         self.visibility = ko.observable(false);
         var workbook = null;
@@ -319,12 +329,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         {
 //        	var list;
         	i=0;
-          window.alert(Filter.getFieldName());
+//          window.alert(Filter.getFieldName());
         	return Filter.getFilterAsync().then(function(field) {
             	{
-            		window.alert(field.getFieldName());
+//            		window.alert(field.getFieldName());
             		if(i==0) {
-            			alert(field.getFieldName());
 	            		if(field.getFieldName()=="Region")
 	            			self.selRegion([]);
 	            		if(field.getFieldName()=="Devicedate")
@@ -352,28 +361,87 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	            				self.selLifetime.push(values[j].value);
 	            			}
 	            		}
-	            		alert(self.selLifetime());
             			i++;
             		}
             	}
+            	self.checkAllSelected();
         	});
         }
+        
+        self.checkAllSelected = function() {
+        	if(self.selLifetimeFlag() == 1 && self.selRegionFlag() == 1 && self.selTopFlag() == 1 && self.selDataArpuFlag()==1 && self.selVasPlanFlag()==1 &&  self.selDateFlag()==1)
+        		self.isNoValuesSelected(1);
+        	else
+        		self.isNoValuesSelected(0);
+        }
+        
+        self.selLifetime.subscribe(function(newVal) {
+        	if(newVal == '*' || newVal.length == 5)
+        		self.selLifetimeFlag(1);
+        	else
+        		self.selLifetimeFlag(0);
+        });
+        
+        self.selRegion.subscribe(function(newVal) {
+        	if(newVal == '*' || newVal.length == 7)
+        		self.selRegionFlag(1);
+        	else
+        		self.selRegionFlag(0);
+        });
+        
+        self.selTop.subscribe(function(newVal) {
+        	if(newVal == '*')
+        		self.selTopFlag(1);
+        	else
+        		self.selTopFlag(0);
+        });
+        
+        self.selDataArpu.subscribe(function(newVal) {
+        	if(newVal == '*')
+        		self.selDataArpuFlag(1);
+        	else
+        		self.selDataArpuFlag(0);
+        });
+        
+        self.selVasPlan.subscribe(function(newVal) {
+        	if(newVal == '*')
+        		self.selVasPlanFlag(1);
+        	else
+        		self.selVasPlanFlag(0);
+        });
+        
+        self.selDate.subscribe(function(newVal) {
+        	if(newVal == '*')
+        		self.selDateFlag(1);
+        	else
+        		self.selDateFlag(0);
+        });
         
         
         self.onMarksSelection = function(marksEvent) {
 //        	alert(marksEvent.getWorksheet().getName());
-			if(marksEvent.getWorksheet().getName()=="Segment" || marksEvent.getWorksheet().getName()== "Vas Plan")
+			if(marksEvent.getWorksheet().getName()=="Segment" || marksEvent.getWorksheet().getName()== "Vas Plan") {
+				self.count(0);
 				return marksEvent.getMarksAsync().then(reportSelectedMarks);
+			}
 		}
 		
-		
+        
 		self.reportSelectedMarks = function(marks) {
+			if (marks.length==0)
+				self.count(self.count()+1);
+			if (self.count() == 2){
+				self.selTop(["*"]);
+		        self.selLifetime(["*"]);
+		        self.selDataArpu(["*"]);
+		        self.selVasPlan(["*"]);
+		        self.selDate("*");
+		        self.selRegion(["*"]);
+			}
 			if(marks.length > 0) {
 				self.selTop([]);
 				self.selVasPlan([]);
-				self.selLifetime([]);
 				self.selDataArpu([]);
-				self.selRegion([]);
 			}
 			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
                 var pairs = marks[markIndex].getPairs();
@@ -381,15 +449,15 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                    var pair = pairs[pairIndex];
                    if (pair.fieldName=="ATTR(Segment)")
                 	   self.selTop.push(pair.formattedValue);
-                   if (pair.fieldName=="ATTR(Region)")
-                	   self.selRegion.push(pair.formattedValue);
+//                   if (pair.fieldName=="ATTR(Region)")
+//                	   self.selRegion.push(pair.formattedValue);
                    if (pair.fieldName=="ATTR(Date Week)")
                 	   self.selDate(pair.formattedValue);
                    if (pair.fieldName=="Vas Plan")
                 	   self.selVasPlan.push(pair.formattedValue);
-                   if (pair.fieldName=="ATTR(Lifetime)") {
-                	   self.selLifetime.push(pair.formattedValue);
-                   }
+//                   if (pair.fieldName=="ATTR(Lifetime)") {
+//                	   self.selLifetime.push(pair.formattedValue);
+//                   }
                    if (pair.fieldName=="ATTR(Arpu Data)") {
                 	   self.selDataArpu.push(pair.formattedValue);
                    }
@@ -397,6 +465,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 //                  alert(pair.formattedValue);
                 }
              }
+			self.checkAllSelected();
 		}
         
         
@@ -474,6 +543,22 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             self.activeSheet(diff_map);
 			self.maxSel(sel_vas);
 			self.showSelect(true);
+			
+			
+			self.selTop(["*"]);
+	        self.selLifetime(["*"]);
+	        self.selDataArpu(["*"]);
+	        self.selVasPlan(["*"]);
+	        self.selDate("*");
+	        self.selRegion(["*"]);
+	        
+	        self.selLifetimeFlag(1);
+	        self.selRegionFlag(1);
+	        self.isNoValuesSelected(1);
+	        self.selTopFlag(1);
+	        self.selDataArpuFlag(1);
+	        self.selVasPlanFlag(1);
+	        self.selDateFlag(1);
         };
 
         self.toggleClass = function () {
@@ -683,12 +768,17 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             loadFilterPopup:self.loadFilterPopup,
             selTop:self.selTop,
             selRegion:self.selRegion,
-        	selSubSgmt:self.selSubSgmt,
         	selLifetime:self.selLifetime,
         	selDataArpu:self.selDataArpu,
         	selVasPlan:self.selVasPlan,
         	selDate:self.selDate,
-        	selLocation:self.selLocation
+        	selTopFlag:self.selTopFlag,
+            selRegionFlag:self.selRegionFlag,
+        	selLifetimeFlag:self.selLifetimeFlag,
+        	selDataArpuFlag:self.selDataArpuFlag,
+        	selVasPlanFlag:self.selVasPlanFlag,
+        	selDateFlag:self.selDateFlag,
+        	isNoValuesSelected:self.isNoValuesSelected
         };
     }
 	

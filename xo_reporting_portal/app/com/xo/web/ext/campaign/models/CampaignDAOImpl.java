@@ -36,10 +36,12 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 	}
 
 	@Override
-	public List<String> getMsisdnsAsList(String topSegment, String[] subSegment, String[] homeLocation) throws Exception {
-		String subSgmtQuery = prepQuery("segment.subsegment_name", subSegment);
-		String homeLocQuery = prepQuery("demographics.homeregion", homeLocation);
-		List<String> allHits = esSql.fetchAllHits(ES_HOST," "+ES_ORDER.get(0)+","+ES_ORDER.get(1)+","+ES_ORDER.get(2)+" from easycampaign where segment.segment_name='" + topSegment + "' and " + subSgmtQuery + " and " + homeLocQuery, 1000, 600000);
+	public List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception {
+		String topSgmtQuery = prepQuery("segment.segment_name", topSegment);
+		String lifetimeQuery = prepQuery("lifetime", lifetime);
+		String dataArpuQuery = prepQuery("data arpu", dataArpu);
+		String vasPlanQuery = prepQuery("vas plan", vasPlan);
+		List<String> allHits = esSql.fetchAllHits(ES_HOST," "+ES_ORDER.get(0)+","+ES_ORDER.get(1)+","+ES_ORDER.get(2)+" from easycampaign where date_week='" + dateWeek + "' and " + topSgmtQuery + " and " + lifetimeQuery + " and " + dataArpuQuery + " and " + vasPlanQuery, 1000, 600000);
 		return allHits;
 	}
 
@@ -50,10 +52,12 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 	}
 
 	@Override
-	public Long getQueryHits(String topSegment, String[] subSegment, String[] homeLocation) throws Exception {
-		String subSgmtQuery = prepQuery("segment.subsegment_name", subSegment);
-		String homeLocQuery = prepQuery("demographics.homeregion", homeLocation);
-		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX + " where segment.segment_name='" + topSegment + "' and " + subSgmtQuery + " and " + homeLocQuery);
+	public Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan) throws Exception {
+		String topSgmtQuery = prepQuery("segment.segment_name", topSegment);
+		String lifetimeQuery = prepQuery("lifetime", lifetime);
+		String dataArpuQuery = prepQuery("data arpu", dataArpu);
+		String vasPlanQuery = prepQuery("vas plan", vasPlan);
+		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX + " where date_week='" + dateWeek + "' and " + topSgmtQuery + " and " + lifetimeQuery + " and " + dataArpuQuery + " and " + vasPlanQuery);
 		return Integer.toUnsignedLong(totalHits);
 	}
 	

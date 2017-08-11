@@ -11,12 +11,11 @@ import play.Logger;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FilterJson {
 
-	public String topSegment;
-	public String[] subSegment;
-	public String[] homeLocation;
-	public String lifetime;
-	public String dataArpu;
-	public String vasPlan;
+	public String[] topSegment;
+	public String dateWeek;
+	public String[] lifetime;
+	public String[] dataArpu;
+	public String[] vasPlan;
 	public String noExported;
 	public String totalBase;
 	
@@ -24,10 +23,9 @@ public class FilterJson {
 		
 	}
 	
-	public FilterJson(String topSegment, String[] subSegment, String[] homeLocation, String lifetime, String dataArpu, String vasPlan, String noExported, String totalBase) {
+	public FilterJson(String[] topSegment, String dateWeek, String[] lifetime, String[] dataArpu, String[] vasPlan, String noExported, String totalBase) {
 		this.topSegment = topSegment;
-		this.subSegment = subSegment;
-		this.homeLocation = homeLocation;
+		this.dateWeek = dateWeek;
 		this.lifetime = lifetime;
 		this.dataArpu = dataArpu;
 		this.vasPlan = vasPlan;
@@ -35,27 +33,24 @@ public class FilterJson {
 		this.totalBase = totalBase;
 	}
 	
-	public void setTopSegment(String topSegment) {
+	public void setTopSegment(String[] topSegment) {
 		this.topSegment = topSegment;
 	}
 	
-	public void setSubSegment(String[] subSegment) {
-		this.subSegment = subSegment;
+	
+	public void setHomeLocation(String dateWeek) {
+		this.dateWeek = dateWeek;
 	}
 	
-	public void setHomeLocation(String[] homeLocation) {
-		this.homeLocation = homeLocation;
-	}
-	
-	public void setLifetime(String lifetime) {
+	public void setLifetime(String[] lifetime) {
 		this.lifetime = lifetime;
 	}
 	
-	public void setDataArpu(String dataArpu) {
+	public void setDataArpu(String[] dataArpu) {
 		this.dataArpu = dataArpu;
 	}
 	
-	public void setVasPlan(String vasPlan) {
+	public void setVasPlan(String[] vasPlan) {
 		this.vasPlan = vasPlan;
 	}
 	
@@ -67,27 +62,23 @@ public class FilterJson {
 		this.totalBase = totalBase;
 	}
 	
-	public String getTopSegment() {
+	public String[] getTopSegment() {
 		return this.topSegment ;
 	}
 	
-	public String[] getSubSegment() {
-		return this.subSegment;
+	public String getDateWeek() {
+		return this.dateWeek;
 	}
 	
-	public String[] getHomeLocation() {
-		return this.homeLocation;
-	}
-	
-	public String getLifetime() {
+	public String[] getLifetime() {
 		return this.lifetime;
 	}
 	
-	public String getDataArpu() {
+	public String[] getDataArpu() {
 		return this.dataArpu;
 	}
 	
-	public String getVasPlan() {
+	public String[] getVasPlan() {
 		return this.vasPlan;
 	}
 	
