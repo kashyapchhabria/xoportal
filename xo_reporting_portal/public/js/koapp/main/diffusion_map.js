@@ -480,6 +480,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		 };
 		 
         self.exportFilters = function() {
+        	$('.ui.modals').modal('hide');
         	setLocationHash("newcampaign");
         };
 

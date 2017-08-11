@@ -40,12 +40,12 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		writer.commentRow("Campaign Name:" + campaignDto.name.toUpperCase());
 		writer.commentRow("Campaign Description:" + campaignDto.description);
 		writer.commentRow("Applied Filters");
-		writer.commentRow("Segment:" + campaignDto.filterJson.getTopSegment());
+		writer.commentRow("Segment:" + "\"" + String.join("-",campaignDto.filterJson.getTopSegment()) + "\"" );
 		writer.commentRow("Date Week:" + campaignDto.filterJson.getDateWeek());
-		writer.commentRow("Regions:" + "\"" + campaignDto.filterJson.getRegions() + "\"");
-		writer.commentRow("Lifetime:" + "\"" + campaignDto.filterJson.getLifetime() + "\"");
-		writer.commentRow("Data ARPU:" + "\"" + campaignDto.filterJson.getDataArpu() + "\"");
-		writer.commentRow("VAS Plan:" + "\"" + campaignDto.filterJson.getVasPlan() + "\"");
+		writer.commentRow("Regions:" + "\"" + String.join("-",campaignDto.filterJson.getRegions()) + "\"");
+		writer.commentRow("Lifetime:" + "\"" + String.join("-",campaignDto.filterJson.getLifetime()) + "\"");
+		writer.commentRow("Data ARPU:" + "\"" + String.join("-",campaignDto.filterJson.getDataArpu()) + "\"");
+		writer.commentRow("VAS Plan:" + "\"" + String.join("-",campaignDto.filterJson.getVasPlan()) + "\"");
 	}
 
 	private void getReportHeaders(CsvWriter writer) {

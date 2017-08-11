@@ -22,6 +22,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.campaignPercent = ko.observable();
 		self.rangeValue = ko.observable(50);
 		self.abSplitValue = ko.observable();
+		self.isDemo = ko.observable();
 		self.sgmtKeywords = ko.observable({
 			A1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
 			A2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
@@ -81,7 +82,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		});
 		
 		self.selVasPlan.subscribe(function(newVal) {
-        	if ( newVal == "*" )
+        	if ( newVal == "*" || self.selVasPlan() == "")
         		self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
 		});
 		
@@ -99,8 +100,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			data['description'] = self.campaignDescription();
 			data['filterJson'] = {};
 			data['filterJson']['topSegment'] = self.selTop();
-			data['filterJson']['selDate'] = self.selDate();
-			data['filterJson']['homeLocation'] = self.selRegion();
+			data['filterJson']['dateWeek'] = self.selDate();
+			data['filterJson']['regions'] = self.selRegion();
 			data['filterJson']['lifetime'] = self.selLifetime();
 			data['filterJson']['dataArpu'] = self.selDataArpu();
 			data['filterJson']['vasPlan'] = self.selVasPlan();
@@ -240,7 +241,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				}
 			});
 		}
-
+		
 		return {
 			selTop : self.selTop,
 			selRegion : self.selRegion,

@@ -68,6 +68,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       function diffusionmapPage() {
       	self.userGuide(false);
         return showPageLoader(function() {
+        	diffMap.clearAll();
         	diffMap.showDiffusionMap();
         	diffMap.getComments();
         	return new Router.Page('Diffusion Map','diffusion_map',{diffMap:diffMap});
@@ -77,10 +78,9 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
       function campgaignfilterPage() {
     	  return showPageLoader(function() {
     		  cleanUp();
-    		  $('.ui.modals').modal('hide');
     		  campFilter.getTotalCount();
     		  campFilter.selTop(diffMap.selTop());
-    		  campFilter.selSubSgmt(diffMap.selSubSgmt());
+    		  campFilter.selDate(diffMap.selDate());
     		  campFilter.selRegion(diffMap.selRegion());
     		  campFilter.selLifetime(diffMap.selLifetime());
     		  campFilter.selDataArpu(diffMap.selDataArpu());

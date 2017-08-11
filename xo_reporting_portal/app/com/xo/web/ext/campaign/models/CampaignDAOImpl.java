@@ -43,8 +43,8 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 		String vasPlanQuery = prepQuery("vasPlan", vasPlan);
 		String regionsQuery = prepQuery("region", regions);
 		List<String> allHits = esSql.fetchAllHits(
-				ES_HOST, " from " + ES_INDEX + 
-				"where date_week='" + dateWeek + 
+				ES_HOST, " * from " + ES_INDEX + 
+				" where dateWeek='" + dateWeek + 
 				"' and " + topSgmtQuery + 
 				" and " + lifetimeQuery + 
 				" and " + dataArpuQuery + 
@@ -68,7 +68,7 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 		String regionsQuery = prepQuery("region", regions);
 		int totalHits = esSql.getTotalHits( 
 				ES_HOST, " from " + ES_INDEX + 
-				" where date_week='" + dateWeek + 
+				" where dateWeek='" + dateWeek + 
 				"' and " + topSgmtQuery + 
 				" and " + lifetimeQuery + 
 				" and " + dataArpuQuery + 

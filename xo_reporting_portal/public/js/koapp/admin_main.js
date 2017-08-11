@@ -213,9 +213,11 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'semantic',
       }
       
       function campgaignfilterPage() {
+    	  if (performance.navigation.type == 1) {
+    		  setLocationHash("diffusionmap");
+//    		  return diffusionmapPage();
+    	  }
     	  return showPageLoader(function() {
-    		  cleanUp();
-    		  $('.ui.modals').modal('hide');
     		  campFilter.getTotalCount();
     		  campFilter.selTop(diffMap.selTop());
     		  campFilter.selDate(diffMap.selDate());
