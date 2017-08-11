@@ -369,7 +369,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         }
         
         self.checkAllSelected = function() {
-        	if(self.selLifetimeFlag() == 1 && self.selRegionFlag() == 1 && self.selTopFlag() == 1 && self.selDataArpuFlag()==1 && self.selVasPlanFlag()==1 &&  self.selDateFlag()==1)
+        	if(self.selTopFlag() == 1 && self.selDataArpuFlag()==1 && self.selVasPlanFlag()==1 &&  self.selDateFlag()==1)
         		self.isNoValuesSelected(1);
         	else
         		self.isNoValuesSelected(0);
@@ -404,7 +404,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         });
         
         self.selVasPlan.subscribe(function(newVal) {
-        	if(newVal == '*')
+        	if(newVal == '*' || self.selVasPlan() == "" )
         		self.selVasPlanFlag(1);
         	else
         		self.selVasPlanFlag(0);
@@ -432,11 +432,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				self.count(self.count()+1);
 			if (self.count() == 2){
 				self.selTop(["*"]);
-		        self.selLifetime(["*"]);
 		        self.selDataArpu(["*"]);
 		        self.selVasPlan(["*"]);
 		        self.selDate("*");
-		        self.selRegion(["*"]);
 			}
 			if(marks.length > 0) {
 				self.selTop([]);
@@ -447,8 +445,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 var pairs = marks[markIndex].getPairs();
                 for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
                    var pair = pairs[pairIndex];
-                   if (pair.fieldName=="ATTR(Segment)")
-                	   self.selTop.push(pair.formattedValue);
+                   if (pair.fieldName=="ATTR(Segment)") {
+                	   if (self.selTop.indexOf(pair.formattedValue) < 0) { 
+                		   self.selTop.push(pair.formattedValue); 
+                	   }
+                   }
 //                   if (pair.fieldName=="ATTR(Region)")
 //                	   self.selRegion.push(pair.formattedValue);
                    if (pair.fieldName=="ATTR(Date Week)")
@@ -459,7 +460,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 //                	   self.selLifetime.push(pair.formattedValue);
 //                   }
                    if (pair.fieldName=="ATTR(Arpu Data)") {
-                	   self.selDataArpu.push(pair.formattedValue);
+                	   if (self.selDataArpu.indexOf(pair.formattedValue) < 0) { 
+                		   self.selDataArpu.push(pair.formattedValue); 
+                	   }
                    }
 //                  alert(pair.fieldName);
 //                  alert(pair.formattedValue);

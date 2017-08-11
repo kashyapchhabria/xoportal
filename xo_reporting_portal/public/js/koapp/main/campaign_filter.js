@@ -69,6 +69,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	if ( newVal == "*" )
         		self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
 		});
+		
+		self.selRegion.subscribe(function(newVal) {
+        	if ( newVal == "*" )
+        		self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
+		});
         
         self.selDataArpu.subscribe(function(newVal) {
         	if ( newVal == "*" )
