@@ -41,15 +41,14 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		writer.commentRow("Campaign Description:" + campaignDto.description);
 		writer.commentRow("Applied Filters");
 		writer.commentRow("Top Segment:" + campaignDto.filterJson.getTopSegment());
-		writer.commentRow("Sub Segment:" + String.join("-", campaignDto.filterJson.getSubSegment()));
-		writer.commentRow("Regions:" + String.join("-", campaignDto.filterJson.getHomeLocation()));
+		writer.commentRow("Regions:" + String.join("-", campaignDto.filterJson.getDateWeek()));
 		writer.commentRow("Lifetime:" + campaignDto.filterJson.getLifetime());
 		writer.commentRow("Data ARPU:" + campaignDto.filterJson.getDataArpu());
 		writer.commentRow("VAS Plan:" + campaignDto.filterJson.getVasPlan());
 	}
 
 	private void getReportHeaders(CsvWriter writer) {
-		writer.writeHeaders("MSISDN", "Sub Segment", "Region", "Lifetime", "Data ARPU", "VAS Plan");
+		writer.writeHeaders("MSISDN", "Date Week", "Region", "Lifetime", "Data ARPU", "VAS Plan");
 	}
 	
 	public CampaignLogic() {
@@ -69,7 +68,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		
 		writer.commentRow("Set A");
 		
-		List<String> allHits = this.campaignDao.getMsisdnsAsList(campaignDto.filterJson.getTopSegment(), campaignDto.filterJson.getSubSegment(), campaignDto.filterJson.getHomeLocation());
+		List<String> allHits = this.campaignDao.getMsisdnsAsList(campaignDto.filterJson.getTopSegment(), campaignDto.filterJson.getDateWeek(), campaignDto.filterJson.getLifetime(), campaignDto.filterJson.getDataArpu(), campaignDto.filterJson.getVasPlan());
 		
 		int setB = (setAb * allHits.size()) / 100 ;
 		int count = 0;
@@ -80,7 +79,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 			if ( actualObj != null ) {
 				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(0))).toString());
 				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(1))).toString());
+				recordData.append(actualObj.at(campaignDto.filterJson.dateWeek));
 				recordData.append(SYMBOL_COMMA);
 				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(2))).toString());
 				recordData.append(SYMBOL_COMMA);
@@ -113,7 +112,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 
 	public String getMsisdnCount(CampaignDto campaignDto) {
 		try {
-			Long hitSize = this.campaignDao.getQueryHits(campaignDto.filterJson.getTopSegment(), campaignDto.filterJson.getSubSegment(), campaignDto.filterJson.getHomeLocation());
+			Long hitSize = this.campaignDao.getQueryHits(campaignDto.filterJson.getTopSegment(), campaignDto.filterJson.getDateWeek(), campaignDto.filterJson.getLifetime(), campaignDto.filterJson.getDataArpu(), campaignDto.filterJson.getVasPlan());
 			return Long.toString(hitSize);
 		} catch (Exception e) {
 			e.printStackTrace();

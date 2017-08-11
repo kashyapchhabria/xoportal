@@ -7,7 +7,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 
 		BaseModel.call(this, ko, $);
 		var self = this;
-		self.selTop = ko.observable("");
+		self.selTop = ko.observableArray();
 		self.selRegion = ko.observableArray();
 		self.selDate = ko.observableArray();
 		self.selLifetime = ko.observable();
@@ -30,8 +30,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			A5 : "Relationships, Seeks advice, Duty, Commitment, Duty/tradition, Integrity, Techno skeptics, Tradition",
 			Y1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
 			Y2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
-			Y3 : "Stylish, Confident, Status, Designer labels improve a person's image, Respect, Power",
-			Y4 : ""
+			Y3 : "Stylish, Confident, Status, Designer labels improve a person's image, Respect, Power"
 		});
 		
 		self.formatNumberData = function(number) {
@@ -51,7 +50,34 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		};
 		
 		self.selTop.subscribe(function(newVal) {
-			self.selSgmtKeywords(self.sgmtKeywords()[newVal]);
+			if ( newVal == "*" )
+        		self.selTop(["A1","A2","A3","A4","A5","Y1","Y2","Y3"]);
+			self.selSgmtKeywords("");
+			var keywordHeader = "<h4 class=\"ui header\">Segment Keywords - ";
+			var endKeywordHeader = "</h4>";
+			var keywordsPara = "<p>";
+			var endKeywordsPara = "</p><br />";
+        	for(var i=0; i < self.selTop().length; i++) {
+        		var sgmtSelHeader = keywordHeader + self.selTop()[i] + endKeywordHeader ;
+        		var sgmtSelWords = self.sgmtKeywords()[self.selTop()[i]];
+        		var fullHtml = sgmtSelHeader + keywordsPara + sgmtSelWords + endKeywordsPara;
+        		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+        	}
+		});
+		
+		self.selLifetime.subscribe(function(newVal) {
+        	if ( newVal == "*" )
+        		self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
+		});
+        
+        self.selDataArpu.subscribe(function(newVal) {
+        	if ( newVal == "*" )
+        		self.selDataArpu(["HH","LH","LL","HL"]);
+		});
+		
+		self.selVasPlan.subscribe(function(newVal) {
+        	if ( newVal == "*" )
+        		self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
 		});
 		
 		self.rangeValue.subscribe(function(newVal){
