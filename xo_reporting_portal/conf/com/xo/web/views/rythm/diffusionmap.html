@@ -5,20 +5,6 @@
 			<div id="diffusionViewPlace" data-bind='attr:{style:(diffMap.isTopBarVisibile() ? "background-color:white;margin-top:3px;" : "background-color:white;margin-top:-45px;")}'>
 				<div data-bind="visible:diffMap.isTitleVisible()">
 					<div class="ui grid page" style="padding:1% !important;">
-						<div class="row">
-							<div class="one wide column">
-								<img class="ui tiny image" data-bind='attr: {src: diffMap.clientLogoImageUrl}'></img>
-							</div>
-							<div class="fifteen wide column" align="left">
-								<a class="ui small button" style="background-color: #0ABAB5; color:white" id="diffMap" data-bind="click:diffMap.changeActiveSheet.bind($data,'Diffusion Map')">Diffusion Map</a>
-								<!-- <a class="ui small button" style="color:black;" id="spndSeg" data-bind="click:diffMap.changeActiveSheet.bind($data,'Spend Segment')">Spend Segment</a>
-								<a class="ui small button" style="color:black;" id="trndSen" data-bind="click:diffMap.changeActiveSheet.bind($data,'Trendsensor')">Trendsensor</a>
-								<a class="ui small button" style="color:black;" id="reports" data-bind="click:diffMap.changeActiveSheet.bind($data,'Reports')">Reports</a> -->
-								<a class="ui small button" style="color:black;" id="filters" data-bind="click:diffMap.loadFilterPopup">Export Filters</a>
-							</div>
-						</div>
-						  
-            			 
             				<!-- <div class="small-2 columns">
 		            			<a data-bind="click:diffMap.getSelectedFilters" class="button postfix">Go</a>
         		    		</div> -->

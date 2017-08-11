@@ -72,6 +72,12 @@
 			<a id="home_button" class="item" href="#">
 				<i class="home icon" title='Home'></i>
 			</a>
+			<!-- ko if: router.currentPage().title()=="Diffusion Map" -->
+				<a class="item" style="color:black;" id="filters" data-bind="click:loadFilterPopup">
+					&nbsp;&nbsp;<i class="upload icon"></i>
+					&nbsp;&nbsp;Export As CSV
+				</a>
+			<!-- /ko -->
 			<div class="right menu">
 				<!-- ko ifnot: menuData && menuData().length > 0 || router.currentPage().title()=="Diffusion Map" -->
 					<div class="item disp" data-bind="text: router.currentPage().title">
