@@ -79,10 +79,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			if( number > 1000 ) {
 				if( number > 1000000) {
 					var tempCount = number / 1000000;
-					return Number((tempCount).toFixed(2)) + " Mn";
+					return Number((tempCount).toFixed(0)) + " Mn";
 				} else {
 					var tempCount = number / 1000;
-					return Number((tempCount).toFixed(2)) + " K";
+					return Number((tempCount).toFixed(0)) + " K";
 				}
 			} else if (self.isDemo()){
 				return number + " K";

@@ -49,7 +49,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 	}
 
 	private void getReportHeaders(CsvWriter writer) {
-		writer.writeHeaders("MSISDN", "Segment", "Region" ,"Date Week", "Lifetime", "Data ARPU", "VAS Plan");
+		writer.writeHeaders("MSISDN");
 	}
 	
 	public CampaignLogic() {

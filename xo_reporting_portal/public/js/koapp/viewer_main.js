@@ -71,6 +71,7 @@ define([ 'knockout', 'main/router', 'knockout.validation', 'main/koselectize', '
         	diffMap.clearAll();
         	diffMap.showDiffusionMap();
         	diffMap.getComments();
+        	diffMap.getComments();
         	return new Router.Page('Diffusion Map','diffusion_map',{diffMap:diffMap});
         });
       }
