@@ -19,22 +19,98 @@
 	  			</div>
 	  		</div>
 	  	</center>
-		<div id="list_filters" class="ui small modal">
+		<div id="no_filters" class="ui small modal" >
+			<i class="close icon"></i>
+			<div class="header">No Filters Selected</div>
+			<div class="content" data-bind="visible:diffMap.isNoValuesSelected()==1">
+				<p>Kindly click on any one of the cells.</p>
+			</div>
+		</div>
+		<div id="list_filters" class="ui fullscreen modal" >
 			<i class="close icon"></i>
 			<div class="header">Selected Filters</div>
-			<div class="content">
-				<p data-bind="visible:diffMap.selTopFlag()!=1 ,text:'Top Segment : '+diffMap.selTop()"></p>
-				<p data-bind="visible:diffMap.selRegionFlag()!=1  && diffMap.isNoValuesSelected()!=1  ,text:'Regions : '+diffMap.selRegion()"></p>
-				<p data-bind="visible:diffMap.selLifetimeFlag()!=1  && diffMap.isNoValuesSelected()!=1   ,text:'Lifetime : '+diffMap.selLifetime()"></p>
-				<p data-bind="visible:diffMap.selDataArpuFlag()!=1   ,text:'Data ARPU : '+diffMap.selDataArpu()"></p>
-				<p data-bind="visible:diffMap.selVasPlanFlag()!=1   ,text:'VAS Plan : '+diffMap.selVasPlan()"></p>
-				<p data-bind="visible:diffMap.selDateFlag()!=1   ,text:'Date Week : '+diffMap.selDate()"></p>
-				<p data-bind="visible:diffMap.isNoValuesSelected()==1   ,text:'No Filters Selected'"></p>
-			</div>
-			<div class="actions" data-bind="visible:diffMap.isNoValuesSelected()!=1">
-				<div data-bind="click:diffMap.exportFilters" class="ui green button">Export</div>
-			</div>
-			
+			<hr />
+			<div class="content ui stackable grid page" data-bind="visible:diffMap.isNoValuesSelected()!=1 " >
+					<div class="row" style="margin-top: -60px;">
+						<div class="ten wide column">
+							<div class="ui form">
+								<div class="">
+									<h5 class="ui header" >
+										Enter Campaign Name and Description
+									</h5>
+								</div> 
+								<div class="">
+									<input data-bind="value:diffMap.campaignName" placeholder="Enter Campaign Name" type="text" id="campName" />
+								</div>
+								<br><br>
+								<div class="">
+									<textarea data-bind="value:diffMap.campaignDescription" rows="4" placeholder="Enter Campaign Description" id="campDesc"></textarea>
+								</div>
+							</div>				
+						</div>
+						<div class="six wide column">
+							<div class="ui grid">
+								<div class="row">
+									<h5 class="ui header">
+										Target Group Overview
+									</h5>
+								</div>
+								<div class="row">
+									<div class="ten wide column">
+										<label class="ui white large label">No. of Customers:</label>
+									</div>
+									<div class="four wide column">
+										<label class="ui grey large label" data-bind="text:diffMap.campaignCount"></label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="ten wide column">
+										<label class="ui white large label">Percent of Stock:</label>
+									</div>
+									<div class="four wide column">
+										<label class="ui grey large label" data-bind="text:diffMap.campaignPercent"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="seven wide column">
+							<div class="ui raised segment">
+								<h4 class="ui header">A/B Slider</h4>
+								<div class="inline field">
+									<input type="range"  min="0" max="100" step="1" data-bind="value: diffMap.rangeValue(), event: { input: function(){ diffMap.rangeValue($element.value); }}" />
+								</div>
+								<br />
+								<div class="ui right labeled input" style="margin-left: 25px;width: 20%;">
+									<label for="abpercent" class="ui label">A/B Split %</label>
+									<input type="text" placeholder="A/B Split %" id="abpercent" data-bind="value: diffMap.rangeValue(), event: { input: function(){ diffMap.rangeValue($element.value); }}" />
+									<div class="ui basic label" data-bind="html:diffMap.abSplitValue()"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="ui right floated button" style="width: 50%;" data-bind="click:diffMap.getMsisdns">
+									<a style="color: rgba(0,0,0,.6);">Export</a>
+								</div>
+							</div>
+						</div>
+						<div class="four wide column">
+							<div class="ui raised segment">
+								<h4 class="ui header">Selected Filters</h4>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selTopFlag()!=1 ,text:'Top Segment : '+diffMap.selTop()"></p>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selDateFlag()!=1 ,text:'Date Week : '+diffMap.selDate()"></p>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selRegionFlag()!=1  && diffMap.isNoValuesSelected()!=1 ,text:'Regions : '+diffMap.selRegion()"></p>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selLifetimeFlag()!=1  && diffMap.isNoValuesSelected()!=1 ,text:'Lifetime : '+diffMap.selLifetime()"></p>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selDataArpuFlag()!=1 ,text:'Data ARPU : '+diffMap.selDataArpu()"></p>
+								<p style="word-wrap: break-word;" data-bind="visible:diffMap.selVasPlanFlag()!=1 ,text:'VAS Plan : '+diffMap.selVasPlan()"></p>
+							</div>
+						</div>
+						<div class="four wide column">
+							<div class="ui raised segment" data-bind="visible:diffMap.selTopFlag()!=1 ,html:diffMap.selSgmtKeywords()">
+							</div>
+						</div>
+					</div>
+				</div>
 		</div>
 	</section>
 </script>

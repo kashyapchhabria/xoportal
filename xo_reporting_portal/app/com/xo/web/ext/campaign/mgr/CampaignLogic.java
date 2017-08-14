@@ -85,18 +85,18 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 			JsonNode actualObj = mapper.readTree(filterHit);
 			if ( actualObj != null ) {
 				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(0))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(1))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(2))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(3))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(4))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(5))).toString());
-				recordData.append(SYMBOL_COMMA);
-				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(6))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(1))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(2))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(3))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(4))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(5))).toString());
+//				recordData.append(SYMBOL_COMMA);
+//				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(6))).toString());
 				writer.writeRow(recordData.toString());
 			}
 			if(count == setB) {

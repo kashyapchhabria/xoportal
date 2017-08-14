@@ -51,12 +51,228 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         var activeSheet = null;
         self.isTopBarVisibile = ko.observable(true);
         self.userGuide = ko.observable(false);
-        self.array = ko.observableArray(["1Title","1BottomLeft","1BottomRight","1TopLeft","1TopRight","2Title","2BottomLeft","2BottomRight","2TopLeft","2TopRight","3Title","3BottomLeft","3BottomRight","3TopLeft","3TopRight","4Title","4BottomLeft","4BottomRight","4TopLeft","4TopRight","5Title","5BottomLeft","5BottomRight","5TopLeft","5TopRight","6Title","6BottomLeft","6BottomRight","6TopLeft","6TopRight"]);
-        self.spendArray = ko.observableArray(["1","2","3","4","5","6"]);
-        self.trendArray = ko.observableArray(["1","Diffus_Stats","TS1BottomLeft","TS1BottomRight","TS1TopLeft","TS1TopRight"]);
         
         self.isTitleVisible = ko.observable(false);
+        
+        self.campaignName = ko.observable('');
+		self.campaignDescription = ko.observable('');
+		self.campaignCount = ko.observable(0);
+		self.campaignCountNoFormat = ko.observable(0);
+		self.campaignTotalCount = ko.observable(0);
+		self.selSgmtKeywords = ko.observable();
+		self.campaignPercent = ko.observable();
+		self.rangeValue = ko.observable(50);
+		self.abSplitValue = ko.observable();
+		self.isDemo = ko.observable();
+		self.sgmtKeywords = ko.observable({
+			A1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
+			A2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
+			A3 : "Stylish, Confident, Status, Designer labels improve a person's image, Respect, Power",
+			A4 : "Relationships, Seeks advice, Duty, Commitment, Duty/tradition, Integrity, Techno skeptics, Tradition",
+			A5 : "Relationships, Seeks advice, Duty, Commitment, Duty/tradition, Integrity, Techno skeptics, Tradition",
+			Y1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
+			Y2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
+			Y3 : "Stylish, Confident, Status, Designer labels improve a person's image, Respect, Power"
+		});
+        
+		self.formatNumberData = function(number) {
+			if( number > 1000 ) {
+				if( number > 1000000) {
+					var tempCount = number / 1000000;
+					return Number((tempCount).toFixed(2)) + " Mn";
+				} else {
+					var tempCount = number / 1000;
+					return Number((tempCount).toFixed(2)) + " K";
+				}
+			} else if (self.isDemo()){
+				return number + " K";
+			} else {
+				return number;
+			}
+		};
+		
+		self.selTop.subscribe(function(newVal) {
+			if ( newVal == "*" )
+        		self.selTop(["A1","A2","A3","A4","A5","Y1","Y2","Y3"]);
+			self.selSgmtKeywords("");
+			var keywordHeader = "<h4 class=\"ui header\">Segment Keywords - ";
+			var endKeywordHeader = "</h4>";
+			var keywordsPara = "<p>";
+			var endKeywordsPara = "</p>";
+        	for(var i=0; i < self.selTop().length; i++) {
+        		var sgmtSelHeader = keywordHeader + self.selTop()[i] + endKeywordHeader ;
+        		var sgmtSelWords = self.sgmtKeywords()[self.selTop()[i]];
+        		var fullHtml = sgmtSelHeader + keywordsPara + sgmtSelWords + endKeywordsPara;
+        		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+        	}
+		});
+		
+		
+		self.rangeValue.subscribe(function(newVal){
+			var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
+			var aSplit = self.formatNumberData(abSplit);
+			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit);
+			self.abSplitValue("A - " + aSplit +"<br /> B - " + bSplit)
+		});
+		
+		self.prepJsonData = function() {
+			var data = {};
+			var subSgt = [], homeL = [];
+			if(self.selRegion() == '*')
+				self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
+			if(self.selVasPlan() == '*' || self.selVasPlan().length == 0)
+				self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
+			if(self.selDataArpu() == '*')
+				self.selDataArpu(["HH","LH","LL","HL"]);
+			if(self.selLifetime() == '*')
+				self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
+			data['name'] = self.campaignName();
+			data['description'] = self.campaignDescription();
+			data['filterJson'] = {};
+			data['filterJson']['topSegment'] = self.selTop();
+			data['filterJson']['dateWeek'] = self.selDate();
+			data['filterJson']['regions'] = self.selRegion();
+			data['filterJson']['lifetime'] = self.selLifetime();
+			data['filterJson']['dataArpu'] = self.selDataArpu();
+			data['filterJson']['vasPlan'] = self.selVasPlan();
+			data['filterJson']['noExported'] = self.campaignCountNoFormat();
+			data['filterJson']['totalBase'] = self.campaignTotalCount();
+			data['setAb'] = self.rangeValue();
+			return data;
+		};
 
+		self.getSelectedFieldsJson = function(type) {
+			if (type === "export" && self.campaignName() === '') {
+				alert("Enter Campaign Name");
+				return null;
+			} else if (type === "export" && self.campaignDescription() === '') {
+				alert("Enter Campaign Description");
+				return null;
+			} else if (type === "export" && (self.rangeValue() > 100 || self.rangeValue() === '' || self.rangeValue() === "0")) {
+				alert("Kindly choose A/B value between 1-100% ");
+				return null;
+			} else {
+				return self.prepJsonData();
+			}
+		};
+
+		self.getMsisdnCount = function() {
+			var filterData = JSON.stringify(self.getSelectedFieldsJson("count"));
+			$("#preloader").show(true);
+			$.ajax({
+				'url' : xoappcontext + '/getMsisdnCount',
+				'type' : 'POST',
+				'cache' : false,
+				'data' : filterData,
+				'contentType' : "application/json; charset=utf-8",
+				'success' : function(serverResponse) {
+					var campCount = parseInt(serverResponse.message);
+                	self.campaignCountNoFormat(campCount);
+                	self.campaignCount(self.formatNumberData(campCount));
+//                	if (campCount > 1000) {
+//                		if (campCount > 1000000) {
+//                			var tempCount = campCount / 1000000;
+//                			self.campaignCount(Number((tempCount).toFixed(2)) + " Mn");
+//                		} else {
+//                			var tempCount = campCount / 1000;
+//                			self.campaignCount(Number((tempCount).toFixed(2)) + " K");
+//                		}
+//                	} else if (self.isDemo()){
+//                		self.campaignCount(campCount + " K");
+//                	} else {
+//                		self.campaignCount(campCount);
+//                	}
+                	var percent = Number((((campCount / self.campaignTotalCount()) * 100)).toFixed(2)); 
+                	self.campaignPercent(percent);
+                	$("#preloader").fadeOut("slow");
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					$("#preloader").fadeOut("slow");
+					setGlobalMessage({
+						message : textStatus,
+						messageType : 'alert'
+					}, "popup");
+				}
+			});
+		};
+		
+
+		self.getTotalCount = function() {
+			$("#preloader").show(true);
+			$.ajax({
+				'url' : xoappcontext + '/getTotalCount',
+				'type' : 'GET',
+				'cache' : false,
+				'contentType' : "application/json; charset=utf-8",
+				'success' : function(serverResponse) {
+					self.campaignTotalCount(serverResponse.message);
+					self.getMsisdnCount();
+					$("#preloader").fadeOut("slow");
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					$("#preloader").fadeOut("slow");
+					setGlobalMessage({
+						message : textStatus,
+						messageType : 'alert'
+					}, "popup");
+				}
+			});
+		};
+
+		self.getMsisdns = function() {
+			var filterData = JSON.stringify(self.getSelectedFieldsJson("export"));
+			if (filterData !== "null") {
+				$("#preloader").show(true);
+				$.ajax({
+					'url' : xoappcontext + '/savecampaign',
+					'type' : 'POST',
+					'cache' : false,
+					'data' : filterData,
+					'contentType' : "application/json; charset=utf-8",
+					'success' : function(serverResponse) {
+						if (serverResponse !== "Error") {
+							self.getCsvFile(serverResponse);
+						} else {
+							alert("Error Generating File !");
+							$("#preloader").fadeOut("slow");
+						}
+					},
+					'error' : function(jqXHR, textStatus, errorThrown) {
+						$("#preloader").fadeOut("slow");
+						setGlobalMessage({
+							message : textStatus,
+							messageType : 'alert'
+						}, "popup");
+					}
+				});
+
+			}
+		};
+
+		self.getCsvFile = function(fileName) {
+			$.ajax({
+				'url' : xoappcontext + '/getCsvFile/' + fileName,
+				'type' : 'GET',
+				'cache' : false,
+				'contentType' : "application/json; charset=utf-8",
+				'success' : function(serverResponse) {
+					window.open(xoappcontext + '/getCsvFile/' + fileName
+							+ '?authToken='
+							+ $('#authtokenvalue').attr('authtoken'));
+					$("#preloader").fadeOut("slow");
+					console.log("File download Successful");
+				},
+				'error' : function(jqXHR, textStatus, errorThrown) {
+					$("#preloader").fadeOut("slow");
+					setGlobalMessage({
+						message : textStatus,
+						messageType : 'alert'
+					}, "popup");
+				}
+			});
+		}
+        
+		
         self.submitComment = function () {
         	var dashboardName='diffusionMap';
         	if(self.inputText() === '') {
@@ -375,37 +591,47 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         		self.isNoValuesSelected(0);
         }
         
+        
         self.selLifetime.subscribe(function(newVal) {
-        	if(newVal == '*' || newVal.length == 5)
+        	if(newVal == '*' || newVal.length == 5){
+//        		self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
         		self.selLifetimeFlag(1);
+        	}
         	else
         		self.selLifetimeFlag(0);
         });
         
         self.selRegion.subscribe(function(newVal) {
-        	if(newVal == '*' || newVal.length == 7)
+        	if(newVal == '*' || newVal.length == 7){
+//        		self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
         		self.selRegionFlag(1);
+        	}
         	else
         		self.selRegionFlag(0);
         });
         
         self.selTop.subscribe(function(newVal) {
-        	if(newVal == '*')
+        	if(newVal == '*'){
         		self.selTopFlag(1);
+        	}
         	else
         		self.selTopFlag(0);
         });
         
         self.selDataArpu.subscribe(function(newVal) {
-        	if(newVal == '*')
+        	if(newVal == '*'){
+//        		self.selDataArpu(["HH","LH","LL","HL"]);
         		self.selDataArpuFlag(1);
+        	}
         	else
         		self.selDataArpuFlag(0);
         });
         
         self.selVasPlan.subscribe(function(newVal) {
-        	if(newVal == '*' || self.selVasPlan() == "" )
+        	if(newVal == '*' || self.selVasPlan() == "" || newVal.length == 16){
+//        		self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
         		self.selVasPlanFlag(1);
+        	}
         	else
         		self.selVasPlanFlag(0);
         });
@@ -472,11 +698,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		}
         
         
-        
-        
-        
         self.loadFilterPopup = function() {
-			loadPopup("list_filters");
+        	if(self.isNoValuesSelected()==1) {
+        		loadPopup("no_filters");
+        	} else {
+        		self.getTotalCount();
+        		loadPopup("list_filters");
+        	}
 		 };
 		 
         self.exportFilters = function() {
@@ -564,177 +792,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	        self.selDateFlag(1);
         };
 
-        self.toggleClass = function () {
-        	$(".dropdown2 dd ul").slideToggle('fast');
-        }
         
-        self.changeActiveSheet = function (sheetName) {
-        	var defaultColor = "#E7E7E7";
-        	var activeColor = "#0ABAB5";
-        	var actTextColor = "white";
-        	var defTextColor = "black";
-        	self.cancelSelected();
-        	self.activeSheet(sheetName);
-        	if(sheetName === "Diffusion Map") {
-        		self.showSelect(true);
-        		self.dashboardCommentHeading(diff_map);
-        		self.maxSel(sel_vas);
-        		self.retrieveFilters(self.selectedDiffFilters,6);
-        		$("#diffMap").css("background-color", activeColor);
-        		$("#diffMap").css("color", actTextColor);
-			}
-			else if(sheetName === "Spend Segment") {
-				self.showSelect(true);
-				self.dashboardCommentHeading('Spend Segment');
-				self.maxSel(sel_vas);
-				self.retrieveFilters(self.selectedSpendFilters,6);
-				$("#spndSeg").css("background-color", activeColor);
-				$("#spndSeg").css("color", actTextColor);
-			}
-			else if(sheetName === "Reports") {
-				self.showSelect(false);
-				self.dashboardCommentHeading('Reports');
-				self.retrieveFilters(self.selectedSpendFilters,6);
-				$("#reports").css("background-color", activeColor);
-				$("#reports").css("color", actTextColor);
-			}
-			else {
-				self.showSelect(true);
-				self.dashboardCommentHeading('Trendsensor');
-				self.maxSel(sel_vas);
-				self.retrieveFilters(self.selectedTrendFilters,1);
-				$("#trndSen").css("background-color", activeColor);
-				$("#trndSen").css("color", actTextColor);
-			}
-			if (self.prevSelected() === diff_map) {
-				if (sheetName !== diff_map) {
-					$("#diffMap").css("background-color", defaultColor);
-					$("#diffMap").css("color", defTextColor);
-				}
-			} else if (self.prevSelected() === 'Spend Segment') {
-				if (sheetName !== 'Spend Segment') {
-					$("#spndSeg").css("background-color", defaultColor);
-					$("#spndSeg").css("color", defTextColor);
-				}
-			} else if (self.prevSelected() === 'Reports') {
-				if (sheetName !== 'Reports') {
-					$("#reports").css("background-color", defaultColor);
-					$("#reports").css("color", defTextColor);
-				}
-			} else {
-				if (sheetName !== 'Trendsensor') {
-					$("#trndSen").css("background-color", defaultColor);
-					$("#trndSen").css("color", defTextColor);
-				}
-			}
-			self.prevSelected([]);
-			self.prevSelected(sheetName);
-        	viz.getWorkbook().activateSheetAsync(sheetName);
-        	self.getComments();
-        }
-        
-        self.retrieveFilters = function(Filters, maxSelections) {
-        	var flag = false;
-        	var selFilters = Filters;
-        	if(selFilters().length === maxSelections)
-        		flag = true;
-        	for ( var i=0; i< self.filterList().length - 1; i++ ) {
-        		if(selFilters().indexOf(self.filterList()[i]['name']) !== -1) {
-        			self.filterList()[i]['isChecked'](true);
-        			self.filterList()[i]['isDisabled'](false);
-        		} else {
-        			self.filterList()[i]['isChecked'](false);
-        			if (flag)
-        				self.filterList()[i]['isDisabled'](true);
-        			else
-        				self.filterList()[i]['isDisabled'](false);
-        		}
-        	}
-        }
-        
-        self.getSelectedFilters = function () {
-        	self.toggleClass();
-        	views=viz.getWorkbook().getPublishedSheetsInfo();
-        	self.selectedFilters([]);
-        	for ( var i=0; i<self.filterList().length; i++ ) {
-        		if (self.filterList()[i]['isChecked']() && !self.filterList()[i]['isDisabled']()) {
-        			self.selectedFilters.push(self.filterList()[i]['name']);
-        		}
-        	}
-        	for(var i=0; i<views.length;i++) {
-        		if(views[i]['$0']['isActive']) {
-        			if(views[i]['$0']['name'] === "Diffusion Map") {
-        				self.selectedDiffFilters(self.selectedFilters.slice(0));
-        				self.applyDiffusionFilters();
-        			}
-        			else if(views[i]['$0']['name'] === "Spend Segment") {
-        				self.selectedSpendFilters(self.selectedFilters.slice(0));
-        				self.applySpendSegmentFilters();
-        			}
-        			else {
-        				self.selectedTrendFilters(self.selectedFilters.slice(0));
-        				self.applyTrendsensorFilters();
-        			}
-        		}
-        	}
-		}
-		
-		self.applyTrendsensorFilters = function() {
-			sheet = viz.getWorkbook().getActiveSheet();
-			worksheetArray = sheet.getWorksheets();
-			if(self.selectedTrendFilters().length==1)
-				for(var i = 0; i < worksheetArray.length; i++) {
-					worksheetArray[i].applyFilterAsync("Status", self.selectedTrendFilters()[0], 'REPLACE');							
-				}
-			else
-				alert(sel_opt);
-		}
-		
-		self.applySpendSegmentFilters = function() {
-			sheet = viz.getWorkbook().getActiveSheet();
-			worksheetArray = sheet.getWorksheets();
-			j=0;
-			for(var k = 0; k < self.selectedSpendFilters().length; k++) {
-				for(var i = 0; i < worksheetArray.length; i++) {
-					if(worksheetArray[i].getName()==self.spendArray()[j]) {
-						worksheetArray[i].applyFilterAsync("Status", self.selectedSpendFilters()[k], 'REPLACE');	
-						
-					}
-				}j++;
-			}
-				
-			for(k = self.selectedSpendFilters().length; k < 6; k++) {
-				for(var i = 0; i < worksheetArray.length; i++) {
-					if(worksheetArray[i].getName()==self.spendArray()[j]) {
-						
-						worksheetArray[i].applyFilterAsync("Status", null , 'REPLACE');	
-					}
-				}j++;
-			}
-		}
-		
-		self.applyDiffusionFilters = function () {
-			sheet = viz.getWorkbook().getActiveSheet();
-			worksheetArray = sheet.getWorksheets();
-			//console.log(worksheetArray);
-			for(var k = 0; k < self.selectedDiffFilters().length; k++) {
-				j=k*5;
-				for(var i = 0; i < worksheetArray.length; i++) {
-					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
-						worksheetArray[i].applyFilterAsync("Status", self.selectedDiffFilters()[k], 'REPLACE');	
-				}
-				
-			}
-				
-			for(k = self.selectedDiffFilters().length; k < 6; k++) {
-				j=k*5;
-				for(var i = 0; i < worksheetArray.length; i++) {
-					if(worksheetArray[i].getName()==self.array()[j] || worksheetArray[i].getName()==self.array()[j+1] || worksheetArray[i].getName()==self.array()[j+2] || worksheetArray[i].getName()==self.array()[j+3] || worksheetArray[i].getName()==self.array()[j+4])
-						worksheetArray[i].applyFilterAsync("Status", null , 'REPLACE');	
-				}
-				
-			}
-		}
 
         return {
             clearAll: self.clearAll,
@@ -781,7 +839,19 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	selDataArpuFlag:self.selDataArpuFlag,
         	selVasPlanFlag:self.selVasPlanFlag,
         	selDateFlag:self.selDateFlag,
-        	isNoValuesSelected:self.isNoValuesSelected
+        	isNoValuesSelected:self.isNoValuesSelected,
+        	
+        	
+        	campaignName : self.campaignName,
+			campaignDescription : self.campaignDescription,
+			campaignCount : self.campaignCount,
+			getMsisdnCount:self.getMsisdnCount,
+			selSgmtKeywords:self.selSgmtKeywords,
+			getTotalCount:self.getTotalCount,
+			getMsisdns:self.getMsisdns,
+			campaignPercent:self.campaignPercent,
+			rangeValue:self.rangeValue,
+			abSplitValue:self.abSplitValue
         };
     }
 	
