@@ -53,7 +53,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         self.userGuide = ko.observable(false);
         
         self.isTitleVisible = ko.observable(false);
-        
+        self.loopcount = ko.observable(0);
         self.campaignName = ko.observable('');
 		self.campaignDescription = ko.observable('');
 		self.campaignCount = ko.observable(0);
@@ -85,11 +85,18 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					return Number((tempCount).toFixed(0)) + " K";
 				}
 			} else if (self.isDemo()){
-				return number + " K";
+				return number.toFixed(0) + " K";
 			} else {
-				return number;
+				return number.toFixed(0);
 			}
 		};
+		
+		self.clearHtml = function() {
+			self.campaignName('');
+			self.campaignDescription('');
+			self.rangeValue(50);
+			self.abSplitValue('');
+		}
 		
 		self.selTop.subscribe(function(newVal) {
 			if ( newVal == "*" )
@@ -634,6 +641,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	}
         	else
         		self.selVasPlanFlag(0);
+        	alert(self.selVasPlan());
         });
         
         self.selDate.subscribe(function(newVal) {
@@ -648,6 +656,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 //        	alert(marksEvent.getWorksheet().getName());
 			if(marksEvent.getWorksheet().getName()=="Segment" || marksEvent.getWorksheet().getName()== "Vas Plan") {
 				self.count(0);
+				self.loopcount(0);
 				return marksEvent.getMarksAsync().then(reportSelectedMarks);
 			}
 		}
@@ -662,10 +671,11 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		        self.selVasPlan(["*"]);
 		        self.selDate("*");
 			}
-			if(marks.length > 0) {
+			if(self.loopcount() ==  0) {
+				self.loopcount(self.loopcount() + 1);
 				self.selTop([]);
-				self.selVasPlan([]);
 				self.selDataArpu([]);
+				self.selVasPlan([]);
 			}
 			for (var markIndex = 0; markIndex < marks.length; markIndex++) {
                 var pairs = marks[markIndex].getPairs();
@@ -851,7 +861,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			getMsisdns:self.getMsisdns,
 			campaignPercent:self.campaignPercent,
 			rangeValue:self.rangeValue,
-			abSplitValue:self.abSplitValue
+			abSplitValue:self.abSplitValue,
+			clearHtml:self.clearHtml
         };
     }
 	

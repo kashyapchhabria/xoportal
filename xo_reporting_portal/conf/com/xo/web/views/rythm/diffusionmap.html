@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div id="list_filters" class="ui fullscreen modal" >
-			<i class="close icon"></i>
+			<i class="close icon" data-bind="click: diffMap.clearHtml" ></i>
 			<div class="header">Selected Filters</div>
 			<hr />
 			<div class="content ui stackable grid page" data-bind="visible:diffMap.isNoValuesSelected()!=1 " >
