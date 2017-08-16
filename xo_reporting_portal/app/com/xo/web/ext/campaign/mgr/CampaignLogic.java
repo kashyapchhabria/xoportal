@@ -49,7 +49,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 	}
 
 	private void getReportHeaders(CsvWriter writer) {
-		writer.writeHeaders("MSISDN");
+		writer.writeHeaders("MSISDN", "Set");
 	}
 	
 	public CampaignLogic() {
@@ -67,8 +67,6 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		getReportMetaData(writer,campaignDto);
 		getReportHeaders(writer);
 		
-		writer.commentRow("Set A");
-		
 		List<String> allHits = this.campaignDao.getMsisdnsAsList(
 				campaignDto.filterJson.getTopSegment(), 
 				campaignDto.filterJson.getDateWeek(), 
@@ -85,7 +83,12 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 			JsonNode actualObj = mapper.readTree(filterHit);
 			if ( actualObj != null ) {
 				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(0))).toString());
-//				recordData.append(SYMBOL_COMMA);
+				recordData.append(SYMBOL_COMMA);
+				if(count >= setB) {
+					recordData.append("Set B");
+				} else {
+					recordData.append("Set A");
+				}
 //				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(1))).toString());
 //				recordData.append(SYMBOL_COMMA);
 //				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(2))).toString());
@@ -98,9 +101,6 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 //				recordData.append(SYMBOL_COMMA);
 //				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(6))).toString());
 				writer.writeRow(recordData.toString());
-			}
-			if(count == setB) {
-				writer.commentRow("Set B");
 			}
 		}
 		writer.close();

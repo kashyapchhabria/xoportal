@@ -75,19 +75,19 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			Y3 : "Stylish, Confident, Status, Designer labels improve a person's image, Respect, Power"
 		});
         
-		self.formatNumberData = function(number) {
+		self.formatNumberData = function(number,decimalPt) {
 			if( number > 1000 ) {
 				if( number > 1000000) {
 					var tempCount = number / 1000000;
-					return Number((tempCount).toFixed(0)) + " Mn";
+					return Number((tempCount).toFixed(decimalPt)) + " Mn";
 				} else {
 					var tempCount = number / 1000;
-					return Number((tempCount).toFixed(0)) + " K";
+					return Number((tempCount).toFixed(decimalPt)) + " K";
 				}
 			} else if (self.isDemo()){
-				return number.toFixed(0) + " K";
+				return number.toFixed(decimalPt) + " K";
 			} else {
-				return number.toFixed(0);
+				return number.toFixed(decimalPt);
 			}
 		};
 		
@@ -117,8 +117,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		
 		self.rangeValue.subscribe(function(newVal){
 			var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
-			var aSplit = self.formatNumberData(abSplit);
-			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit);
+			var aSplit = self.formatNumberData(abSplit,0);
+			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit,0);
 			self.abSplitValue("A - " + aSplit +"<br /> B - " + bSplit)
 		});
 		
@@ -175,7 +175,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'success' : function(serverResponse) {
 					var campCount = parseInt(serverResponse.message);
                 	self.campaignCountNoFormat(campCount);
-                	self.campaignCount(self.formatNumberData(campCount));
+                	self.campaignCount(self.formatNumberData(campCount,2));
 //                	if (campCount > 1000) {
 //                		if (campCount > 1000000) {
 //                			var tempCount = campCount / 1000000;
@@ -600,7 +600,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         
         self.selLifetime.subscribe(function(newVal) {
-        	if(newVal == '*' || newVal.length == 5){
+        	if(newVal == '*' || newVal.length == 4){
 //        		self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
         		self.selLifetimeFlag(1);
         	}
@@ -641,7 +641,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	}
         	else
         		self.selVasPlanFlag(0);
-        	alert(self.selVasPlan());
         });
         
         self.selDate.subscribe(function(newVal) {
@@ -682,7 +681,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
                    var pair = pairs[pairIndex];
                    if (pair.fieldName=="ATTR(Segment)") {
-                	   if (self.selTop.indexOf(pair.formattedValue) < 0) { 
+                	   if (self.selTop.indexOf(pair.formattedValue) < 0 && pair.formattedValue != '*') { 
                 		   self.selTop.push(pair.formattedValue); 
                 	   }
                    }
@@ -695,7 +694,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 //                   if (pair.fieldName=="ATTR(Lifetime)") {
 //                	   self.selLifetime.push(pair.formattedValue);
 //                   }
-                   if (pair.fieldName=="ATTR(Arpu Data)") {
+                   if (pair.fieldName=="ATTR(Arpu Data)" && pair.formattedValue != '*') {
                 	   if (self.selDataArpu.indexOf(pair.formattedValue) < 0) { 
                 		   self.selDataArpu.push(pair.formattedValue); 
                 	   }

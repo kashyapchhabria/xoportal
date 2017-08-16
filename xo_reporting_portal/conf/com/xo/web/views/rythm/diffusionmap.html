@@ -28,7 +28,7 @@
 		</div>
 		<div id="list_filters" class="ui fullscreen modal" >
 			<i class="close icon" data-bind="click: diffMap.clearHtml" ></i>
-			<div class="header">Selected Filters</div>
+			<div class="header">Recommended VAS Target Segment</div>
 			<hr />
 			<div class="content ui stackable grid page" data-bind="visible:diffMap.isNoValuesSelected()!=1 " >
 					<div class="row" style="margin-top: -60px;">
@@ -77,19 +77,19 @@
 					<div class="row">
 						<div class="seven wide column">
 							<div class="ui raised segment">
-								<h4 class="ui header">A/B Slider</h4>
+								<h4 class="ui header">Target Users Split up</h4>
 								<div class="inline field">
 									<input type="range"  min="0" max="100" step="1" data-bind="value: diffMap.rangeValue(), event: { input: function(){ diffMap.rangeValue($element.value); }}" />
 								</div>
 								<br />
 								<div class="ui right labeled input" style="margin-left: 25px;width: 20%;">
-									<label for="abpercent" class="ui label">A/B Split %</label>
-									<input type="text" placeholder="A/B Split %" id="abpercent" data-bind="value: diffMap.rangeValue(), event: { input: function(){ diffMap.rangeValue($element.value); }}" />
+									<label for="abpercent" class="ui label">Split %</label>
+									<input type="text" placeholder="Split %" id="abpercent" data-bind="value: diffMap.rangeValue(), event: { input: function(){ diffMap.rangeValue($element.value); }}" />
 									<div class="ui basic label" data-bind="html:diffMap.abSplitValue()"></div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="ui right floated button" style="width: 50%;" data-bind="click:diffMap.getMsisdns">
+								<div class="ui right floated positive button" style="width: 50%;" data-bind="click:diffMap.getMsisdns">
 									<a style="color: rgba(0,0,0,.6);">Export</a>
 								</div>
 							</div>
