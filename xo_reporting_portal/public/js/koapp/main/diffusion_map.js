@@ -99,8 +99,12 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		}
 		
 		self.selTop.subscribe(function(newVal) {
-			if ( newVal == "*" )
-        		self.selTop(["A1","A2","A3","A4","A5","Y1","Y2","Y3"]);
+			if ( newVal == "*" || newVal == null || newVal == '' || newVal.length == 8 ) {
+        		self.selTopFlag(1);
+        	}
+        	else
+        		self.selTopFlag(0);
+			
 			self.selSgmtKeywords("");
 			var keywordHeader = "<h4 class=\"ui header\">Segment Keywords - ";
 			var endKeywordHeader = "</h4>";
@@ -125,11 +129,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.prepJsonData = function() {
 			var data = {};
 			var subSgt = [], homeL = [];
-			if(self.selRegion() == '*')
+			if(self.selTop() == '*' || self.selTop().length == 0)
+				self.selTop(["A1","A2","A3","A4","A5","Y1","Y2","Y3"]);
+			if(self.selRegion() == '*' || self.selRegion().length == 0)
 				self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
 			if(self.selVasPlan() == '*' || self.selVasPlan().length == 0)
 				self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
-			if(self.selDataArpu() == '*')
+			if(self.selDataArpu() == '*' || self.selDataArpu() == '' )
 				self.selDataArpu(["HH","LH","LL","HL"]);
 			if(self.selLifetime() == '*')
 				self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
@@ -559,7 +565,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
             		if(i==0) {
 	            		if(field.getFieldName()=="Region")
 	            			self.selRegion([]);
-	            		if(field.getFieldName()=="Devicedate")
+	            		if(field.getFieldName()=="Date Week")
 	            			self.selDate("");
 	            		if(field.getFieldName()=="Lifetime")
 	            			self.selLifetime([]);
@@ -574,7 +580,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 	            				self.selRegion.push(values[j].value);
 	            			}
 	            		}
-	            		if(field.getFieldName()=="Devicedate"){
+	            		if(field.getFieldName()=="Date Week"){
 	            			for (j = 0; j < values.length; j++) {
 	            				self.selDate(values[j].value);
 	            			}
@@ -617,16 +623,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         		self.selRegionFlag(0);
         });
         
-        self.selTop.subscribe(function(newVal) {
-        	if(newVal == '*'){
-        		self.selTopFlag(1);
-        	}
-        	else
-        		self.selTopFlag(0);
-        });
+        
         
         self.selDataArpu.subscribe(function(newVal) {
-        	if(newVal == '*'){
+        	if(newVal == '*' || newVal == null || newVal == '' || newVal.length == 4){
 //        		self.selDataArpu(["HH","LH","LL","HL"]);
         		self.selDataArpuFlag(1);
         	}
