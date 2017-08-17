@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtAspectj.AspectjKeys._
 
 name := """Xo Diffusion Map Export Tool"""
 
-version := "4.7.1"
+version := "4.7.2"
 
 organization := "com.xo.web"
 
