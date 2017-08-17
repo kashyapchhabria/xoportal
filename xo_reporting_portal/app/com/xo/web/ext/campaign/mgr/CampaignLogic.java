@@ -84,7 +84,7 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 			if ( actualObj != null ) {
 				recordData.append(actualObj.at(getNestedPath(ES_FIELDS.get(0))).toString());
 				recordData.append(SYMBOL_COMMA);
-				if(count >= setB) {
+				if(count > setB) {
 					recordData.append("Set B");
 				} else {
 					recordData.append("Set A");
