@@ -116,50 +116,45 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			self.a3Array([]);
 			self.a2Array([]);
 			var heading = "<h4 class=\"ui header\">Recommended Communication Keywords for Target Groups </h4>";
+        	self.selTop().forEach(function(topSgmt) {
+        		if('A1,Y1'.indexOf(topSgmt) !== -1 ) {
+        			self.a1Array().push(topSgmt);
+        		}
+        		if('A2,Y2'.indexOf(topSgmt) !== -1 ) {
+        			self.a2Array().push(topSgmt);
+        		}
+        		if('A3,Y3'.indexOf(topSgmt) !== -1 ) {
+        			self.a3Array().push(topSgmt);
+        		}
+        		if('A4,A5'.indexOf(topSgmt) !== -1 ) {
+        			self.a4Array().push(topSgmt);
+        		}
+        	});
+        	self.selSgmtKeywords(self.selSgmtKeywords()+heading);
+        	if ( self.a1Array().length !=0 ) {
+        		self.formSgmtKeywords(self.a1Array());
+    		}
+    		if ( self.a2Array().length !=0 ) {
+    			self.formSgmtKeywords(self.a2Array());
+    		}
+    		if ( self.a3Array().length !=0 ) {
+    			self.formSgmtKeywords(self.a3Array());
+    		}
+    		if ( self.a4Array().length !=0 ) {
+    			self.formSgmtKeywords(self.a4Array());
+    		}
+		});
+		
+		self.formSgmtKeywords = function(sgmtHeaderArray) {
 			var keywordHeader = "<b>";
 			var endKeywordHeader = "</b>";
 			var keywordsPara = "<p>";
 			var endKeywordsPara = "</p>";
-        	for(var i=0; i < self.selTop().length; i++) {
-        		if( self.selTop()[i] === 'A1'  || self.selTop()[i] === 'Y1') {
-        			self.a1Array().push(self.selTop()[i]);
-        		}
-        		if( self.selTop()[i] === 'A2'  || self.selTop()[i] === 'Y2') {
-        			self.a2Array().push(self.selTop()[i]);
-        		}
-        		if( self.selTop()[i] === 'A3'  || self.selTop()[i] === 'Y3') {
-        			self.a3Array().push(self.selTop()[i]);
-        		}
-        		if( self.selTop()[i] === 'A4'  || self.selTop()[i] === 'A5') {
-        			self.a4Array().push(self.selTop()[i]);
-        		}
-        	}
-        	self.selSgmtKeywords(self.selSgmtKeywords()+heading);
-        	if ( self.a1Array().length !=0 ) {
-	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a1Array() + ' - ' + endKeywordHeader ;
-	    		var sgmtSelWords = self.sgmtKeywords()[self.a1Array()[0]];
-	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
-	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
-    		}
-    		if ( self.a2Array().length !=0 ) {
-	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a2Array() + ' - '+ endKeywordHeader ;
-	    		var sgmtSelWords = self.sgmtKeywords()[self.a2Array()[0]];
-	    		var fullHtml = sgmtSelHeader + sgmtSelWords + endKeywordsPara;
-	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
-    		}
-    		if ( self.a3Array().length !=0 ) {
-	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a3Array()+ ' - ' + endKeywordHeader ;
-	    		var sgmtSelWords = self.sgmtKeywords()[self.a3Array()[0]];
-	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
-	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
-    		}
-    		if ( self.a4Array().length !=0 ) {
-	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a4Array() + ' - ' + endKeywordHeader ;
-	    		var sgmtSelWords = self.sgmtKeywords()[self.a4Array()[0]];
-	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
-	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
-    		}
-		});
+			sgmtSelHeader =keywordsPara + keywordHeader + sgmtHeaderArray + ' - ' + endKeywordHeader ;
+    		var sgmtSelWords = self.sgmtKeywords()[sgmtHeaderArray[0]];
+    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
+    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+		}
 		
 		
 		self.rangeValue.subscribe(function(newVal){
@@ -225,19 +220,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					var campCount = parseInt(serverResponse.message);
                 	self.campaignCountNoFormat(campCount);
                 	self.campaignCount(self.formatNumberData(campCount,2));
-//                	if (campCount > 1000) {
-//                		if (campCount > 1000000) {
-//                			var tempCount = campCount / 1000000;
-//                			self.campaignCount(Number((tempCount).toFixed(2)) + " Mn");
-//                		} else {
-//                			var tempCount = campCount / 1000;
-//                			self.campaignCount(Number((tempCount).toFixed(2)) + " K");
-//                		}
-//                	} else if (self.isDemo()){
-//                		self.campaignCount(campCount + " K");
-//                	} else {
-//                		self.campaignCount(campCount);
-//                	}
                 	var percent = Number((((campCount / self.campaignTotalCount()) * 100)).toFixed(2)); 
                 	self.campaignPercent(percent);
                 	$("#preloader").fadeOut("slow");
@@ -650,7 +632,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.selLifetime.subscribe(function(newVal) {
         	if(newVal == '*' || newVal.length == 4){
-//        		self.selLifetime(["1 - 3 years","3 - 5 years","5+ years","6 months - 1 year"]);
         		self.selLifetimeFlag(1);
         	}
         	else
@@ -659,7 +640,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.selRegion.subscribe(function(newVal) {
         	if(newVal == '*' || newVal.length == 7){
-//        		self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
         		self.selRegionFlag(1);
         	}
         	else
@@ -670,7 +650,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.selDataArpu.subscribe(function(newVal) {
         	if(newVal == '*' || newVal == null || newVal == '' || newVal.length == 4){
-//        		self.selDataArpu(["HH","LH","LL","HL"]);
         		self.selDataArpuFlag(1);
         	}
         	else
@@ -679,7 +658,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         self.selVasPlan.subscribe(function(newVal) {
         	if(newVal == '*' || self.selVasPlan() == "" || newVal.length == 16){
-//        		self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
         		self.selVasPlanFlag(1);
         	}
         	else
@@ -695,7 +673,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         
         self.onMarksSelection = function(marksEvent) {
-//        	alert(marksEvent.getWorksheet().getName());
 			if(marksEvent.getWorksheet().getName()=="Segment" || marksEvent.getWorksheet().getName()== "Vas Plan") {
 				self.count(0);
 				self.loopcount(0);
@@ -892,8 +869,6 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	selVasPlanFlag:self.selVasPlanFlag,
         	selDateFlag:self.selDateFlag,
         	isNoValuesSelected:self.isNoValuesSelected,
-        	
-        	
         	campaignName : self.campaignName,
 			campaignDescription : self.campaignDescription,
 			campaignCount : self.campaignCount,
