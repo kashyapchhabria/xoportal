@@ -172,7 +172,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			if(self.selRegion() == '*' || self.selRegion().length == 0)
 				self.selRegion(["Lagos", "North_1", "North_2", "South East", "South South", "South West", "Unavailable"]);
 			if(self.selVasPlan() == '*' || self.selVasPlan().length == 0)
-				self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth"]);
+				self.selVasPlan(["Backup", "Entertainment", "Infotainment", "Jobs", "MFS", "Undefined", "Betting", "Financial", "Football","Music", "Promo", "Religion", "Video", "Voting", "mAgric", "mHealth", "No VAS"]);
 			if(self.selDataArpu() == '*' || self.selDataArpu() == '' )
 				self.selDataArpu(["HH","LH","LL","HL"]);
 			if(self.selLifetime() == '*')
@@ -631,7 +631,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         
         
         self.selLifetime.subscribe(function(newVal) {
-        	if(newVal == '*' || newVal.length == 4){
+        	if(newVal == '*' || newVal.length == 4 || newVal.length == 5){
         		self.selLifetimeFlag(1);
         	}
         	else
@@ -657,7 +657,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         });
         
         self.selVasPlan.subscribe(function(newVal) {
-        	if(newVal == '*' || self.selVasPlan() == "" || newVal.length == 16){
+        	if(newVal == '*' || self.selVasPlan() == "" || newVal.length == 17){
         		self.selVasPlanFlag(1);
         	}
         	else

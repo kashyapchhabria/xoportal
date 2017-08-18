@@ -37,19 +37,19 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 
 	@Override
 	public List<String> getMsisdnsAsList(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception {
-		String topSgmtQuery = prepQuery("segment", topSegment);
-		String lifetimeQuery = prepQuery("lifetime", lifetime);
-		String dataArpuQuery = prepQuery("dataArpu", dataArpu);
-		String vasPlanQuery = prepQuery("vasPlan", vasPlan);
-		String regionsQuery = prepQuery("region", regions);
-		List<String> allHits = esSql.fetchAllHits(
+		String topSgmtQuery = prepQuery(ES_ORDER.get(1), topSegment);
+		String lifetimeQuery = prepQuery(ES_ORDER.get(4), lifetime);
+		String dataArpuQuery = prepQuery(ES_ORDER.get(5), dataArpu);
+		String vasPlanQuery = prepQuery(ES_ORDER.get(6), vasPlan);
+		String regionsQuery = prepQuery(ES_ORDER.get(2), regions);
+		List<String> allHits = esSql.fetchAllHits( 
 				ES_HOST, " * from " + ES_INDEX + 
-				" where dateWeek='" + dateWeek + 
+				" where " + ES_ORDER.get(3) + "='" + dateWeek + 
 				"' and " + topSgmtQuery + 
 				" and " + lifetimeQuery + 
 				" and " + dataArpuQuery + 
-				" and " + vasPlanQuery +
-				" and " + regionsQuery, 1000, 600000);
+				" and " + vasPlanQuery + 
+				" and " + regionsQuery, 7500, 600000);
 		return allHits;
 	}
 
@@ -61,14 +61,14 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 
 	@Override
 	public Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception {
-		String topSgmtQuery = prepQuery("segment", topSegment);
-		String lifetimeQuery = prepQuery("lifetime", lifetime);
-		String dataArpuQuery = prepQuery("dataArpu", dataArpu);
-		String vasPlanQuery = prepQuery("vasPlan", vasPlan);
-		String regionsQuery = prepQuery("region", regions);
+		String topSgmtQuery = prepQuery(ES_ORDER.get(1), topSegment);
+		String lifetimeQuery = prepQuery(ES_ORDER.get(4), lifetime);
+		String dataArpuQuery = prepQuery(ES_ORDER.get(5), dataArpu);
+		String vasPlanQuery = prepQuery(ES_ORDER.get(6), vasPlan);
+		String regionsQuery = prepQuery(ES_ORDER.get(2), regions);
 		int totalHits = esSql.getTotalHits( 
 				ES_HOST, " from " + ES_INDEX + 
-				" where dateWeek='" + dateWeek + 
+				" where " + ES_ORDER.get(3) + "='" + dateWeek + 
 				"' and " + topSgmtQuery + 
 				" and " + lifetimeQuery + 
 				" and " + dataArpuQuery + 
