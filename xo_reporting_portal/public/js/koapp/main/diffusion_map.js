@@ -59,11 +59,17 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.campaignCount = ko.observable(0);
 		self.campaignCountNoFormat = ko.observable(0);
 		self.campaignTotalCount = ko.observable(0);
-		self.selSgmtKeywords = ko.observable();
+		self.selSgmtKeywords = ko.observableArray();
 		self.campaignPercent = ko.observable();
 		self.rangeValue = ko.observable(50);
 		self.abSplitValue = ko.observable();
 		self.isDemo = ko.observable();
+		
+		self.a1Array = ko.observableArray();
+		self.a2Array = ko.observableArray();
+		self.a3Array = ko.observableArray();
+		self.a4Array = ko.observableArray();
+		
 		self.sgmtKeywords = ko.observable({
 			A1 : "Innovative, WWW everywhere, Dynamic, Daring, Passion, Always the latest, Bold, Energetic, Unique, Trendy, Friendly, Cool, Fun, Enjoying life",
 			A2 : "Efficient, Fair, Ethical, Equality, clear, Transparent, Collaborative, Honest, Planning day-to-day activities, Reliable, Quality>design, Responsibility",
@@ -85,9 +91,9 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					return Number((tempCount).toFixed(decimalPt)) + " K";
 				}
 			} else if (self.isDemo()){
-				return number.toFixed(decimalPt) + " K";
+				return number.toFixed(0) + " K";
 			} else {
-				return number.toFixed(decimalPt);
+				return number.toFixed(0);
 			}
 		};
 		
@@ -104,18 +110,55 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
         	}
         	else
         		self.selTopFlag(0);
-			
-			self.selSgmtKeywords("");
-			var keywordHeader = "<h4 class=\"ui header\">Segment Keywords - ";
-			var endKeywordHeader = "</h4>";
+			self.selSgmtKeywords([]);
+			self.a1Array([]);
+			self.a4Array([]);
+			self.a3Array([]);
+			self.a2Array([]);
+			var heading = "<h4 class=\"ui header\">Recommended Communication Keywords for Target Groups </h4>";
+			var keywordHeader = "<b>";
+			var endKeywordHeader = "</b>";
 			var keywordsPara = "<p>";
 			var endKeywordsPara = "</p>";
         	for(var i=0; i < self.selTop().length; i++) {
-        		var sgmtSelHeader = keywordHeader + self.selTop()[i] + endKeywordHeader ;
-        		var sgmtSelWords = self.sgmtKeywords()[self.selTop()[i]];
-        		var fullHtml = sgmtSelHeader + keywordsPara + sgmtSelWords + endKeywordsPara;
-        		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+        		if( self.selTop()[i] === 'A1'  || self.selTop()[i] === 'Y1') {
+        			self.a1Array().push(self.selTop()[i]);
+        		}
+        		if( self.selTop()[i] === 'A2'  || self.selTop()[i] === 'Y2') {
+        			self.a2Array().push(self.selTop()[i]);
+        		}
+        		if( self.selTop()[i] === 'A3'  || self.selTop()[i] === 'Y3') {
+        			self.a3Array().push(self.selTop()[i]);
+        		}
+        		if( self.selTop()[i] === 'A4'  || self.selTop()[i] === 'A5') {
+        			self.a4Array().push(self.selTop()[i]);
+        		}
         	}
+        	self.selSgmtKeywords(self.selSgmtKeywords()+heading);
+        	if ( self.a1Array().length !=0 ) {
+	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a1Array() + ' - ' + endKeywordHeader ;
+	    		var sgmtSelWords = self.sgmtKeywords()[self.a1Array()[0]];
+	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
+	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+    		}
+    		if ( self.a2Array().length !=0 ) {
+	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a2Array() + ' - '+ endKeywordHeader ;
+	    		var sgmtSelWords = self.sgmtKeywords()[self.a2Array()[0]];
+	    		var fullHtml = sgmtSelHeader + sgmtSelWords + endKeywordsPara;
+	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+    		}
+    		if ( self.a3Array().length !=0 ) {
+	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a3Array()+ ' - ' + endKeywordHeader ;
+	    		var sgmtSelWords = self.sgmtKeywords()[self.a3Array()[0]];
+	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
+	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+    		}
+    		if ( self.a4Array().length !=0 ) {
+	        	sgmtSelHeader =keywordsPara + keywordHeader + self.a4Array() + ' - ' + endKeywordHeader ;
+	    		var sgmtSelWords = self.sgmtKeywords()[self.a4Array()[0]];
+	    		var fullHtml = sgmtSelHeader +  sgmtSelWords + endKeywordsPara;
+	    		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
+    		}
 		});
 		
 		
@@ -123,7 +166,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 			var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
 			var aSplit = self.formatNumberData(abSplit,0);
 			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit,0);
-			self.abSplitValue("A - " + aSplit +"<br /> B - " + bSplit)
+			self.abSplitValue("Set A - " + aSplit +"<br />Set B - " + bSplit)
 		});
 		
 		self.prepJsonData = function() {
