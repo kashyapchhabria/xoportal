@@ -44,8 +44,9 @@ public class CampaignController extends BaseController<Campaign, Integer> implem
 			CampaignDto campaignDto = Json.fromJson(json, CampaignDto.class);
 			if(this.campaignLogic.isCampaignExist(campaignDto)) {
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-				String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-				String fileName = campaignDto.name.trim() + '_' + date + FILE_TYPE;
+//				String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//				String fileName = campaignDto.name.trim() + '_' + date + FILE_TYPE;
+				String fileName = campaignDto.name.trim() + FILE_TYPE;
 				File campaignFile = new File(fileName);
 				FileWriter writer = new FileWriter(campaignFile);
 				writer = this.campaignLogic.getMsisdnsAsList(campaignDto, writer,json.get("setAb").asInt());
