@@ -24,4 +24,9 @@
             <column name="last_modified_dt" not-null="true" />
         </property>
     </class>
+    <query name="com.xo.web.ext.campaign.models.Campaign.isCampaignExists">
+    	<![CDATA[
+    		SELECT campaign FROM com.xo.web.ext.campaign.models.Campaign campaign WHERE name = :campaignName
+    	]]>
+    </query>
 </hibernate-mapping>

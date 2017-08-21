@@ -56,6 +56,11 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		super(new CampaignDAOImpl());
 		campaignDao = (CampaignDAO) entityDao;
 	}
+	
+	public boolean isCampaignExist(CampaignDto campaignDto) {
+		Boolean isCampaignExist = this.campaignDao.isCampaignExist(campaignDto.name.trim());
+		return isCampaignExist;
+	}
 
 	public FileWriter getMsisdnsAsList(CampaignDto campaignDto, FileWriter writer2, int setAb) throws Exception {
 		ByteArrayOutputStream csvResult = new ByteArrayOutputStream();

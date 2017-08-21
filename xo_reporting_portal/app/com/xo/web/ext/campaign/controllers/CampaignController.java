@@ -3,6 +3,8 @@ package com.xo.web.ext.campaign.controllers;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.xo.web.controllers.BaseController;
@@ -40,16 +42,20 @@ public class CampaignController extends BaseController<Campaign, Integer> implem
 		}
 		try {
 			CampaignDto campaignDto = Json.fromJson(json, CampaignDto.class);
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			String fileName = campaignDto.name + '_' + Long.toString(timestamp.getTime()) + FILE_TYPE;
-			File campaignFile = new File(fileName);
-			FileWriter writer = new FileWriter(campaignFile);
-			writer = this.campaignLogic.getMsisdnsAsList(campaignDto, writer,json.get("setAb").asInt());
-			writer.flush();
-			writer.close();
-			Campaign campaign = this.campaignLogic.save(campaignDto);
-			System.out.println(campaignFile.getAbsolutePath());
-			return ok(campaignFile.getName());
+			if(this.campaignLogic.isCampaignExist(campaignDto)) {
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+				String fileName = campaignDto.name.trim() + '_' + date + FILE_TYPE;
+				File campaignFile = new File(fileName);
+				FileWriter writer = new FileWriter(campaignFile);
+				writer = this.campaignLogic.getMsisdnsAsList(campaignDto, writer,json.get("setAb").asInt());
+				writer.flush();
+				writer.close();
+				Campaign campaign = this.campaignLogic.save(campaignDto);
+				System.out.println(campaignFile.getAbsolutePath());
+				return ok(campaignFile.getName());
+			}
+			jsonResponse = generateErrorResponse(Messages.get(ERR_CAMPAIGN_EXISTS));
 		} catch(Exception e) {
 			Logger.error("Error while saving the campaign.", e);
 			jsonResponse = generateErrorResponse(Messages.get(ERR_SAVE_CAMPAIGN));

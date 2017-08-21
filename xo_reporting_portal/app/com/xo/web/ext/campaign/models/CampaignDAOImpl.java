@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.hibernate.Query;
+
 import com.xo.web.ext.campaign.models.Campaign;
+import com.xo.web.ext.comment.models.Comment;
 import com.xo.web.models.dao.GenericDAOImpl;
 import com.xo.web.util.XoAppConfigKeys;
 import com.xo.web.util.XoUtil;
@@ -17,6 +20,9 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 	private static final String ES_INDEX = XoUtil.getConfig(XoAppConfigKeys.ES_INDEX);
 	private static final String ES_TYPE = XoUtil.getConfig(XoAppConfigKeys.ES_TYPE);
 	private static final String ES_HOST = XoUtil.getConfig(XoAppConfigKeys.ES_URL) ;
+	
+	private static final String QUERY_CAMPAIGN_EXISTS = "isCampaignExists";
+	private static final String PARAM_CAMPAIGN_NAME = "campaignName";
 	
 	private String prepQuery(String fieldName, String[] fieldData) {
 		String fieldQuery = fieldName + " in ";
@@ -75,6 +81,13 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 				" and " + vasPlanQuery + 
 				" and " + regionsQuery);
 		return Integer.toUnsignedLong(totalHits);
+	}
+
+	@Override
+	public Boolean isCampaignExist(String campaignName) {
+		Query query = getNamedQuery(QUERY_CAMPAIGN_EXISTS);
+		query.setParameter(PARAM_CAMPAIGN_NAME, campaignName);
+        return query.list().isEmpty();
 	}
 	
 }

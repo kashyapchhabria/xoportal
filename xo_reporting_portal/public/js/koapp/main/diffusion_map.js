@@ -268,7 +268,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 					'data' : filterData,
 					'contentType' : "application/json; charset=utf-8",
 					'success' : function(serverResponse) {
-						if (serverResponse !== "Error") {
+						if ( serverResponse.message !== undefined ) {
+							alert(serverResponse.message);
+							$("#preloader").fadeOut("slow");
+						} else if( serverResponse !== "Error" ) {
 							self.getCsvFile(serverResponse);
 						} else {
 							alert("Error Generating File !");

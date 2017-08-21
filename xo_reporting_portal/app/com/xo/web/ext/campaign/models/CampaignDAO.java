@@ -16,4 +16,6 @@ public interface CampaignDAO extends GenericDAO<Campaign, Integer> {
 
 	Long getQueryHits(String[] topSegment,String dateWeek, String[] lifetime ,String[] dataArpu,String[] vasPlan, String[] regions) throws Exception;
 	
+	Boolean isCampaignExist(String campaignName);
+	
 }
