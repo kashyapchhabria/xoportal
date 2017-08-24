@@ -60,8 +60,9 @@ public class CampaignDAOImpl extends GenericDAOImpl<Campaign, Integer> implement
 	}
 
 	@Override
-	public Long getTotalHits() throws Exception {
-		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX );
+	public Long getTotalHits(String selDate) throws Exception {
+		int totalHits = esSql.getTotalHits(ES_HOST, " from " + ES_INDEX + 
+				" where " + ES_ORDER.get(3) + "='" + selDate + "'" );
 		return Integer.toUnsignedLong(totalHits);
 	}
 

@@ -61,7 +61,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.campaignTotalCount = ko.observable(0);
 		self.selSgmtKeywords = ko.observableArray();
 		self.campaignPercent = ko.observable();
-		self.rangeValue = ko.observable(50);
+		self.rangeValue = ko.observable(0);
 		self.abSplitValue = ko.observable();
 		self.isDemo = ko.observable();
 		
@@ -156,12 +156,19 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
     		self.selSgmtKeywords(self.selSgmtKeywords()+fullHtml);
 		}
 		
-		
 		self.rangeValue.subscribe(function(newVal){
-			var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
-			var aSplit = self.formatNumberData(abSplit,0);
-			var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit,0);
-			self.abSplitValue("Set A - " + aSplit +"<br />Set B - " + bSplit)
+			if(self.rangeValue() >=0 && self.rangeValue() <=100 ){
+				var abSplit = (newVal * self.campaignCountNoFormat()) / 100;
+				var aSplit = self.formatNumberData(abSplit,0);
+				var bSplit = self.formatNumberData(self.campaignCountNoFormat()-abSplit,0);
+				if( abSplit % 1 == 0.5 && isNaN(aSplit) == false ) 
+					aSplit = aSplit - 1;
+				self.abSplitValue("Set A - " + aSplit +"<br />Set B - " + bSplit)
+			}
+			else {
+				alert("Range Value to be 0-100");
+				self.rangeValue(50);
+			}
 		});
 		
 		self.prepJsonData = function() {
@@ -223,6 +230,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 	var percent = Number((((campCount / self.campaignTotalCount()) * 100)).toFixed(2)); 
                 	self.campaignPercent(percent);
                 	$("#preloader").fadeOut("slow");
+                	self.rangeValue(0);
+                	self.rangeValue(50);
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					$("#preloader").fadeOut("slow");
@@ -238,13 +247,13 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.getTotalCount = function() {
 			$("#preloader").show(true);
 			$.ajax({
-				'url' : xoappcontext + '/getTotalCount',
+				'url' : xoappcontext + '/getTotalCount/' + self.selDate() ,
 				'type' : 'GET',
 				'cache' : false,
 				'contentType' : "application/json; charset=utf-8",
 				'success' : function(serverResponse) {
 					self.campaignTotalCount(serverResponse.message);
-					self.getMsisdnCount();
+//					self.getMsisdnCount();
 					$("#preloader").fadeOut("slow");
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
@@ -288,6 +297,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				});
 
 			}
+			
 		};
 
 		self.getCsvFile = function(fileName) {
@@ -302,6 +312,8 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 							+ $('#authtokenvalue').attr('authtoken'));
 					$("#preloader").fadeOut("slow");
 					console.log("File download Successful");
+					$('#list_filters').modal('hide');
+					self.clearHtml();
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
 					$("#preloader").fadeOut("slow");
@@ -721,6 +733,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 	   if (self.selDataArpu.indexOf(pair.formattedValue) < 0) { 
                 		   self.selDataArpu.push(pair.formattedValue); 
                 	   }
+                   }
+                   if (pair.fieldName == "SUM(Kpi Value)" ) {
+                	   self.campaignCountNoFormat(pair.value);
+                	   self.campaignCount(self.formatNumberData(pair.value,2));
                    }
 //                  alert(pair.fieldName);
 //                  alert(pair.formattedValue);

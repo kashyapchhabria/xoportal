@@ -81,12 +81,12 @@ public class CampaignController extends BaseController<Campaign, Integer> implem
 		return ok(jsonResponse);
 	}
 	
-	public Result getTotalCount() {
+	public Result getTotalCount(String selDate) {
 		
 		JsonNode jsonResponse = null;
 		
 		try {
-			Long totalCount = this.campaignLogic.getTotalCount();
+			Long totalCount = this.campaignLogic.getTotalCount(selDate);
 			jsonResponse = generateSuccessResponse(Messages.get(totalCount.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();

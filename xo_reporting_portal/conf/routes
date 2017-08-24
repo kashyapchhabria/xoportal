@@ -174,4 +174,4 @@ GET		 /sheetComments/:sheetName/:dashboardName					  @com.xo.web.ext.comment.con
 POST	 /savecampaign												  @com.xo.web.ext.campaign.controllers.CampaignController.saveCampaign()
 POST	 /getMsisdnCount											  @com.xo.web.ext.campaign.controllers.CampaignController.getMsisdnCount()
 GET		 /getCsvFile/:fileName										  @com.xo.web.ext.campaign.controllers.CampaignController.getCsvFile(fileName: String)
-GET		 /getTotalCount												  @com.xo.web.ext.campaign.controllers.CampaignController.getTotalCount()
+GET		 /getTotalCount/:selDate									  @com.xo.web.ext.campaign.controllers.CampaignController.getTotalCount(selDate: String)

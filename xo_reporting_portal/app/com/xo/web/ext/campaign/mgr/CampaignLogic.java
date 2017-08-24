@@ -140,10 +140,10 @@ public class CampaignLogic extends BaseLogic<Campaign, Integer> {
 		return Long.toString(0);
 	}
 
-	public Long getTotalCount() {
+	public Long getTotalCount(String selDate) {
 		Long totalCount = 0l;
 		try {
-			totalCount = this.campaignDao.getTotalHits();
+			totalCount = this.campaignDao.getTotalHits(selDate);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
