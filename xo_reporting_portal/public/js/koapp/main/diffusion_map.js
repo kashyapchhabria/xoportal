@@ -61,7 +61,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 		self.campaignTotalCount = ko.observable(0);
 		self.selSgmtKeywords = ko.observableArray();
 		self.campaignPercent = ko.observable();
-		self.rangeValue = ko.observable(0);
+		self.rangeValue = ko.observable(50);
 		self.abSplitValue = ko.observable();
 		self.isDemo = ko.observable();
 		
@@ -253,7 +253,7 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
 				'contentType' : "application/json; charset=utf-8",
 				'success' : function(serverResponse) {
 					self.campaignTotalCount(serverResponse.message);
-//					self.getMsisdnCount();
+					self.getMsisdnCount();
 					$("#preloader").fadeOut("slow");
 				},
 				'error' : function(jqXHR, textStatus, errorThrown) {
@@ -734,10 +734,10 @@ define([ 'knockout', 'jquery' ], function(ko, $) {
                 		   self.selDataArpu.push(pair.formattedValue); 
                 	   }
                    }
-                   if (pair.fieldName == "SUM(Kpi Value)" ) {
-                	   self.campaignCountNoFormat(pair.value);
-                	   self.campaignCount(self.formatNumberData(pair.value,2));
-                   }
+//                   if (pair.fieldName == "SUM(Kpi Value)" ) {
+//                	   self.campaignCountNoFormat(pair.value);
+//                	   self.campaignCount(self.formatNumberData(pair.value,2));
+//                   }
 //                  alert(pair.fieldName);
 //                  alert(pair.formattedValue);
                 }
